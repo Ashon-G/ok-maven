@@ -102,7 +102,7 @@ export type Database = {
           full_name: string | null
           id: string
           settings: Json | null
-          user_type: string | null
+          user_type: Database["public"]["Enums"]["user_type_enum"] | null
           username: string | null
         }
         Insert: {
@@ -112,7 +112,7 @@ export type Database = {
           full_name?: string | null
           id: string
           settings?: Json | null
-          user_type?: string | null
+          user_type?: Database["public"]["Enums"]["user_type_enum"] | null
           username?: string | null
         }
         Update: {
@@ -122,7 +122,7 @@ export type Database = {
           full_name?: string | null
           id?: string
           settings?: Json | null
-          user_type?: string | null
+          user_type?: Database["public"]["Enums"]["user_type_enum"] | null
           username?: string | null
         }
         Relationships: []
@@ -183,7 +183,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      user_type_enum: "founder" | "maven" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
