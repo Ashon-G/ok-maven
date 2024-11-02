@@ -5,8 +5,12 @@ import { supabase } from "@/integrations/supabase/client";
 
 const Dashboard = () => {
   const { session } = useAuth();
-  const isAdmin = session?.user?.user_metadata?.user_type === 'admin' || 
-                 session?.user?.app_metadata?.user_type === 'admin';
+  const userMetadataType = session?.user?.user_metadata?.user_type;
+  const appMetadataType = session?.user?.app_metadata?.user_type;
+  const isAdmin = userMetadataType === 'admin' || appMetadataType === 'admin';
+
+  console.log('User metadata:', session?.user?.user_metadata);
+  console.log('App metadata:', session?.user?.app_metadata);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -78,6 +82,9 @@ const Dashboard = () => {
             <LogOut className="w-4 h-4" />
             Sign Out
           </button>
+        </div>
+        <div className="mt-2 text-sm text-gray-500">
+          Current user type: {userMetadataType || 'none'} (user metadata) / {appMetadataType || 'none'} (app metadata)
         </div>
       </nav>
       <Outlet />
