@@ -6,7 +6,8 @@ import {
   useSpring,
 } from "framer-motion";
 import React, { useRef } from "react";
-import { FiArrowDown } from "react-icons/fi";
+import { FiArrowDown, FiLogIn, FiUserPlus } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 export const VelocityHero = () => {
   const targetRef = useRef(null);
@@ -65,10 +66,26 @@ const Logo = () => {
 
 const Links = () => {
   return (
-    <nav className="flex gap-6 text-sm">
+    <nav className="flex items-center gap-6 text-sm">
       <a href="#how-it-works" className="hover:text-secondary">How it Works</a>
       <a href="#pricing" className="hover:text-secondary">Pricing</a>
       <a href="#contact" className="hover:text-secondary">Contact</a>
+      <div className="ml-4 flex items-center gap-2">
+        <Link
+          to="/login"
+          className="flex items-center gap-2 rounded-lg border border-white/20 px-4 py-2 text-sm font-medium text-white transition-all hover:border-white/40 hover:text-secondary"
+        >
+          <FiLogIn className="h-4 w-4" />
+          Login
+        </Link>
+        <Link
+          to="/signup"
+          className="flex items-center gap-2 rounded-lg bg-secondary px-4 py-2 text-sm font-medium text-white transition-all hover:bg-secondary/90"
+        >
+          <FiUserPlus className="h-4 w-4" />
+          Sign Up
+        </Link>
+      </div>
     </nav>
   );
 };
