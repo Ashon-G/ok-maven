@@ -11,30 +11,30 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Loader2, Plus } from "lucide-react";
+import { Plus, Loader2 } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { AssignmentDialog } from "./AssignmentDialog";
 
 export const AdminAssignments = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedFounder, setSelectedFounder] = useState("");
-  const [selectedMaven, setSelectedMaven] = useState("");
   const { session } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  // First verify if the current user is an admin
+  const { data: currentUserProfile } = useQuery({
+    queryKey: ["currentUserProfile"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("user_type")
+        .eq("id", session?.user.id)
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+  });
 
   const { data: founders } = useQuery({
     queryKey: ["founders"],
@@ -87,12 +87,15 @@ export const AdminAssignments = () => {
   });
 
   const createAssignment = useMutation({
-    mutationFn: async () => {
+    mutationFn: async ({ founderId, mavenId }: { founderId: string; mavenId: string }) => {
       if (!session?.user.id) throw new Error("No user found");
+      if (currentUserProfile?.user_type !== "admin") {
+        throw new Error("Only admins can create assignments");
+      }
 
       const { error } = await supabase.from("founder_maven_assignments").insert({
-        founder_id: selectedFounder,
-        maven_id: selectedMaven,
+        founder_id: founderId,
+        maven_id: mavenId,
         assigned_by: session.user.id,
       });
 
@@ -101,8 +104,6 @@ export const AdminAssignments = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["assignments"] });
       setIsOpen(false);
-      setSelectedFounder("");
-      setSelectedMaven("");
       toast({
         title: "Success",
         description: "Assignment created successfully",
@@ -128,64 +129,23 @@ export const AdminAssignments = () => {
   return (
     <div className="space-y-4">
       <div className="flex justify-end">
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="h-4 w-4 mr-2" />
-              New Assignment
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Create New Assignment</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div>
-                <label className="text-sm font-medium">Founder</label>
-                <Select
-                  value={selectedFounder}
-                  onValueChange={setSelectedFounder}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a founder" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {founders?.map((founder) => (
-                      <SelectItem key={founder.id} value={founder.id}>
-                        {founder.full_name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <label className="text-sm font-medium">Maven</label>
-                <Select value={selectedMaven} onValueChange={setSelectedMaven}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a maven" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {mavens?.map((maven) => (
-                      <SelectItem key={maven.id} value={maven.id}>
-                        {maven.full_name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <Button
-                onClick={() => createAssignment.mutate()}
-                disabled={!selectedFounder || !selectedMaven || createAssignment.isPending}
-              >
-                {createAssignment.isPending && (
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                )}
-                Create Assignment
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+        <Button onClick={() => setIsOpen(true)}>
+          <Plus className="h-4 w-4 mr-2" />
+          New Assignment
+        </Button>
       </div>
+
+      <AssignmentDialog
+        isOpen={isOpen}
+        onOpenChange={setIsOpen}
+        onCreateAssignment={(founderId, mavenId) =>
+          createAssignment.mutate({ founderId, mavenId })
+        }
+        isPending={createAssignment.isPending}
+        founders={founders || []}
+        mavens={mavens || []}
+      />
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>
