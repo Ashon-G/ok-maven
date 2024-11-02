@@ -1,11 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap');
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  :root {
+:root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
@@ -26,37 +19,36 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
     --radius: 0.75rem;
-  }
+}
 
-  body {
+body {
     @apply bg-gray-50 text-foreground antialiased;
-  }
 }
 
 .gradient-text {
-  @apply bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent;
 }
 
 /* Modern Card Styles */
 .modern-card {
-  @apply rounded-xl border border-black/5 bg-white p-6 shadow-[0_2px_4px_rgba(0,0,0,0.02)] transition-all hover:shadow-[0_4px_16px_rgba(0,0,0,0.04)];
+    @apply rounded-xl border border-black bg-white p-6 shadow-[0_2px_4px_rgba(0,0,0,0.02)] transition-all hover:shadow-[0_4px_16px_rgba(0,0,0,0.04)];
 }
 
 /* Modern Input Styles */
 .modern-input {
-  @apply rounded-lg border border-black/10 bg-white px-4 py-2 shadow-[0_2px_4px_rgba(0,0,0,0.02)] focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20;
+    @apply rounded-lg border border-black bg-white px-4 py-2 shadow-[0_2px_4px rgba(0,0,0,0.02)] focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20;
 }
 
 /* Modern Button Styles */
 .modern-button {
-  @apply rounded-lg border border-black/10 bg-white px-4 py-2 font-medium shadow-[0_2px_4px_rgba(0,0,0,0.02)] transition-all hover:bg-gray-50 hover:shadow-[0_4px_16px_rgba(0,0,0,0.04)];
+    @apply rounded-lg border border-black bg-white px-4 py-2 font-medium shadow-[0_2px_4px rgba(0,0,0,0.02)] transition-all hover:bg-gray-50 hover:shadow-[0_4px_16px rgba(0,0,0,0.04)];
 }
 
 /* Navigation Styles */
 .nav-link {
-  @apply flex items-center gap-2 rounded-lg border border-transparent px-4 py-2 text-sm font-medium transition-all hover:bg-gray-50;
+    @apply flex items-center gap-2 rounded-lg border border-black px-4 py-2 text-sm font-medium transition-all hover:bg-gray-50;
 }
 
 .nav-link.active {
-  @apply border-black/5 bg-white text-blue-600 shadow-[0_2px_4px_rgba(0,0,0,0.02)];
+    @apply border-black bg-white text-blue-600 shadow-[0_2px_4px rgba(0,0,0,0.02)];
 }
