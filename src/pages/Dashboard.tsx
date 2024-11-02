@@ -9,85 +9,70 @@ const Dashboard = () => {
   const appMetadataType = session?.user?.app_metadata?.user_type;
   const isAdmin = userMetadataType === 'admin' || appMetadataType === 'admin';
 
-  console.log('User metadata:', session?.user?.user_metadata);
-  console.log('App metadata:', session?.user?.app_metadata);
-
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     window.location.href = "/login";
   };
 
   return (
-    <div className="container py-8">
-      <nav className="mb-8">
-        <div className="flex gap-4 border-b">
-          <NavLink
-            to="tasks"
-            className={({ isActive }) =>
-              `flex items-center gap-2 px-4 py-2 border-b-2 ${
-                isActive
-                  ? "border-primary text-primary"
-                  : "border-transparent hover:border-gray-200"
-              }`
-            }
-          >
-            <ListTodo className="w-4 h-4" />
-            Tasks
-          </NavLink>
-          <NavLink
-            to="chat"
-            className={({ isActive }) =>
-              `flex items-center gap-2 px-4 py-2 border-b-2 ${
-                isActive
-                  ? "border-primary text-primary"
-                  : "border-transparent hover:border-gray-200"
-              }`
-            }
-          >
-            <MessageSquare className="w-4 h-4" />
-            Chat
-          </NavLink>
-          <NavLink
-            to="profile"
-            className={({ isActive }) =>
-              `flex items-center gap-2 px-4 py-2 border-b-2 ${
-                isActive
-                  ? "border-primary text-primary"
-                  : "border-transparent hover:border-gray-200"
-              }`
-            }
-          >
-            <UserCircle className="w-4 h-4" />
-            Profile
-          </NavLink>
-          {isAdmin && (
+    <div className="min-h-screen bg-gray-50/50 p-8">
+      <div className="mx-auto max-w-7xl">
+        <nav className="mb-8 rounded-2xl border border-black/5 bg-white p-2 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
+          <div className="flex items-center gap-2">
             <NavLink
-              to="admin"
+              to="tasks"
               className={({ isActive }) =>
-                `flex items-center gap-2 px-4 py-2 border-b-2 ${
-                  isActive
-                    ? "border-primary text-primary"
-                    : "border-transparent hover:border-gray-200"
-                }`
+                `nav-link ${isActive ? "active" : ""}`
               }
             >
-              <Settings className="w-4 h-4" />
-              Admin
+              <ListTodo className="h-4 w-4" />
+              Tasks
             </NavLink>
-          )}
-          <button
-            onClick={handleSignOut}
-            className="flex items-center gap-2 px-4 py-2 border-b-2 border-transparent hover:border-gray-200 ml-auto"
-          >
-            <LogOut className="w-4 h-4" />
-            Sign Out
-          </button>
+            <NavLink
+              to="chat"
+              className={({ isActive }) =>
+                `nav-link ${isActive ? "active" : ""}`
+              }
+            >
+              <MessageSquare className="h-4 w-4" />
+              Chat
+            </NavLink>
+            <NavLink
+              to="profile"
+              className={({ isActive }) =>
+                `nav-link ${isActive ? "active" : ""}`
+              }
+            >
+              <UserCircle className="h-4 w-4" />
+              Profile
+            </NavLink>
+            {isAdmin && (
+              <NavLink
+                to="admin"
+                className={({ isActive }) =>
+                  `nav-link ${isActive ? "active" : ""}`
+                }
+              >
+                <Settings className="h-4 w-4" />
+                Admin
+              </NavLink>
+            )}
+            <button
+              onClick={handleSignOut}
+              className="nav-link ml-auto text-red-500 hover:bg-red-50"
+            >
+              <LogOut className="h-4 w-4" />
+              Sign Out
+            </button>
+          </div>
+          <div className="mt-2 px-4 text-sm text-gray-500">
+            Current user type: {userMetadataType || 'none'} (user metadata) / {appMetadataType || 'none'} (app metadata)
+          </div>
+        </nav>
+        <div className="rounded-2xl border border-black/5 bg-white p-8 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
+          <Outlet />
         </div>
-        <div className="mt-2 text-sm text-gray-500">
-          Current user type: {userMetadataType || 'none'} (user metadata) / {appMetadataType || 'none'} (app metadata)
-        </div>
-      </nav>
-      <Outlet />
+      </div>
     </div>
   );
 };
