@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Tasks from "./pages/dashboard/Tasks";
 import Chat from "./pages/dashboard/Chat";
+import Profile from "./pages/dashboard/Profile";
 import { useAuth } from "@/components/auth/AuthProvider";
 
 const queryClient = new QueryClient();
@@ -45,6 +46,7 @@ const App = () => (
               <Route index element={<Navigate to="tasks" replace />} />
               <Route path="tasks" element={<Tasks />} />
               <Route path="chat" element={<Chat />} />
+              <Route path="profile" element={<Profile />} />
             </Route>
           </Routes>
         </AuthProvider>
