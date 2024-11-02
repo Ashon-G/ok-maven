@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { AuthChangeEvent } from "@supabase/supabase-js";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const Login = () => {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
+    } = supabase.auth.onAuthStateChange(async (event: AuthChangeEvent, session) => {
       if (event === "SIGNED_UP" && userType) {
         await supabase.auth.updateUser({
           data: { user_type: userType }
