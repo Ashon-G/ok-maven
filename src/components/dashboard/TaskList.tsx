@@ -26,7 +26,11 @@ export const TaskList = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("tasks")
-        .select("*, assigned_to:profiles(full_name)")
+        .select(`
+          *,
+          assignee:profiles!tasks_assigned_to_fkey(full_name),
+          creator:profiles!tasks_created_by_fkey(full_name)
+        `)
         .order("created_at", { ascending: false });
 
       if (error) throw error;
@@ -130,9 +134,11 @@ export const TaskList = () => {
               <p className="text-sm text-gray-600 mt-1">{task.description}</p>
             )}
             <div className="mt-2 text-sm text-gray-500">
-              {task.assigned_to?.full_name
-                ? `Assigned to: ${task.assigned_to.full_name}`
+              {task.assignee?.full_name
+                ? `Assigned to: ${task.assignee.full_name}`
                 : "Unassigned"}
+              <br />
+              Created by: {task.creator?.full_name}
             </div>
           </div>
         ))}
