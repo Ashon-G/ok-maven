@@ -7,16 +7,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Loader2, Upload } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
 
-type ProfileFormData = {
+type ProfileSettings = {
+  emailNotifications?: boolean;
+  theme?: 'light' | 'dark';
+};
+
+type Profile = {
   full_name: string;
   bio: string;
-  settings: {
-    emailNotifications?: boolean;
-    theme?: 'light' | 'dark';
-  };
+  settings: ProfileSettings;
+  avatar_url?: string;
 };
 
 export const ProfileForm = () => {
@@ -36,11 +39,14 @@ export const ProfileForm = () => {
         .single();
 
       if (error) throw error;
-      return data;
+      
+      // Ensure settings is properly typed
+      const settings = (data?.settings || {}) as ProfileSettings;
+      return { ...data, settings } as Profile;
     },
   });
 
-  const { register, handleSubmit, formState: { errors } } = useForm<ProfileFormData>({
+  const { register, handleSubmit, formState: { errors } } = useForm<Profile>({
     defaultValues: {
       full_name: profile?.full_name || "",
       bio: profile?.bio || "",
@@ -49,7 +55,7 @@ export const ProfileForm = () => {
   });
 
   const updateProfile = useMutation({
-    mutationFn: async (data: ProfileFormData) => {
+    mutationFn: async (data: Profile) => {
       let avatarUrl = profile?.avatar_url;
 
       if (avatarFile) {
