@@ -21,7 +21,6 @@ export const AdminAssignments = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  // First verify if the current user is an admin
   const { data: currentUserProfile } = useQuery({
     queryKey: ["currentUserProfile"],
     queryFn: async () => {
@@ -126,6 +125,11 @@ export const AdminAssignments = () => {
     );
   }
 
+  const existingAssignments = assignments?.map(assignment => ({
+    founder_id: assignment.founder.id,
+    maven_id: assignment.maven.id,
+  })) || [];
+
   return (
     <div className="space-y-4">
       <div className="flex justify-end">
@@ -144,6 +148,7 @@ export const AdminAssignments = () => {
         isPending={createAssignment.isPending}
         founders={founders || []}
         mavens={mavens || []}
+        existingAssignments={existingAssignments}
       />
 
       <div className="rounded-md border">

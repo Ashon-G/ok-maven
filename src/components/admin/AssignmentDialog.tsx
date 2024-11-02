@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface AssignmentDialogProps {
   isOpen: boolean;
@@ -23,6 +24,7 @@ interface AssignmentDialogProps {
   isPending: boolean;
   founders: Array<{ id: string; full_name: string }>;
   mavens: Array<{ id: string; full_name: string }>;
+  existingAssignments: Array<{ founder_id: string; maven_id: string }>;
 }
 
 export const AssignmentDialog = ({
@@ -32,6 +34,7 @@ export const AssignmentDialog = ({
   isPending,
   founders,
   mavens,
+  existingAssignments,
 }: AssignmentDialogProps) => {
   const [selectedFounder, setSelectedFounder] = useState("");
   const [selectedMaven, setSelectedMaven] = useState("");
@@ -39,6 +42,16 @@ export const AssignmentDialog = ({
   const handleCreate = () => {
     onCreateAssignment(selectedFounder, selectedMaven);
   };
+
+  // Filter out mavens that are already assigned to the selected founder
+  const availableMavens = mavens?.filter(
+    (maven) =>
+      !existingAssignments.some(
+        (assignment) =>
+          assignment.founder_id === selectedFounder &&
+          assignment.maven_id === maven.id
+      )
+  );
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -69,7 +82,7 @@ export const AssignmentDialog = ({
                 <SelectValue placeholder="Select a maven" />
               </SelectTrigger>
               <SelectContent>
-                {mavens?.map((maven) => (
+                {availableMavens?.map((maven) => (
                   <SelectItem key={maven.id} value={maven.id}>
                     {maven.full_name}
                   </SelectItem>
@@ -77,6 +90,13 @@ export const AssignmentDialog = ({
               </SelectContent>
             </Select>
           </div>
+          {selectedFounder && availableMavens.length === 0 && (
+            <Alert>
+              <AlertDescription>
+                All available mavens have already been assigned to this founder.
+              </AlertDescription>
+            </Alert>
+          )}
           <Button
             onClick={handleCreate}
             disabled={!selectedFounder || !selectedMaven || isPending}
