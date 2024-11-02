@@ -28,14 +28,14 @@ const Login = () => {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session: Session | null) => {
-      if (event === 'SIGNED_UP' && userType) {
+    } = supabase.auth.onAuthStateChange(async (_event: 'INITIAL_SESSION' | 'SIGNED_IN' | 'SIGNED_OUT' | 'USER_UPDATED' | 'USER_DELETED' | 'PASSWORD_RECOVERY' | 'TOKEN_REFRESHED' | 'SIGNED_UP', session: Session | null) => {
+      if (_event === 'SIGNED_UP' && userType) {
         await supabase.auth.updateUser({
           data: { user_type: userType }
         });
         toast.success('Welcome! You have successfully signed up.');
         navigate("/dashboard");
-      } else if (event === 'SIGNED_IN') {
+      } else if (_event === 'SIGNED_IN') {
         navigate("/dashboard");
       }
     });
