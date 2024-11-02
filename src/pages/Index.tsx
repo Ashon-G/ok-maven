@@ -5,12 +5,14 @@ import { HowItWorks } from "@/components/landing/HowItWorks";
 import { Testimonials } from "@/components/landing/Testimonials";
 import { Pricing } from "@/components/landing/Pricing";
 import { CTA } from "@/components/landing/CTA";
+import ScrollFeatures from "@/components/landing/ScrollFeatures";
 
 const Index = () => {
   return (
     <main className="min-h-screen">
       <VelocityHero />
       <CountUpStats />
+      <ScrollFeatures />
       <HowItWorks />
       <Features />
       <Testimonials />
