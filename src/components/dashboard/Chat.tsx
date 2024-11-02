@@ -32,14 +32,18 @@ export const Chat = () => {
       const { data, error } = await supabase
         .from("messages")
         .select(`
-          *,
+          id,
+          content,
+          created_at,
+          sender_id,
+          receiver_id,
           sender:profiles!sender_id(full_name),
           receiver:profiles!receiver_id(full_name)
         `)
         .order("created_at", { ascending: true });
 
       if (error) throw error;
-      return data;
+      return data as Message[];
     },
   });
 
