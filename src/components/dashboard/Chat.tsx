@@ -7,12 +7,26 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
+type Message = {
+  id: string;
+  content: string;
+  created_at: string;
+  sender_id: string;
+  receiver_id: string;
+  sender: {
+    full_name: string | null;
+  };
+  receiver: {
+    full_name: string | null;
+  };
+};
+
 export const Chat = () => {
   const [message, setMessage] = useState("");
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const { data: messages, isLoading } = useQuery({
+  const { data: messages, isLoading } = useQuery<Message[]>({
     queryKey: ["messages"],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -89,20 +103,20 @@ export const Chat = () => {
             <div
               key={msg.id}
               className={`flex flex-col ${
-                msg.sender.full_name === "You"
+                msg.sender?.full_name === "You"
                   ? "items-end"
                   : "items-start"
               }`}
             >
               <div
                 className={`max-w-[80%] p-3 rounded-lg ${
-                  msg.sender.full_name === "You"
+                  msg.sender?.full_name === "You"
                     ? "bg-secondary text-white"
                     : "bg-gray-100"
                 }`}
               >
                 <p className="text-sm font-medium mb-1">
-                  {msg.sender.full_name}
+                  {msg.sender?.full_name}
                 </p>
                 <p>{msg.content}</p>
               </div>
