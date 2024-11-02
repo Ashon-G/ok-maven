@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
 
@@ -20,6 +21,7 @@ type Profile = {
   bio: string;
   settings: ProfileSettings;
   avatar_url?: string;
+  user_type?: 'founder' | 'maven' | 'admin';
 };
 
 export const ProfileForm = () => {
@@ -40,7 +42,6 @@ export const ProfileForm = () => {
 
       if (error) throw error;
       
-      // Ensure settings is properly typed
       const settings = (data?.settings || {}) as ProfileSettings;
       return { ...data, settings } as Profile;
     },
@@ -117,6 +118,19 @@ export const ProfileForm = () => {
     );
   }
 
+  const getUserTypeColor = (userType?: string) => {
+    switch (userType) {
+      case 'founder':
+        return 'bg-blue-500';
+      case 'maven':
+        return 'bg-green-500';
+      case 'admin':
+        return 'bg-purple-500';
+      default:
+        return 'bg-gray-500';
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit((data) => updateProfile.mutate(data))} className="space-y-6">
       <div className="flex items-center gap-4">
@@ -124,7 +138,7 @@ export const ProfileForm = () => {
           <AvatarImage src={profile?.avatar_url || ""} />
           <AvatarFallback>{profile?.full_name?.charAt(0) || "?"}</AvatarFallback>
         </Avatar>
-        <div>
+        <div className="space-y-2">
           <Input
             type="file"
             accept="image/*"
@@ -134,6 +148,11 @@ export const ProfileForm = () => {
           <p className="text-sm text-muted-foreground">
             Recommended: Square image, max 1MB
           </p>
+          {profile?.user_type && (
+            <Badge className={getUserTypeColor(profile.user_type)}>
+              {profile.user_type.charAt(0).toUpperCase() + profile.user_type.slice(1)}
+            </Badge>
+          )}
         </div>
       </div>
 
