@@ -29,13 +29,13 @@ const Login = () => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event: AuthChangeEvent, session) => {
-      if (event === "SIGNED_UP" && userType) {
+      if (event === AuthChangeEvent.SIGNED_UP && userType) {
         await supabase.auth.updateUser({
           data: { user_type: userType }
         });
         toast.success('Welcome! You have successfully signed up.');
         navigate("/dashboard");
-      } else if (event === "SIGNED_IN") {
+      } else if (event === AuthChangeEvent.SIGNED_IN) {
         navigate("/dashboard");
       }
     });
