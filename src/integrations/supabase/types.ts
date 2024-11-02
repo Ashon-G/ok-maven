@@ -9,6 +9,52 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      founder_maven_assignments: {
+        Row: {
+          assigned_by: string
+          created_at: string
+          founder_id: string
+          id: string
+          maven_id: string
+        }
+        Insert: {
+          assigned_by: string
+          created_at?: string
+          founder_id: string
+          id?: string
+          maven_id: string
+        }
+        Update: {
+          assigned_by?: string
+          created_at?: string
+          founder_id?: string
+          id?: string
+          maven_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "founder_maven_assignments_assigned_by_fkey"
+            columns: ["assigned_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "founder_maven_assignments_founder_id_fkey"
+            columns: ["founder_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "founder_maven_assignments_maven_id_fkey"
+            columns: ["maven_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       messages: {
         Row: {
           content: string
