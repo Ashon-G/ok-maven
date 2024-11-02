@@ -7,6 +7,8 @@ import { AuthProvider } from "@/components/auth/AuthProvider";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import Tasks from "./pages/dashboard/Tasks";
+import Chat from "./pages/dashboard/Chat";
 import { useAuth } from "@/components/auth/AuthProvider";
 
 const queryClient = new QueryClient();
@@ -35,14 +37,15 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }>
+              <Route index element={<Navigate to="tasks" replace />} />
+              <Route path="tasks" element={<Tasks />} />
+              <Route path="chat" element={<Chat />} />
+            </Route>
           </Routes>
         </AuthProvider>
       </BrowserRouter>
