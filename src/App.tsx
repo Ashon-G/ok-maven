@@ -10,11 +10,12 @@ import Dashboard from "./pages/Dashboard";
 import Tasks from "./pages/dashboard/Tasks";
 import Chat from "./pages/dashboard/Chat";
 import Profile from "./pages/dashboard/Profile";
+import Admin from "./pages/dashboard/Admin";
 import { useAuth } from "@/components/auth/AuthProvider";
 
 const queryClient = new QueryClient();
 
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+const ProtectedRoute = ({ children, adminOnly = false }: { children: React.ReactNode, adminOnly?: boolean }) => {
   const { session, loading } = useAuth();
 
   if (loading) {
@@ -23,6 +24,13 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
   if (!session) {
     return <Navigate to="/login" />;
+  }
+
+  if (adminOnly) {
+    const isAdmin = session.user.user_metadata.user_type === 'admin';
+    if (!isAdmin) {
+      return <Navigate to="/dashboard" />;
+    }
   }
 
   return <>{children}</>;
@@ -47,6 +55,11 @@ const App = () => (
               <Route path="tasks" element={<Tasks />} />
               <Route path="chat" element={<Chat />} />
               <Route path="profile" element={<Profile />} />
+              <Route path="admin" element={
+                <ProtectedRoute adminOnly>
+                  <Admin />
+                </ProtectedRoute>
+              } />
             </Route>
           </Routes>
         </AuthProvider>

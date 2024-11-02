@@ -1,7 +1,11 @@
 import { Outlet, NavLink } from "react-router-dom";
-import { MessageSquare, ListTodo, UserCircle } from "lucide-react";
+import { MessageSquare, ListTodo, UserCircle, Settings } from "lucide-react";
+import { useAuth } from "@/components/auth/AuthProvider";
 
 const Dashboard = () => {
+  const { session } = useAuth();
+  const isAdmin = session?.user.user_metadata.user_type === 'admin';
+
   return (
     <div className="container py-8">
       <nav className="mb-8">
@@ -45,6 +49,21 @@ const Dashboard = () => {
             <UserCircle className="w-4 h-4" />
             Profile
           </NavLink>
+          {isAdmin && (
+            <NavLink
+              to="admin"
+              className={({ isActive }) =>
+                `flex items-center gap-2 px-4 py-2 border-b-2 ${
+                  isActive
+                    ? "border-primary text-primary"
+                    : "border-transparent hover:border-gray-200"
+                }`
+              }
+            >
+              <Settings className="w-4 h-4" />
+              Admin
+            </NavLink>
+          )}
         </div>
       </nav>
       <Outlet />
