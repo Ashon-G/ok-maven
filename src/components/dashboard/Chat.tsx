@@ -43,7 +43,15 @@ export const Chat = () => {
         .order("created_at", { ascending: true });
 
       if (error) throw error;
-      return data as Message[];
+      
+      // Transform the data to match our Message type
+      const transformedData = data?.map(msg => ({
+        ...msg,
+        sender: { full_name: msg.sender?.[0]?.full_name ?? null },
+        receiver: { full_name: msg.receiver?.[0]?.full_name ?? null }
+      })) ?? [];
+
+      return transformedData;
     },
   });
 
