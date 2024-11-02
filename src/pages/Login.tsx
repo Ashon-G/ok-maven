@@ -28,6 +28,40 @@ const Login = () => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
+  const handleSignUp = async (email: string, password: string, fullName: string, avatarFile: File) => {
+    const { user, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: fullName,
+          user_type: 'founder', // or any default user type
+        },
+      },
+    });
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
+    if (user && avatarFile) {
+      const filePath = `${user.id}/avatar.${avatarFile.name.split('.').pop()}`;
+      const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, avatarFile);
+
+      if (uploadError) {
+        toast.error(uploadError.message);
+        return;
+      }
+
+      const { publicURL } = supabase.storage.from('avatars').getPublicUrl(filePath);
+      await supabase.from('profiles').update({ avatar_url: publicURL }).eq('id', user.id);
+    }
+
+    toast.success("Sign up successful!");
+    navigate("/dashboard");
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -42,6 +76,7 @@ const Login = () => {
             appearance={{ theme: ThemeSupa }}
             theme="light"
             providers={[]}
+            onSignUp={handleSignUp}
           />
         </div>
       </div>
