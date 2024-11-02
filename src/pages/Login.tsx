@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Session, AuthChangeEvent } from "@supabase/supabase-js";
+import { Session } from "@supabase/supabase-js";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -28,14 +28,14 @@ const Login = () => {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event: AuthChangeEvent, session: Session | null) => {
-      if (event === AuthChangeEvent.SIGNED_UP && userType) {
+    } = supabase.auth.onAuthStateChange(async (event, session: Session | null) => {
+      if (event === 'SIGNED_UP' && userType) {
         await supabase.auth.updateUser({
           data: { user_type: userType }
         });
         toast.success('Welcome! You have successfully signed up.');
         navigate("/dashboard");
-      } else if (event === AuthChangeEvent.SIGNED_IN) {
+      } else if (event === 'SIGNED_IN') {
         navigate("/dashboard");
       }
     });
