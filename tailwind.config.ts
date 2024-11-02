@@ -19,40 +19,25 @@ export default {
     },
     extend: {
       colors: {
-        primary: "hsl(210, 80%, 60%)",
-        "primary-content": "hsl(210, 80%, 10%)",
-        "primary-dark": "hsl(210, 80%, 50%)",
-        "primary-light": "hsl(210, 81%, 70%)",
-
-        secondary: "hsl(30, 80%, 60%)",
-        "secondary-content": "hsl(30, 80%, 10%)",
-        "secondary-dark": "hsl(30, 80%, 50%)",
-        "secondary-light": "hsl(30, 81%, 70%)",
-
-        background: "hsl(208, 33%, 10%)",
-        foreground: "hsl(211, 35%, 15%)",
-        border: "hsl(209, 35%, 25%)",
-
-        copy: "hsl(220, 43%, 99%)",
-        "copy-light": "hsl(209, 35%, 85%)",
-        "copy-lighter": "hsl(210, 35%, 65%)",
-
-        success: "hsl(120, 80%, 60%)",
-        warning: "hsl(60, 80%, 60%)",
-        error: "hsl(0, 80%, 60%)",
-
-        "success-content": "hsl(120, 80%, 10%)",
-        "warning-content": "hsl(60, 80%, 10%)",
-        "error-content": "hsl(0, 0%, 100%)",
-
+        border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        muted: {
-          DEFAULT: "#64748B",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "#0F172A",
+          foreground: "#ffffff",
+        },
+        secondary: {
+          DEFAULT: "#0EA5E9",
           foreground: "#ffffff",
         },
         accent: {
           DEFAULT: "#0D9488",
+          foreground: "#ffffff",
+        },
+        muted: {
+          DEFAULT: "#64748B",
           foreground: "#ffffff",
         },
       },
