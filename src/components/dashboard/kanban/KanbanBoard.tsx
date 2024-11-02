@@ -1,4 +1,4 @@
-import { DragDropContext, Droppable, Draggable } from "@dnd-kit/core";
+import { DndContext, DragEndEvent, useSensor, useSensors, PointerSensor } from "@dnd-kit/core";
 import { useToast } from "@/components/ui/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -21,6 +21,7 @@ interface KanbanBoardProps {
 export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const sensors = useSensors(useSensor(PointerSensor));
 
   const updateTaskStatus = useMutation({
     mutationFn: async ({ taskId, status }: { taskId: string; status: string }) => {
@@ -47,13 +48,16 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
     },
   });
 
-  const handleDragEnd = (result: any) => {
-    if (!result.destination) return;
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over) return;
 
-    const taskId = result.draggableId;
-    const newStatus = result.destination.droppableId;
+    const taskId = active.id as string;
+    const newStatus = over.id as string;
 
-    updateTaskStatus.mutate({ taskId, status: newStatus });
+    if (newStatus !== active.data.current?.status) {
+      updateTaskStatus.mutate({ taskId, status: newStatus });
+    }
   };
 
   if (isLoading) {
@@ -71,7 +75,7 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
   };
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
+    <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <KanbanColumn title="To Do" tasks={columns.pending} status="pending" />
         <KanbanColumn
@@ -85,6 +89,6 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
           status="completed"
         />
       </div>
-    </DragDropContext>
+    </DndContext>
   );
 };

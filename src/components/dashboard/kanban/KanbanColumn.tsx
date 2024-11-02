@@ -1,5 +1,7 @@
-import { Droppable, Draggable } from "@dnd-kit/core";
+import { useDroppable } from "@dnd-kit/core";
 import { TaskCard } from "./TaskCard";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { SortableTask } from "./SortableTask";
 
 interface Task {
   id: string;
@@ -15,33 +17,20 @@ interface KanbanColumnProps {
 }
 
 export const KanbanColumn = ({ title, status, tasks }: KanbanColumnProps) => {
+  const { setNodeRef } = useDroppable({
+    id: status,
+  });
+
   return (
-    <Droppable droppableId={status}>
-      {(provided) => (
-        <div
-          {...provided.droppableProps}
-          ref={provided.innerRef}
-          className="bg-gray-50 rounded-lg p-4"
-        >
-          <h3 className="font-semibold mb-4">{title}</h3>
-          <div className="space-y-3">
-            {tasks.map((task, index) => (
-              <Draggable key={task.id} draggableId={task.id} index={index}>
-                {(provided) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                  >
-                    <TaskCard task={task} />
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </div>
-        </div>
-      )}
-    </Droppable>
+    <div className="bg-gray-50 rounded-lg p-4">
+      <h3 className="font-semibold mb-4">{title}</h3>
+      <div ref={setNodeRef} className="space-y-3">
+        <SortableContext items={tasks.map(task => task.id)} strategy={verticalListSortingStrategy}>
+          {tasks.map((task) => (
+            <SortableTask key={task.id} id={task.id} task={task} />
+          ))}
+        </SortableContext>
+      </div>
+    </div>
   );
 };
