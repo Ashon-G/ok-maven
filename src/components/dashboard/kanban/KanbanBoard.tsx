@@ -5,6 +5,7 @@ import { KanbanColumn } from "./KanbanColumn";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { TaskDialog } from "./TaskDialog";
+import { useToast } from "@/components/ui/use-toast";
 
 interface Task {
   id: string;
@@ -23,6 +24,7 @@ interface KanbanBoardProps {
 
 export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
   const sensors = useSensors(useSensor(PointerSensor));
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
@@ -37,6 +39,17 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      toast({
+        title: "Success",
+        description: "Task status updated successfully",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
     },
   });
 
@@ -47,9 +60,10 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
     const taskId = active.id as string;
     const newStatus = over.id as string;
 
-    if (newStatus !== active.data.current?.status) {
-      updateTaskStatus.mutate({ taskId, status: newStatus });
-    }
+    const task = tasks.find(t => t.id === taskId);
+    if (!task || task.status === newStatus) return;
+
+    updateTaskStatus.mutate({ taskId, status: newStatus });
   };
 
   if (isLoading) {
@@ -73,7 +87,7 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <div className="min-h-[calc(100vh-12rem)] bg-[#f9fafc] p-6">
-        <div className="flex gap-4">
+        <div className="flex gap-4 overflow-x-auto pb-4">
           <KanbanColumn 
             title="To Do" 
             tasks={columns.pending} 
