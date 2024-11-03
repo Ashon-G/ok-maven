@@ -1,22 +1,17 @@
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { UserCircle, Calendar, Trash2 } from "lucide-react";
-import { format } from "date-fns";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
+import { TaskDialogHeader } from "./TaskDialogHeader";
+import { TaskDialogContent } from "./TaskDialogContent";
+import { TaskDialogFooter } from "./TaskDialogFooter";
 
 interface Task {
   id: string;
@@ -43,10 +38,18 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
   const [editedDescription, setEditedDescription] = useState(task?.description || "");
 
   const updateTask = useMutation({
-    mutationFn: async ({ title, description }: { title: string; description: string }) => {
+    mutationFn: async ({ 
+      title, 
+      description, 
+      status 
+    }: { 
+      title: string; 
+      description: string;
+      status?: string;
+    }) => {
       const { error } = await supabase
         .from("tasks")
-        .update({ title, description })
+        .update({ title, description, ...(status && { status }) })
         .eq("id", task?.id);
 
       if (error) throw error;
@@ -110,6 +113,14 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
     updateTask.mutate({ title: editedTitle, description: editedDescription });
   };
 
+  const handleStatusChange = (newStatus: string) => {
+    updateTask.mutate({ 
+      title: task.title, 
+      description: task.description || "", 
+      status: newStatus 
+    });
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
@@ -126,94 +137,40 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
           )}
         >
           <div className="max-h-[80vh] overflow-y-auto">
-            <DialogHeader>
-              {isEditing ? (
-                <Input
-                  value={editedTitle}
-                  onChange={(e) => setEditedTitle(e.target.value)}
-                  className="text-xl font-semibold"
-                />
-              ) : (
-                <DialogTitle className="text-xl font-semibold text-[#172b4d]">
-                  {task.title}
-                </DialogTitle>
-              )}
-            </DialogHeader>
+            <TaskDialogHeader
+              title={task.title}
+              isEditing={isEditing}
+              editedTitle={editedTitle}
+              setEditedTitle={setEditedTitle}
+            />
 
-            <div className="mt-4">
-              {isEditing ? (
-                <Textarea
-                  value={editedDescription}
-                  onChange={(e) => setEditedDescription(e.target.value)}
-                  placeholder="Add a description..."
-                  className="min-h-[100px]"
-                />
-              ) : (
-                <div className="text-sm text-[#172b4d]">
-                  {task.description || "No description provided"}
-                </div>
-              )}
-            </div>
+            <TaskDialogContent
+              description={task.description}
+              isEditing={isEditing}
+              editedDescription={editedDescription}
+              setEditedDescription={setEditedDescription}
+              assignee={task.assignee}
+              dueDate={task.due_date}
+              status={task.status}
+              onStatusChange={handleStatusChange}
+            />
 
-            <div className="mt-6 space-y-4">
-              {task.assignee && (
-                <div className="flex items-center gap-2">
-                  <UserCircle className="h-4 w-4 text-[#5e6c84]" />
-                  <span className="text-sm">{task.assignee.full_name}</span>
-                </div>
-              )}
-              {task.due_date && (
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-[#5e6c84]" />
-                  <span className="text-sm">
-                    {format(new Date(task.due_date), "PPP")}
-                  </span>
-                </div>
-              )}
-            </div>
-
-            <DialogFooter className="mt-6">
-              {canEdit && (
-                <div className="flex gap-2">
-                  {isEditing ? (
-                    <>
-                      <Button
-                        variant="outline"
-                        onClick={() => {
-                          setIsEditing(false);
-                          setEditedTitle(task.title);
-                          setEditedDescription(task.description || "");
-                        }}
-                      >
-                        Cancel
-                      </Button>
-                      <Button onClick={handleSave}>Save</Button>
-                    </>
-                  ) : (
-                    <>
-                      <Button
-                        variant="outline"
-                        onClick={() => {
-                          setEditedTitle(task.title);
-                          setEditedDescription(task.description || "");
-                          setIsEditing(true);
-                        }}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        onClick={() => deleteTask.mutate()}
-                        className="gap-2"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                        Delete
-                      </Button>
-                    </>
-                  )}
-                </div>
-              )}
-            </DialogFooter>
+            <TaskDialogFooter
+              canEdit={canEdit}
+              isEditing={isEditing}
+              onEdit={() => {
+                setEditedTitle(task.title);
+                setEditedDescription(task.description || "");
+                setIsEditing(true);
+              }}
+              onCancel={() => {
+                setIsEditing(false);
+                setEditedTitle(task.title);
+                setEditedDescription(task.description || "");
+              }}
+              onSave={handleSave}
+              onDelete={() => deleteTask.mutate()}
+            />
           </div>
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
