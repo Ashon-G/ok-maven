@@ -1,5 +1,6 @@
 import { Message } from "@/types/chat";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { format } from "date-fns";
 
 type MessageListProps = {
   messages: Message[];
@@ -8,7 +9,7 @@ type MessageListProps = {
 
 export const MessageList = ({ messages, currentUserId }: MessageListProps) => {
   return (
-    <ScrollArea className="flex-1 p-4 bg-white rounded-lg border shadow-sm mb-4">
+    <ScrollArea className="flex-1 p-4">
       <div className="space-y-4">
         {messages?.map((msg) => (
           <div
@@ -24,7 +25,12 @@ export const MessageList = ({ messages, currentUserId }: MessageListProps) => {
                   : "bg-muted"
               }`}
             >
-              <p className="text-sm font-medium mb-1">{msg.sender?.full_name}</p>
+              <div className="flex items-center gap-2 mb-1">
+                <p className="text-sm font-medium">{msg.sender?.full_name}</p>
+                <p className="text-xs text-gray-500">
+                  {format(new Date(msg.created_at), "MMM d, h:mm a")}
+                </p>
+              </div>
               <p>{msg.content}</p>
             </div>
           </div>

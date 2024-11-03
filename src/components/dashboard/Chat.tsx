@@ -6,7 +6,7 @@ import { useAuth } from "@/components/auth/AuthProvider";
 import { Message, ChatUser } from "@/types/chat";
 import { MessageList } from "./chat/MessageList";
 import { MessageInput } from "./chat/MessageInput";
-import { UserSelect } from "./chat/UserSelect";
+import { UserList } from "./chat/UserList";
 import { Loader2 } from "lucide-react";
 
 export const Chat = () => {
@@ -93,7 +93,6 @@ export const Chat = () => {
 
       if (error) throw error;
 
-      // Transform the data to match our Message type
       return (data || []).map(msg => ({
         ...msg,
         sender: Array.isArray(msg.sender) ? msg.sender[0] : msg.sender,
@@ -137,24 +136,32 @@ export const Chat = () => {
   }
 
   return (
-    <div className="flex flex-col h-[600px]">
-      <UserSelect
+    <div className="flex h-[600px] border rounded-lg overflow-hidden">
+      <UserList
         users={availableUsers || []}
         selectedUser={selectedUser}
         onUserSelect={setSelectedUser}
       />
-      <MessageList
-        messages={messages || []}
-        currentUserId={session?.user.id || ""}
-      />
-      {selectedUser && (
-        <MessageInput
-          message={message}
-          setMessage={setMessage}
-          onSend={() => sendMessage.mutate()}
-          isPending={sendMessage.isPending}
-        />
-      )}
+      <div className="flex-1 flex flex-col">
+        {selectedUser ? (
+          <>
+            <MessageList
+              messages={messages || []}
+              currentUserId={session?.user.id || ""}
+            />
+            <MessageInput
+              message={message}
+              setMessage={setMessage}
+              onSend={() => sendMessage.mutate()}
+              isPending={sendMessage.isPending}
+            />
+          </>
+        ) : (
+          <div className="flex-1 flex items-center justify-center text-gray-500">
+            Select a user to start chatting
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -16,7 +16,7 @@ export const MessageInput = ({
   isPending,
 }: MessageInputProps) => {
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 p-4 border-t">
       <Input
         value={message}
         onChange={(e) => setMessage(e.target.value)}
