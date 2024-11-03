@@ -1,15 +1,15 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate, Link } from "react-router-dom";
-import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useToast } from "@/components/ui/use-toast";
 
 const Signup = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
@@ -18,18 +18,13 @@ const Signup = () => {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
 
     try {
-      if (!fullName.trim()) {
-        throw new Error("Full name is required");
+      if (!email || !password || !fullName || !userType) {
+        throw new Error("Please fill in all required fields");
       }
 
-      if (!avatarFile) {
-        throw new Error("Profile picture is required");
-      }
-
-      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -40,75 +35,54 @@ const Signup = () => {
         },
       });
 
-      if (signUpError) throw signUpError;
-      if (!signUpData.user) throw new Error("No user data returned");
+      if (error) throw error;
 
-      const fileExt = avatarFile.name.split('.').pop();
-      const filePath = `${signUpData.user.id}/avatar.${fileExt}`;
+      toast({
+        title: "Success!",
+        description: "Please check your email to verify your account.",
+      });
 
-      const { error: uploadError } = await supabase.storage
-        .from('avatars')
-        .upload(filePath, avatarFile, { upsert: true });
-
-      if (uploadError) throw uploadError;
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('avatars')
-        .getPublicUrl(filePath);
-
-      await supabase
-        .from('profiles')
-        .update({ avatar_url: publicUrl })
-        .eq('id', signUpData.user.id);
-
-      toast.success("Sign up successful! Please check your email to verify your account.");
       navigate("/login");
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
-      setLoading(false);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "An error occurred during signup",
+        variant: "destructive",
+      });
     }
   };
 
   return (
-    <div className="min-h-screen bg-primary flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="text-center">
-          <div className="text-4xl font-bold text-white mb-2">
-            Maven<span className="text-secondary">.</span>
-          </div>
-          <h2 className="text-center text-3xl font-bold tracking-tight text-white">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Create your account
           </h2>
-          <p className="mt-2 text-center text-sm text-white/60">
-            Already have an account?{" "}
-            <Link to="/login" className="font-medium text-secondary hover:text-secondary/90">
-              Sign in
-            </Link>
-          </p>
         </div>
-      </div>
-
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-card py-8 px-4 shadow-xl ring-1 ring-white/10 sm:rounded-lg sm:px-10">
-          <form onSubmit={handleSignup} className="space-y-6">
+        <form className="mt-8 space-y-6" onSubmit={handleSignup}>
+          <div className="rounded-md shadow-sm space-y-4">
             <div>
               <Label htmlFor="fullName" className="text-black">Full Name</Label>
               <Input
                 id="fullName"
                 type="text"
-                required
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="mt-1 bg-white/10 border border-black text-black placeholder:text-black/60"
+                className="border-black border-[1px]"
+                required
               />
             </div>
 
             <div>
               <Label className="text-black mb-2">I am a...</Label>
               <RadioGroup
-                value={userType}
-                onValueChange={(value) => setUserType(value as "founder" | "maven")}
+                defaultValue={userType}
+                onValueChange={(value: string) => {
+                  if (value === "founder" || value === "maven") {
+                    setUserType(value);
+                  }
+                }}
                 className="flex gap-4"
               >
                 <div className="flex items-center space-x-2">
@@ -127,10 +101,10 @@ const Signup = () => {
               <Input
                 id="email"
                 type="email"
-                required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 bg-white/10 border border-black text-black placeholder:text-black/60"
+                className="border-black border-[1px]"
+                required
               />
             </div>
 
@@ -139,34 +113,23 @@ const Signup = () => {
               <Input
                 id="password"
                 type="password"
-                required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 bg-white/10 border border-black text-black placeholder:text-black/60"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="avatar" className="text-black">Profile Picture</Label>
-              <Input
-                id="avatar"
-                type="file"
+                className="border-black border-[1px]"
                 required
-                accept="image/*"
-                onChange={(e) => setAvatarFile(e.target.files?.[0] || null)}
-                className="mt-1 bg-white/10 border border-black text-black file:bg-white/10 file:text-black file:border-0"
               />
             </div>
+          </div>
 
+          <div>
             <Button
               type="submit"
-              className="w-full bg-secondary hover:bg-secondary/90"
-              disabled={loading}
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
-              {loading ? "Signing up..." : "Sign up"}
+              Sign up
             </Button>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     </div>
   );
