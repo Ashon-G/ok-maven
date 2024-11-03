@@ -1,26 +1,43 @@
 import { Button } from "@/components/ui/button";
-import { Check, X } from "lucide-react";
+import { Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
-import CountdownTimer from "@/components/sales/CountdownTimer";
+import { Switch } from "@/components/ui/switch";
+import { useState } from "react";
 
 const CompliancePackages = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [selectedPackages, setSelectedPackages] = useState<string[]>([]);
 
-  const handlePurchase = (packageName: string) => {
+  const handleTogglePackage = (packageName: string) => {
+    setSelectedPackages(prev => 
+      prev.includes(packageName) 
+        ? prev.filter(p => p !== packageName)
+        : [...prev, packageName]
+    );
+  };
+
+  const handlePurchase = () => {
+    if (selectedPackages.length === 0) {
+      toast({
+        title: "No packages selected",
+        description: "Please select at least one compliance package to continue.",
+        variant: "destructive"
+      });
+      return;
+    }
     // TODO: Implement Stripe checkout
     toast({
       title: "Coming soon!",
-      description: `${packageName} package will be available for purchase soon.`,
+      description: `Selected packages will be available for purchase soon.`,
     });
   };
 
   const packages = [
     {
       name: "Project Manager",
-      originalPrice: 1000,
-      discountedPrice: 299,
+      price: 299,
       period: "per 3 months",
       features: [
         "Dedicated project manager",
@@ -32,8 +49,7 @@ const CompliancePackages = () => {
     },
     {
       name: "Documentation Package",
-      originalPrice: 250,
-      discountedPrice: 49,
+      price: 49,
       period: "one-time",
       features: [
         "Custom crafted policies",
@@ -45,8 +61,7 @@ const CompliancePackages = () => {
     },
     {
       name: "Done-for-You Program",
-      originalPrice: 2050,
-      discountedPrice: 169,
+      price: 169,
       period: "per 3 months",
       features: [
         "Complete orientation",
@@ -58,47 +73,64 @@ const CompliancePackages = () => {
     },
   ];
 
+  const totalPrice = selectedPackages.reduce((sum, pkg) => {
+    const packageData = packages.find(p => p.name === pkg);
+    return sum + (packageData?.price || 0);
+  }, 0);
+
   return (
     <main className="min-h-screen bg-gray-50">
-      <CountdownTimer />
       <div className="container max-w-6xl py-16">
-        <div className="mb-12 text-center">
-          <span className="inline-block mb-4 px-4 py-1.5 bg-secondary/10 text-secondary rounded-full text-sm font-medium">
-            Limited Time Offer - Mix & Match Your Perfect Package
-          </span>
-          <h1 className="text-4xl font-bold mb-4">
-            Customize Your <span className="gradient-text">Compliance Package</span>
+        <div className="mb-12">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-8">
+            <h2 className="text-xl font-semibold text-red-800 mb-3">
+              Federal Compliance Requirements
+            </h2>
+            <p className="text-red-700 mb-4">
+              Federal law mandates that educational programs maintain proper documentation, 
+              oversight, and management systems. Non-compliance can result in serious consequences 
+              including program suspension and legal penalties.
+            </p>
+            <p className="text-red-700">
+              Don't risk your program's future. We can help you maintain full compliance 
+              with all federal requirements through our comprehensive support services.
+            </p>
+          </div>
+
+          <h1 className="text-4xl font-bold mb-4 text-center">
+            Select Your <span className="gradient-text">Compliance Support</span>
           </h1>
-          <p className="text-lg max-w-2xl mx-auto text-muted-foreground">
-            Choose the components that best fit your needs. Purchase individually or
-            combine for maximum value. Each package is carefully designed to enhance
-            your Maven experience.
+          <p className="text-lg max-w-2xl mx-auto text-muted-foreground text-center">
+            Choose the support services you need. Our team will handle all compliance 
+            requirements, allowing you to focus on your program's success.
           </p>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="space-y-6">
           {packages.map((pkg) => (
             <div
               key={pkg.name}
-              className="bg-white rounded-2xl border border-border p-8 shadow-lg hover:border-secondary transition-colors"
+              className={`bg-white rounded-2xl border p-6 shadow-sm transition-colors ${
+                selectedPackages.includes(pkg.name) 
+                  ? "border-secondary" 
+                  : "border-border"
+              }`}
             >
-              <div className="mb-8">
-                <h3 className="text-2xl font-semibold mb-2">{pkg.name}</h3>
-                <div className="flex items-baseline gap-2 mb-4">
-                  <span className="text-3xl font-bold">${pkg.discountedPrice}</span>
-                  <span className="text-muted-foreground">{pkg.period}</span>
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h3 className="text-xl font-semibold">{pkg.name}</h3>
+                  <div className="flex items-baseline gap-2 mt-1">
+                    <span className="text-2xl font-bold">${pkg.price}</span>
+                    <span className="text-muted-foreground">{pkg.period}</span>
+                  </div>
                 </div>
-                <div className="text-sm text-secondary line-through mb-4">
-                  Originally ${pkg.originalPrice}
-                </div>
-                <p className="text-muted-foreground">
-                  {pkg.name === "Documentation Package"
-                    ? "One-time purchase for permanent access"
-                    : "Quarterly subscription, cancel anytime"}
-                </p>
+                <Switch 
+                  checked={selectedPackages.includes(pkg.name)}
+                  onCheckedChange={() => handleTogglePackage(pkg.name)}
+                />
               </div>
 
-              <ul className="space-y-4 mb-8">
+              <ul className="space-y-3">
                 {pkg.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-3">
                     <Check className="h-5 w-5 text-secondary mt-1 flex-shrink-0" />
@@ -106,55 +138,68 @@ const CompliancePackages = () => {
                   </li>
                 ))}
               </ul>
-
-              <Button
-                onClick={() => handlePurchase(pkg.name)}
-                className="w-full bg-secondary text-white hover:bg-secondary/90"
-              >
-                Get Started Now
-              </Button>
             </div>
           ))}
         </div>
 
+        <div className="mt-8 bg-white rounded-xl p-6 shadow-sm">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-xl font-semibold">Total Investment</h3>
+              <p className="text-muted-foreground mt-1">
+                Selected packages: {selectedPackages.length}
+              </p>
+            </div>
+            <span className="text-3xl font-bold">${totalPrice}</span>
+          </div>
+          
+          <Button
+            onClick={handlePurchase}
+            className="w-full bg-secondary text-white hover:bg-secondary/90"
+            disabled={selectedPackages.length === 0}
+          >
+            Complete Purchase
+          </Button>
+        </div>
+
         <div className="mt-12 bg-secondary/5 rounded-xl p-8 max-w-3xl mx-auto">
           <h3 className="text-xl font-semibold mb-4 text-center">
-            Why Choose Our Compliance Packages?
+            Why Choose Our Compliance Support?
           </h3>
           <div className="grid gap-6 md:grid-cols-2">
             <div className="flex items-start gap-3">
               <Check className="h-5 w-5 text-secondary mt-1 flex-shrink-0" />
               <div>
-                <p className="font-medium">Flexible Solutions</p>
+                <p className="font-medium">Expert Compliance Management</p>
                 <p className="text-sm text-muted-foreground">
-                  Mix and match packages to create your perfect compliance solution
+                  Let our specialists handle your compliance requirements
                 </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <Check className="h-5 w-5 text-secondary mt-1 flex-shrink-0" />
               <div>
-                <p className="font-medium">Significant Savings</p>
+                <p className="font-medium">Risk Mitigation</p>
                 <p className="text-sm text-muted-foreground">
-                  Save up to 90% with our limited-time promotional pricing
+                  Protect your program from compliance-related issues
                 </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <Check className="h-5 w-5 text-secondary mt-1 flex-shrink-0" />
               <div>
-                <p className="font-medium">Immediate Access</p>
+                <p className="font-medium">Dedicated Support</p>
                 <p className="text-sm text-muted-foreground">
-                  Get started right away with instant digital delivery
+                  Direct access to compliance experts whenever you need them
                 </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <Check className="h-5 w-5 text-secondary mt-1 flex-shrink-0" />
               <div>
-                <p className="font-medium">Expert Support</p>
+                <p className="font-medium">Peace of Mind</p>
                 <p className="text-sm text-muted-foreground">
-                  Access to our team of compliance and program management experts
+                  Focus on your program while we handle compliance
                 </p>
               </div>
             </div>
