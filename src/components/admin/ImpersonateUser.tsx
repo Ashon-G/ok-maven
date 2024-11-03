@@ -50,10 +50,10 @@ export const ImpersonateUser = () => {
       if (error) throw error;
       if (!data) throw new Error("No data returned from impersonation");
 
-      // Sign in with the impersonated user's email
+      // Sign in with the impersonated user's email and temporary password
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email: data.email,
-        password: data.user_metadata // The database function returns the temporary password
+        password: data.user_metadata
       });
 
       if (signInError) throw signInError;
@@ -68,6 +68,7 @@ export const ImpersonateUser = () => {
       window.location.reload(); // Reload to update the UI with the new user context
     },
     onError: (error) => {
+      console.error("Impersonation error:", error);
       toast({
         title: "Error",
         description: error.message,
