@@ -114,6 +114,8 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
   };
 
   const handleStatusChange = (newStatus: string) => {
+    if (newStatus === task.status) return;
+    
     updateTask.mutate({ 
       title: task.title, 
       description: task.description || "", 
