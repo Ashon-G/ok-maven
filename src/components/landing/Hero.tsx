@@ -25,13 +25,13 @@ export const VelocityHero = () => {
   const x = useSpring(xRaw, { mass: 3, stiffness: 400, damping: 50 });
 
   return (
-    <section ref={targetRef} className="relative bg-primary text-white min-h-screen">
-      <div className="relative h-screen">
+    <section ref={targetRef} className="h-[500vh] bg-primary text-white">
+      <div className="fixed top-0 left-0 right-0 flex h-screen flex-col justify-between overflow-hidden">
         <Nav isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
         <CenterCopy />
         <motion.p
           style={{ skewX, x }}
-          className="absolute bottom-0 origin-bottom-left whitespace-nowrap text-7xl font-black uppercase leading-[0.85] text-secondary/20 md:text-9xl md:leading-[0.85]"
+          className="origin-bottom-left whitespace-nowrap text-7xl font-black uppercase leading-[0.85] text-secondary/20 md:text-9xl md:leading-[0.85]"
         >
           Build your startup faster with expert Mavens. Access world-class talent
           for a fraction of the cost. Launch, grow, and succeed with proven
@@ -109,7 +109,7 @@ const Links = ({ setIsMenuOpen }: { setIsMenuOpen: (value: boolean) => void }) =
 
 const CenterCopy = () => {
   return (
-    <div className="flex items-center justify-center px-4 text-center h-[calc(100vh-200px)]">
+    <div className="flex items-center justify-center px-4 text-center">
       <div className="max-w-4xl">
         <h1 className="mb-6 text-4xl font-bold sm:text-6xl md:text-7xl">
           Your Startup's Secret Weapon:{" "}
