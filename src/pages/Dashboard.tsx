@@ -4,6 +4,7 @@ import { useAuth } from "@/components/auth/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { ImpersonateUser } from "@/components/admin/ImpersonateUser";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -149,6 +150,13 @@ const Dashboard = () => {
               <NavLinks />
             </div>
 
+            {/* Admin Impersonation */}
+            {isAdmin && (
+              <div className="hidden md:block">
+                <ImpersonateUser />
+              </div>
+            )}
+
             {/* Profile Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger className="focus:outline-none">
@@ -166,6 +174,11 @@ const Dashboard = () => {
                     Profile
                   </DropdownMenuItem>
                 </NavLink>
+                {isAdmin && (
+                  <div className="md:hidden p-2">
+                    <ImpersonateUser />
+                  </div>
+                )}
                 <DropdownMenuItem className="cursor-pointer text-red-600" onClick={handleSignOut}>
                   <LogOut className="mr-2 h-4 w-4" />
                   Sign Out

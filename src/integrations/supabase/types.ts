@@ -180,7 +180,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      impersonate_user: {
+        Args: {
+          impersonator_id: string
+          target_user_id: string
+        }
+        Returns: Json
+      }
     }
     Enums: {
       user_type_enum: "founder" | "maven" | "admin"
