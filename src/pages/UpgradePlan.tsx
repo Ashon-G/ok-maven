@@ -19,6 +19,9 @@ const UpgradePlan = () => {
     <main className="min-h-screen bg-gray-50">
       <div className="container max-w-5xl py-16">
         <div className="mb-8 text-center">
+          <span className="inline-block mb-4 px-4 py-1.5 bg-secondary/10 text-secondary rounded-full text-sm font-medium">
+            Limited Time Offer - Only 5 Spots Left!
+          </span>
           <h1 className="text-4xl font-bold mb-4">
             Supercharge Your Growth with Additional{" "}
             <span className="gradient-text">Mavens</span>
@@ -27,6 +30,9 @@ const UpgradePlan = () => {
             Transform your startup's potential with dedicated student Mavens who specialize
             in critical areas of your business. Get personalized support worth thousands
             for a fraction of the cost.
+          </p>
+          <p className="mt-4 text-secondary font-medium">
+            🔥 Over 50 founders upgraded this month - Don't miss out!
           </p>
         </div>
 
@@ -39,8 +45,10 @@ const UpgradePlan = () => {
               </p>
             </div>
             <div className="text-right">
+              <div className="text-sm text-secondary line-through mb-1">$299/month</div>
               <div className="text-4xl font-bold">$99</div>
               <div className="text-muted-foreground">/month</div>
+              <div className="text-xs text-secondary font-medium mt-1">Early adopter pricing</div>
             </div>
           </div>
 
@@ -87,11 +95,17 @@ const UpgradePlan = () => {
             </div>
           </div>
 
+          <div className="bg-secondary/5 p-4 rounded-lg mb-8">
+            <p className="text-sm text-foreground">
+              <span className="font-medium">⚡ Act fast:</span> This special pricing is only available for the next 48 hours. Join the 200+ founders who have already accelerated their growth with Maven Plus.
+            </p>
+          </div>
+
           <Button
             onClick={handleUpgrade}
             className="w-full bg-secondary text-white hover:bg-secondary/90 py-6 text-lg"
           >
-            Upgrade Now
+            Upgrade Now - Limited Spots Available
           </Button>
 
           <p className="text-center text-muted-foreground text-sm mt-4">
