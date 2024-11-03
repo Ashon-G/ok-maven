@@ -12,9 +12,10 @@ interface Task {
 interface SortableTaskProps {
   id: string;
   task: Task;
+  onClick: () => void;
 }
 
-export const SortableTask = ({ id, task }: SortableTaskProps) => {
+export const SortableTask = ({ id, task, onClick }: SortableTaskProps) => {
   const {
     attributes,
     listeners,
@@ -37,7 +38,7 @@ export const SortableTask = ({ id, task }: SortableTaskProps) => {
       {...listeners}
       className={`${isDragging ? 'opacity-50' : ''}`}
     >
-      <TaskCard task={task} />
+      <TaskCard task={task} onClick={onClick} />
     </div>
   );
 };

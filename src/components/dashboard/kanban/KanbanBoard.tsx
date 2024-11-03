@@ -4,6 +4,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { KanbanColumn } from "./KanbanColumn";
 import { Loader2 } from "lucide-react";
+import { useState } from "react";
+import { TaskDialog } from "./TaskDialog";
 
 interface Task {
   id: string;
@@ -22,6 +24,7 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const sensors = useSensors(useSensor(PointerSensor));
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   const updateTaskStatus = useMutation({
     mutationFn: async ({ taskId, status }: { taskId: string; status: string }) => {
@@ -76,25 +79,33 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
 
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-      <div className="overflow-x-auto min-h-[calc(100vh-12rem)] bg-[#f1f2f4] p-4">
+      <div className="min-h-[calc(100vh-12rem)] bg-[#f9fafc] p-6">
         <div className="flex gap-4">
           <KanbanColumn 
             title="To Do" 
             tasks={columns.pending} 
-            status="pending" 
+            status="pending"
+            onTaskClick={setSelectedTask}
           />
           <KanbanColumn
             title="In Progress"
             tasks={columns["in-progress"]}
             status="in-progress"
+            onTaskClick={setSelectedTask}
           />
           <KanbanColumn
             title="Completed"
             tasks={columns.completed}
             status="completed"
+            onTaskClick={setSelectedTask}
           />
         </div>
       </div>
+      <TaskDialog
+        task={selectedTask}
+        open={!!selectedTask}
+        onOpenChange={() => setSelectedTask(null)}
+      />
     </DndContext>
   );
 };

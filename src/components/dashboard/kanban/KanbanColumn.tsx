@@ -2,6 +2,9 @@ import { useDroppable } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { Plus } from "lucide-react";
 import { SortableTask } from "./SortableTask";
+import { CreateTaskDialog } from "./CreateTaskDialog";
+import { useState } from "react";
+import { useAuth } from "@/components/auth/AuthProvider";
 
 interface Task {
   id: string;
@@ -14,35 +17,50 @@ interface KanbanColumnProps {
   title: string;
   status: string;
   tasks: Task[];
+  onTaskClick: (task: Task) => void;
 }
 
-export const KanbanColumn = ({ title, status, tasks }: KanbanColumnProps) => {
-  const { setNodeRef } = useDroppable({
-    id: status,
-  });
+export const KanbanColumn = ({ title, status, tasks, onTaskClick }: KanbanColumnProps) => {
+  const { setNodeRef } = useDroppable({ id: status });
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const { session } = useAuth();
 
   return (
-    <div className="w-[272px] flex-shrink-0">
-      <div className="bg-[#f1f2f4] rounded-[3px]">
-        <div className="flex items-center justify-between p-2 font-medium text-sm">
-          <h3>{title}</h3>
-          <button className="p-1.5 hover:bg-black/5 rounded-sm">
+    <div className="w-[280px] flex-shrink-0">
+      <div className="bg-[#ebecf0] rounded-lg">
+        <div className="flex items-center justify-between px-3 py-2.5">
+          <h3 className="text-sm font-medium text-[#172b4d]">{title}</h3>
+          <button 
+            onClick={() => setIsCreateDialogOpen(true)}
+            className="p-1.5 hover:bg-[#dadbe2] rounded-sm transition-colors"
+          >
             <Plus className="h-4 w-4" />
           </button>
         </div>
         <div
           ref={setNodeRef}
-          className="p-1 min-h-[1px]"
+          className="px-1 pb-1"
         >
           <SortableContext items={tasks.map(task => task.id)} strategy={verticalListSortingStrategy}>
             <div className="flex flex-col gap-2">
               {tasks.map((task) => (
-                <SortableTask key={task.id} id={task.id} task={task} />
+                <SortableTask 
+                  key={task.id} 
+                  id={task.id} 
+                  task={task} 
+                  onClick={() => onTaskClick(task)}
+                />
               ))}
             </div>
           </SortableContext>
         </div>
       </div>
+      <CreateTaskDialog
+        open={isCreateDialogOpen}
+        onOpenChange={setIsCreateDialogOpen}
+        userId={session?.user.id}
+        defaultStatus={status}
+      />
     </div>
   );
 };
