@@ -69,73 +69,78 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-primary flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-          Create your account
-        </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Already have an account?{" "}
-          <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
-            Sign in
-          </Link>
-        </p>
+        <div className="text-center">
+          <div className="text-4xl font-bold text-white mb-2">
+            Maven<span className="text-secondary">.</span>
+          </div>
+          <h2 className="text-center text-3xl font-bold tracking-tight text-white">
+            Create your account
+          </h2>
+          <p className="mt-2 text-center text-sm text-white/60">
+            Already have an account?{" "}
+            <Link to="/login" className="font-medium text-secondary hover:text-secondary/90">
+              Sign in
+            </Link>
+          </p>
+        </div>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="bg-card py-8 px-4 shadow-xl ring-1 ring-white/10 sm:rounded-lg sm:px-10">
           <form onSubmit={handleSignup} className="space-y-6">
             <div>
-              <Label htmlFor="fullName">Full Name</Label>
+              <Label htmlFor="fullName" className="text-white">Full Name</Label>
               <Input
                 id="fullName"
                 type="text"
                 required
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="mt-1"
+                className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
               />
             </div>
 
             <div>
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-white">Email</Label>
               <Input
                 id="email"
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1"
+                className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
               />
             </div>
 
             <div>
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-white">Password</Label>
               <Input
                 id="password"
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-1"
+                className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
               />
             </div>
 
             <div>
-              <Label htmlFor="avatar">Profile Picture</Label>
+              <Label htmlFor="avatar" className="text-white">Profile Picture</Label>
               <Input
                 id="avatar"
                 type="file"
                 required
                 accept="image/*"
                 onChange={(e) => setAvatarFile(e.target.files?.[0] || null)}
-                className="mt-1"
+                className="mt-1 bg-white/10 border-white/20 text-white file:bg-white/10 file:text-white file:border-0"
               />
             </div>
 
             <Button
               type="submit"
-              className="w-full"
+              className="w-full bg-secondary hover:bg-secondary/90"
               disabled={loading}
             >
               {loading ? "Signing up..." : "Sign up"}
