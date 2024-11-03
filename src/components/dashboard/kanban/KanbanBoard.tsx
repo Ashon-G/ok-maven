@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { KanbanColumn } from "./KanbanColumn";
 import { Loader2 } from "lucide-react";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface Task {
   id: string;
@@ -77,7 +77,7 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
 
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-      <ScrollArea className="w-full whitespace-nowrap rounded-md">
+      <ScrollArea className="w-full whitespace-nowrap rounded-md scrollbar-hide">
         <div className="flex space-x-4 p-4">
           <div className="min-w-[300px]">
             <KanbanColumn title="To Do" tasks={columns.pending} status="pending" />
@@ -97,7 +97,6 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
             />
           </div>
         </div>
-        <ScrollBar orientation="horizontal" />
       </ScrollArea>
     </DndContext>
   );
