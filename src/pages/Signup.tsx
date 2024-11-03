@@ -91,50 +91,50 @@ const Signup = () => {
         <div className="bg-card py-8 px-4 shadow-xl ring-1 ring-white/10 sm:rounded-lg sm:px-10">
           <form onSubmit={handleSignup} className="space-y-6">
             <div>
-              <Label htmlFor="fullName" className="text-white">Full Name</Label>
+              <Label htmlFor="fullName" className="text-black">Full Name</Label>
               <Input
                 id="fullName"
                 type="text"
                 required
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
+                className="mt-1 bg-white/10 border border-black text-black placeholder:text-black/60"
               />
             </div>
 
             <div>
-              <Label htmlFor="email" className="text-white">Email</Label>
+              <Label htmlFor="email" className="text-black">Email</Label>
               <Input
                 id="email"
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
+                className="mt-1 bg-white/10 border border-black text-black placeholder:text-black/60"
               />
             </div>
 
             <div>
-              <Label htmlFor="password" className="text-white">Password</Label>
+              <Label htmlFor="password" className="text-black">Password</Label>
               <Input
                 id="password"
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/60"
+                className="mt-1 bg-white/10 border border-black text-black placeholder:text-black/60"
               />
             </div>
 
             <div>
-              <Label htmlFor="avatar" className="text-white">Profile Picture</Label>
+              <Label htmlFor="avatar" className="text-black">Profile Picture</Label>
               <Input
                 id="avatar"
                 type="file"
                 required
                 accept="image/*"
                 onChange={(e) => setAvatarFile(e.target.files?.[0] || null)}
-                className="mt-1 bg-white/10 border-white/20 text-white file:bg-white/10 file:text-white file:border-0"
+                className="mt-1 bg-white/10 border border-black text-black file:bg-white/10 file:text-black file:border-0"
               />
             </div>
 
