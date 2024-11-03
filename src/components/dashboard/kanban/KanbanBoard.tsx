@@ -12,7 +12,9 @@ interface Task {
   title: string;
   description: string | null;
   status: string;
+  due_date: string | null;
   assignee?: { full_name: string } | null;
+  created_by: string;
 }
 
 interface KanbanBoardProps {
