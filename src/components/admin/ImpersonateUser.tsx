@@ -75,16 +75,16 @@ export const ImpersonateUser = () => {
   });
 
   return (
-    <div className="flex gap-2">
+    <div className="flex flex-col sm:flex-row gap-2">
       <Select
         value={selectedUser}
         onValueChange={setSelectedUser}
         disabled={isLoading || impersonateMutation.isPending}
       >
-        <SelectTrigger className="w-[200px]">
+        <SelectTrigger className="w-full sm:w-[200px] bg-white">
           <SelectValue placeholder="Select user to impersonate" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-white">
           {users?.map((user) => (
             <SelectItem key={user.id} value={user.id}>
               {user.full_name} ({user.user_type})
@@ -95,6 +95,7 @@ export const ImpersonateUser = () => {
       <Button
         onClick={() => selectedUser && impersonateMutation.mutate(selectedUser)}
         disabled={!selectedUser || impersonateMutation.isPending}
+        className="w-full sm:w-auto"
       >
         {impersonateMutation.isPending ? (
           <Loader2 className="h-4 w-4 animate-spin" />
