@@ -47,9 +47,14 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
       description: string;
       status?: string;
     }) => {
+      const updateData: any = { title, description };
+      if (status) {
+        updateData.status = status;
+      }
+
       const { error } = await supabase
         .from("tasks")
-        .update({ title, description, ...(status && { status }) })
+        .update(updateData)
         .eq("id", task?.id);
 
       if (error) throw error;
@@ -115,7 +120,6 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
 
   const handleStatusChange = (newStatus: string) => {
     if (newStatus === task.status) return;
-    
     updateTask.mutate({ 
       title: task.title, 
       description: task.description || "", 
