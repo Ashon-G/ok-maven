@@ -14,32 +14,6 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useQuery } from "@tanstack/react-query";
 
-const Dashboard = () => {
-  const { session } = useAuth();
-  const userMetadataType = session?.user?.user_metadata?.user_type;
-  const appMetadataType = session?.user?.app_metadata?.user_type;
-  const isAdmin = userMetadataType === 'admin' || appMetadataType === 'admin';
-  const [open, setOpen] = useState(false);
-
-  const { data: profile } = useQuery({
-    queryKey: ["profile"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", session?.user.id)
-        .single();
-
-      if (error) throw error;
-      return data;
-    },
-  });
-
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    window.location.href = "/login";
-  };
-
   const NavLinks = () => (
     <>
       <NavLink
@@ -128,12 +102,37 @@ const Dashboard = () => {
     </div>
   );
 
+const Dashboard = () => {
+  const { session } = useAuth();
+  const userMetadataType = session?.user?.user_metadata?.user_type;
+  const appMetadataType = session?.user?.app_metadata?.user_type;
+  const isAdmin = userMetadataType === 'admin' || appMetadataType === 'admin';
+  const [open, setOpen] = useState(false);
+
+  const { data: profile } = useQuery({
+    queryKey: ["profile"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", session?.user.id)
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    window.location.href = "/login";
+  };
+
   return (
     <div className="min-h-screen bg-gray-50/50 p-4 pb-20 md:p-8">
       <div className="mx-auto max-w-7xl">
         <nav className="mb-8 rounded-2xl border border-black/5 bg-white p-2 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
           <div className="flex items-center justify-between gap-2">
-            {/* Mobile Menu */}
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger className="md:hidden">
                 <Menu className="h-6 w-6" />
@@ -167,7 +166,7 @@ const Dashboard = () => {
                   </AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuContent align="end" className="w-56 bg-white border border-gray-200 shadow-lg">
                 <NavLink to="profile">
                   <DropdownMenuItem className="cursor-pointer">
                     <UserCircle className="mr-2 h-4 w-4" />
