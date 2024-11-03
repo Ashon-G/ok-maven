@@ -31,7 +31,7 @@ export const MessageList = ({ messages, currentUserId }: MessageListProps) => {
                   {format(new Date(msg.created_at), "MMM d, h:mm a")}
                 </p>
               </div>
-              <p>{msg.content}</p>
+              <p className="break-words">{msg.content}</p>
             </div>
           </div>
         ))}

@@ -10,11 +10,11 @@ type UserListProps = {
 
 export const UserList = ({ users, selectedUser, onUserSelect }: UserListProps) => {
   return (
-    <div className="w-[280px] border-r">
+    <div className="h-full flex flex-col">
       <div className="p-4 border-b">
         <h2 className="font-semibold">Conversations</h2>
       </div>
-      <div className="overflow-y-auto h-[calc(600px-65px)]">
+      <div className="flex-1 overflow-y-auto">
         {users?.map((user) => (
           <button
             key={user.id}
@@ -25,6 +25,7 @@ export const UserList = ({ users, selectedUser, onUserSelect }: UserListProps) =
             )}
           >
             <Avatar>
+              <AvatarImage src={user.avatar_url} />
               <AvatarFallback>
                 {user.full_name?.charAt(0) || "?"}
               </AvatarFallback>

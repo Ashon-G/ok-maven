@@ -7,11 +7,13 @@ import { Message, ChatUser } from "@/types/chat";
 import { MessageList } from "./chat/MessageList";
 import { MessageInput } from "./chat/MessageInput";
 import { UserList } from "./chat/UserList";
-import { Loader2 } from "lucide-react";
+import { Loader2, ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export const Chat = () => {
   const [message, setMessage] = useState("");
   const [selectedUser, setSelectedUser] = useState("");
+  const [showUserList, setShowUserList] = useState(true);
   const { session } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -135,16 +137,29 @@ export const Chat = () => {
     );
   }
 
+  const selectedChatUser = availableUsers?.find(user => user.id === selectedUser);
+
   return (
-    <div className="flex h-[600px] border rounded-lg overflow-hidden">
-      <UserList
-        users={availableUsers || []}
-        selectedUser={selectedUser}
-        onUserSelect={setSelectedUser}
-      />
-      <div className="flex-1 flex flex-col">
+    <div className="flex h-[calc(100vh-12rem)] border rounded-lg overflow-hidden">
+      <div className={`md:block ${showUserList ? 'block w-full md:w-[280px]' : 'hidden'} border-r`}>
+        <UserList
+          users={availableUsers || []}
+          selectedUser={selectedUser}
+          onUserSelect={(userId) => {
+            setSelectedUser(userId);
+            setShowUserList(false);
+          }}
+        />
+      </div>
+      <div className={`flex-1 flex flex-col ${!showUserList ? 'block' : 'hidden md:block'}`}>
         {selectedUser ? (
           <>
+            <div className="p-4 border-b flex items-center gap-2 md:hidden">
+              <Button variant="ghost" size="icon" onClick={() => setShowUserList(true)}>
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
+              <span className="font-medium">{selectedChatUser?.full_name}</span>
+            </div>
             <MessageList
               messages={messages || []}
               currentUserId={session?.user.id || ""}
