@@ -42,9 +42,9 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50/50 p-4 pb-20 md:p-8">
-      <div className="mx-auto max-w-7xl">
-        <nav className="mb-8 rounded-2xl border border-black/5 bg-white p-2 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
+    <div className="min-h-screen bg-gray-50/50">
+      <nav className="fixed top-0 left-0 right-0 z-50 mb-8 bg-white p-2 border-b border-black/5 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
+        <div className="mx-auto max-w-7xl">
           <div className="flex items-center justify-between gap-2">
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger className="md:hidden">
@@ -98,7 +98,10 @@ const Dashboard = () => {
           <div className="mt-2 px-4 text-sm text-gray-500">
             Current user type: {userMetadataType || 'none'} (user metadata) / {appMetadataType || 'none'} (app metadata)
           </div>
-        </nav>
+        </div>
+      </nav>
+
+      <div className="mx-auto max-w-7xl pt-24 p-4 pb-20 md:p-8">
         <div className="rounded-2xl border border-black/5 bg-white p-4 md:p-8 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
           <Outlet />
         </div>
