@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
@@ -20,7 +20,18 @@ type ImpersonateResponse = {
 
 export const ImpersonateUser = () => {
   const [selectedUser, setSelectedUser] = useState("");
+  const [isImpersonating, setIsImpersonating] = useState(false);
+  const [originalAdminId, setOriginalAdminId] = useState<string | null>(null);
   const { toast } = useToast();
+
+  // Check if we're impersonating on component mount
+  useEffect(() => {
+    const storedAdminId = localStorage.getItem("originalAdminId");
+    if (storedAdminId) {
+      setIsImpersonating(true);
+      setOriginalAdminId(storedAdminId);
+    }
+  }, []);
 
   const { data: users, isLoading } = useQuery({
     queryKey: ["impersonate-users"],
@@ -40,6 +51,9 @@ export const ImpersonateUser = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user?.id) throw new Error("No session found");
 
+      // Store the original admin's ID before impersonating
+      localStorage.setItem("originalAdminId", session.user.id);
+
       const { data, error } = await supabase.functions.invoke<ImpersonateResponse>('impersonate_user', {
         body: {
           impersonator_id: session.user.id,
@@ -50,7 +64,6 @@ export const ImpersonateUser = () => {
       if (error) throw error;
       if (!data) throw new Error("No data returned from impersonation");
 
-      // Sign in with the impersonated user's email and temporary password
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email: data.email,
         password: data.user_metadata
@@ -65,7 +78,8 @@ export const ImpersonateUser = () => {
         title: "Success",
         description: "Successfully impersonating user",
       });
-      window.location.reload(); // Reload to update the UI with the new user context
+      setIsImpersonating(true);
+      window.location.reload();
     },
     onError: (error) => {
       console.error("Impersonation error:", error);
@@ -76,6 +90,58 @@ export const ImpersonateUser = () => {
       });
     },
   });
+
+  const revertToAdmin = async () => {
+    if (!originalAdminId) return;
+
+    try {
+      const { data, error } = await supabase.functions.invoke<ImpersonateResponse>('impersonate_user', {
+        body: {
+          impersonator_id: originalAdminId,
+          target_user_id: originalAdminId
+        }
+      });
+
+      if (error) throw error;
+      if (!data) throw new Error("No data returned from impersonation");
+
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.user_metadata
+      });
+
+      if (signInError) throw signInError;
+
+      localStorage.removeItem("originalAdminId");
+      setIsImpersonating(false);
+      setOriginalAdminId(null);
+      
+      toast({
+        title: "Success",
+        description: "Successfully reverted to admin account",
+      });
+      
+      window.location.reload();
+    } catch (error: any) {
+      console.error("Revert error:", error);
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  if (isImpersonating) {
+    return (
+      <Button
+        onClick={revertToAdmin}
+        className="w-full sm:w-auto bg-purple-600 hover:bg-purple-700"
+      >
+        Return to Admin Account
+      </Button>
+    );
+  }
 
   return (
     <div className="flex flex-col sm:flex-row gap-2">
