@@ -15,6 +15,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { cn } from "@/lib/utils";
 
 interface Task {
   id: string;
@@ -110,96 +112,111 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px]">
-        <DialogHeader>
-          {isEditing ? (
-            <Input
-              value={editedTitle}
-              onChange={(e) => setEditedTitle(e.target.value)}
-              className="text-xl font-semibold"
-            />
-          ) : (
-            <DialogTitle className="text-xl font-semibold text-[#172b4d]">
-              {task.title}
-            </DialogTitle>
+      <DialogPrimitive.Portal>
+        <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
+        <DialogPrimitive.Content
+          className={cn(
+            "fixed left-[50%] top-[50%] z-50 grid w-full max-w-3xl translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200",
+            "data-[state=open]:animate-in data-[state=closed]:animate-out",
+            "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+            "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
+            "data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%]",
+            "data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]",
+            "sm:rounded-lg"
           )}
-        </DialogHeader>
-
-        <div className="mt-4">
-          {isEditing ? (
-            <Textarea
-              value={editedDescription}
-              onChange={(e) => setEditedDescription(e.target.value)}
-              placeholder="Add a description..."
-              className="min-h-[100px]"
-            />
-          ) : (
-            <div className="text-sm text-[#172b4d]">
-              {task.description || "No description provided"}
-            </div>
-          )}
-        </div>
-
-        <div className="mt-6 space-y-4">
-          {task.assignee && (
-            <div className="flex items-center gap-2">
-              <UserCircle className="h-4 w-4 text-[#5e6c84]" />
-              <span className="text-sm">{task.assignee.full_name}</span>
-            </div>
-          )}
-          {task.due_date && (
-            <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4 text-[#5e6c84]" />
-              <span className="text-sm">
-                {format(new Date(task.due_date), "PPP")}
-              </span>
-            </div>
-          )}
-        </div>
-
-        <DialogFooter className="mt-6">
-          {canEdit && (
-            <div className="flex gap-2">
+        >
+          <div className="max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
               {isEditing ? (
-                <>
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      setIsEditing(false);
-                      setEditedTitle(task.title);
-                      setEditedDescription(task.description || "");
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                  <Button onClick={handleSave}>Save</Button>
-                </>
+                <Input
+                  value={editedTitle}
+                  onChange={(e) => setEditedTitle(e.target.value)}
+                  className="text-xl font-semibold"
+                />
               ) : (
-                <>
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      setEditedTitle(task.title);
-                      setEditedDescription(task.description || "");
-                      setIsEditing(true);
-                    }}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    onClick={() => deleteTask.mutate()}
-                    className="gap-2"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                    Delete
-                  </Button>
-                </>
+                <DialogTitle className="text-xl font-semibold text-[#172b4d]">
+                  {task.title}
+                </DialogTitle>
+              )}
+            </DialogHeader>
+
+            <div className="mt-4">
+              {isEditing ? (
+                <Textarea
+                  value={editedDescription}
+                  onChange={(e) => setEditedDescription(e.target.value)}
+                  placeholder="Add a description..."
+                  className="min-h-[100px]"
+                />
+              ) : (
+                <div className="text-sm text-[#172b4d]">
+                  {task.description || "No description provided"}
+                </div>
               )}
             </div>
-          )}
-        </DialogFooter>
-      </DialogContent>
+
+            <div className="mt-6 space-y-4">
+              {task.assignee && (
+                <div className="flex items-center gap-2">
+                  <UserCircle className="h-4 w-4 text-[#5e6c84]" />
+                  <span className="text-sm">{task.assignee.full_name}</span>
+                </div>
+              )}
+              {task.due_date && (
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-[#5e6c84]" />
+                  <span className="text-sm">
+                    {format(new Date(task.due_date), "PPP")}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            <DialogFooter className="mt-6">
+              {canEdit && (
+                <div className="flex gap-2">
+                  {isEditing ? (
+                    <>
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          setIsEditing(false);
+                          setEditedTitle(task.title);
+                          setEditedDescription(task.description || "");
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                      <Button onClick={handleSave}>Save</Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          setEditedTitle(task.title);
+                          setEditedDescription(task.description || "");
+                          setIsEditing(true);
+                        }}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        onClick={() => deleteTask.mutate()}
+                        className="gap-2"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                        Delete
+                      </Button>
+                    </>
+                  )}
+                </div>
+              )}
+            </DialogFooter>
+          </div>
+        </DialogPrimitive.Content>
+      </DialogPrimitive.Portal>
     </Dialog>
   );
 };

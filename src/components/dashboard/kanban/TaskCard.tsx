@@ -1,4 +1,5 @@
 import { UserCircle } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface Task {
   title: string;
@@ -12,7 +13,13 @@ interface TaskCardProps {
 
 export const TaskCard = ({ task }: TaskCardProps) => {
   return (
-    <div className="bg-white rounded-lg shadow-sm hover:bg-gray-50 cursor-pointer p-2.5 group transition-all hover:shadow-md">
+    <motion.div
+      layout
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="bg-white rounded-lg shadow-sm hover:bg-gray-50 cursor-pointer p-2.5 group transition-all hover:shadow-md"
+    >
       <div className="text-sm text-[#172b4d] font-medium">{task.title}</div>
       {task.description && (
         <div className="text-xs text-[#5e6c84] mt-2 line-clamp-2">
@@ -27,6 +34,6 @@ export const TaskCard = ({ task }: TaskCardProps) => {
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
