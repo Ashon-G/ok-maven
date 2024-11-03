@@ -37,26 +37,37 @@ export const Chat = () => {
     queryFn: async () => {
       if (!userProfile?.user_type) return [];
 
+      if (userProfile.user_type === 'admin') {
+        // Admins can see all founders and mavens
+        const { data: users } = await supabase
+          .from("profiles")
+          .select("id, full_name, user_type, avatar_url")
+          .in("user_type", ['founder', 'maven'])
+          .neq("id", session?.user.id);
+        return users || [];
+      }
+
+      // For founders and mavens, keep existing logic
       let query;
       if (userProfile.user_type === "founder") {
         query = supabase
           .from("founder_maven_assignments")
           .select(
-            `maven:profiles!founder_maven_assignments_maven_id_fkey(id, full_name, user_type)`
+            `maven:profiles!founder_maven_assignments_maven_id_fkey(id, full_name, user_type, avatar_url)`
           )
           .eq("founder_id", session?.user.id);
       } else if (userProfile.user_type === "maven") {
         query = supabase
           .from("founder_maven_assignments")
           .select(
-            `founder:profiles!founder_maven_assignments_founder_id_fkey(id, full_name, user_type)`
+            `founder:profiles!founder_maven_assignments_founder_id_fkey(id, full_name, user_type, avatar_url)`
           )
           .eq("maven_id", session?.user.id);
       }
 
       const { data: admins } = await supabase
         .from("profiles")
-        .select("id, full_name, user_type")
+        .select("id, full_name, user_type, avatar_url")
         .eq("user_type", "admin");
 
       const { data: assignments } = await query;
