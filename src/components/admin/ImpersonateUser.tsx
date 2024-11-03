@@ -50,11 +50,13 @@ export const ImpersonateUser = () => {
       if (error) throw error;
       if (!data) throw new Error("No data returned from impersonation");
 
-      // Sign in as the impersonated user
-      await supabase.auth.signInWithPassword({
+      // Sign in with the impersonated user's email
+      const { error: signInError } = await supabase.auth.signInWithPassword({
         email: data.email,
-        password: "temporary-password" // This won't work in production, you'll need a proper impersonation mechanism
+        password: data.user_metadata // The database function returns the temporary password
       });
+
+      if (signInError) throw signInError;
 
       return data;
     },

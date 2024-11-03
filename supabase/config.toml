@@ -1,1 +1,4 @@
 project_id = "zrwdpntbrmnkoietmfxa"
+
+[functions.impersonate_user]
+verify_jwt = true
