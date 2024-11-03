@@ -12,12 +12,12 @@
     --popover-foreground: 222.2 84% 4.9%;
     --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 199 89% 48%;
+    --secondary-foreground: 210 40% 98%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 183 74% 29%;
+    --accent-foreground: 210 40% 98%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
@@ -29,44 +29,44 @@
 
 @layer components {
   body {
-    @apply bg-gray-50 text-foreground antialiased;
+    @apply bg-background text-foreground antialiased;
   }
 
   .gradient-text {
-    @apply bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent;
   }
 
   /* Modern Card Styles */
   .modern-card {
-    @apply rounded-xl border border-black bg-white p-6 shadow-sm transition-all hover:shadow-md;
+    @apply rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:shadow-md;
   }
 
   /* Modern Input Styles */
   .modern-input {
-    @apply rounded-lg border border-black bg-white px-4 py-2 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20;
+    @apply rounded-lg border border-input bg-background px-4 py-2 shadow-sm focus:border-secondary focus:ring-2 focus:ring-secondary/20;
   }
 
   /* Modern Button Styles */
   .modern-button {
-    @apply rounded-lg border border-black bg-white px-4 py-2 font-medium shadow-sm transition-all hover:bg-gray-50 hover:shadow-md;
+    @apply rounded-lg border border-border bg-background px-4 py-2 font-medium shadow-sm transition-all hover:bg-muted hover:shadow-md;
   }
 
   /* Navigation Styles */
   .nav-link {
-    @apply flex items-center gap-2 rounded-lg border border-black px-4 py-2 text-sm font-medium transition-all hover:bg-gray-50;
+    @apply flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium transition-all hover:bg-muted;
   }
 
   .nav-link.active {
-    @apply border-black bg-white text-blue-600 shadow-sm;
+    @apply border-secondary bg-card text-secondary shadow-sm;
   }
 
   /* Hide scrollbar but keep functionality */
   .scrollbar-hide {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
   
   .scrollbar-hide::-webkit-scrollbar {
-    display: none;  /* Chrome, Safari and Opera */
+    display: none;
   }
 }

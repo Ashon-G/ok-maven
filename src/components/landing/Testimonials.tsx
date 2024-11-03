@@ -15,7 +15,7 @@ export const Testimonials = () => {
   ];
 
   return (
-    <section className="bg-primary py-24 text-white">
+    <section className="bg-primary py-24 text-primary-foreground">
       <div className="container">
         <h2 className="mb-16 text-center text-4xl font-bold">
           Trusted by <span className="gradient-text">Founders</span>
@@ -24,9 +24,9 @@ export const Testimonials = () => {
           {testimonials.map((testimonial) => (
             <div
               key={testimonial.author}
-              className="rounded-lg bg-white/5 p-8 backdrop-blur-sm"
+              className="rounded-lg bg-primary-foreground/5 p-8 backdrop-blur-sm"
             >
-              <p className="mb-6 text-lg italic text-white/80">"{testimonial.quote}"</p>
+              <p className="mb-6 text-lg italic text-primary-foreground/80">"{testimonial.quote}"</p>
               <div className="flex items-center gap-4">
                 <img
                   src={testimonial.image}
@@ -35,7 +35,7 @@ export const Testimonials = () => {
                 />
                 <div>
                   <p className="font-semibold">{testimonial.author}</p>
-                  <p className="text-sm text-white/60">{testimonial.role}</p>
+                  <p className="text-sm text-primary-foreground/60">{testimonial.role}</p>
                 </div>
               </div>
             </div>

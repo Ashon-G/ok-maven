@@ -21,13 +21,13 @@ export const MessageList = ({ messages, currentUserId }: MessageListProps) => {
             <div
               className={`max-w-[80%] p-3 rounded-lg ${
                 msg.sender_id === currentUserId
-                  ? "bg-primary text-primary-foreground"
+                  ? "bg-secondary text-secondary-foreground"
                   : "bg-muted"
               }`}
             >
               <div className="flex items-center gap-2 mb-1">
                 <p className="text-sm font-medium">{msg.sender?.full_name}</p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-muted-foreground">
                   {format(new Date(msg.created_at), "MMM d, h:mm a")}
                 </p>
               </div>
