@@ -40,13 +40,12 @@ export const ImpersonateUser = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user?.id) throw new Error("No session found");
 
-      const { data, error } = await supabase.rpc<ImpersonateResponse, { impersonator_id: string; target_user_id: string }>(
-        'impersonate_user',
-        {
+      const { data, error } = await supabase.functions.invoke<ImpersonateResponse>('impersonate_user', {
+        body: {
           impersonator_id: session.user.id,
           target_user_id: targetUserId
         }
-      );
+      });
 
       if (error) throw error;
       if (!data) throw new Error("No data returned from impersonation");
