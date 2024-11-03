@@ -76,8 +76,59 @@ const Dashboard = () => {
     </>
   );
 
+  const MobileNavLinks = () => (
+    <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-around border-t border-gray-200 bg-white p-2 md:hidden">
+      <NavLink
+        to="tasks"
+        className={({ isActive }) =>
+          `flex flex-col items-center p-2 ${
+            isActive ? "text-blue-600" : "text-gray-600"
+          }`
+        }
+      >
+        <ListTodo className="h-5 w-5" />
+        <span className="text-xs">Tasks</span>
+      </NavLink>
+      <NavLink
+        to="chat"
+        className={({ isActive }) =>
+          `flex flex-col items-center p-2 ${
+            isActive ? "text-blue-600" : "text-gray-600"
+          }`
+        }
+      >
+        <MessageSquare className="h-5 w-5" />
+        <span className="text-xs">Chat</span>
+      </NavLink>
+      <NavLink
+        to="profile"
+        className={({ isActive }) =>
+          `flex flex-col items-center p-2 ${
+            isActive ? "text-blue-600" : "text-gray-600"
+          }`
+        }
+      >
+        <UserCircle className="h-5 w-5" />
+        <span className="text-xs">Profile</span>
+      </NavLink>
+      {isAdmin && (
+        <NavLink
+          to="admin"
+          className={({ isActive }) =>
+            `flex flex-col items-center p-2 ${
+              isActive ? "text-blue-600" : "text-gray-600"
+            }`
+          }
+        >
+          <Settings className="h-5 w-5" />
+          <span className="text-xs">Admin</span>
+        </NavLink>
+      )}
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-gray-50/50 p-4 md:p-8">
+    <div className="min-h-screen bg-gray-50/50 p-4 pb-20 md:p-8">
       <div className="mx-auto max-w-7xl">
         <nav className="mb-8 rounded-2xl border border-black/5 bg-white p-2 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
           <div className="flex items-center justify-between gap-2">
@@ -130,6 +181,7 @@ const Dashboard = () => {
           <Outlet />
         </div>
       </div>
+      <MobileNavLinks />
     </div>
   );
 };
