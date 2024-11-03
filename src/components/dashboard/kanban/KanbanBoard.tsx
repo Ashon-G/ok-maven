@@ -77,6 +77,10 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
     completed: tasks.filter((task) => task.status === "completed"),
   };
 
+  const handleTaskClick = (task: Task) => {
+    setSelectedTask(task);
+  };
+
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <div className="min-h-[calc(100vh-12rem)] bg-[#f9fafc] p-6">
@@ -85,19 +89,19 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
             title="To Do" 
             tasks={columns.pending} 
             status="pending"
-            onTaskClick={setSelectedTask}
+            onTaskClick={handleTaskClick}
           />
           <KanbanColumn
             title="In Progress"
             tasks={columns["in-progress"]}
             status="in-progress"
-            onTaskClick={setSelectedTask}
+            onTaskClick={handleTaskClick}
           />
           <KanbanColumn
             title="Completed"
             tasks={columns.completed}
             status="completed"
-            onTaskClick={setSelectedTask}
+            onTaskClick={handleTaskClick}
           />
         </div>
       </div>

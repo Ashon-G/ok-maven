@@ -9,6 +9,7 @@ import { UserCircle } from "lucide-react";
 interface Task {
   title: string;
   description: string | null;
+  status: string;
   assignee?: { full_name: string } | null;
 }
 

@@ -24,12 +24,14 @@ interface CreateTaskDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   userId: string | undefined;
+  defaultStatus?: string;
 }
 
 export const CreateTaskDialog = ({
   open,
   onOpenChange,
   userId,
+  defaultStatus = "pending",
 }: CreateTaskDialogProps) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -65,6 +67,7 @@ export const CreateTaskDialog = ({
         description,
         created_by: userId,
         assigned_to: selectedMaven || null,
+        status: defaultStatus,
       });
 
       if (error) throw error;
