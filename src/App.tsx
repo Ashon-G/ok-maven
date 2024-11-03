@@ -4,6 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/components/auth/AuthProvider";
+import { SplashScreen } from "@/components/ui/splash-screen";
+import { LoadingAnimation } from "@/components/ui/loading-animation";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -20,7 +22,11 @@ const ProtectedRoute = ({ children, adminOnly = false }: { children: React.React
   const { session, loading } = useAuth();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingAnimation />
+      </div>
+    );
   }
 
   if (!session) {
@@ -42,6 +48,7 @@ const App = () => (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <TooltipProvider>
+          <SplashScreen />
           <Toaster />
           <Sonner />
           <Routes>
