@@ -86,7 +86,7 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
     { id: "completed", title: "Complete", headingColor: "text-emerald-200" },
   ];
 
-  const handleDragEnd = (e: React.DragEvent, columnId: string) => {
+  const handleDragEnd = (e: DragEvent, columnId: string) => {
     const taskId = e.dataTransfer.getData("taskId");
     if (taskId) {
       updateTaskStatus.mutate({ taskId, status: columnId });
@@ -108,12 +108,12 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
               </span>
             </div>
             <div
-              onDragOver={(e) => {
+              onDragOver={(e: DragEvent) => {
                 e.preventDefault();
                 setActive(true);
               }}
               onDragLeave={() => setActive(false)}
-              onDrop={(e) => handleDragEnd(e, column.id)}
+              onDrop={(e: DragEvent) => handleDragEnd(e, column.id)}
               className={`h-full w-full transition-colors ${
                 active ? "bg-neutral-800/50" : "bg-neutral-800/0"
               }`}
@@ -126,7 +126,7 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
                     layout
                     layoutId={task.id}
                     draggable="true"
-                    onDragStart={(e) => {
+                    onDragStart={(e: DragEvent) => {
                       e.dataTransfer.setData("taskId", task.id);
                     }}
                     onClick={() => setSelectedTask(task)}
@@ -145,12 +145,12 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
         ))}
 
         <div
-          onDragOver={(e) => {
+          onDragOver={(e: DragEvent) => {
             e.preventDefault();
             setActive(true);
           }}
           onDragLeave={() => setActive(false)}
-          onDrop={(e) => {
+          onDrop={(e: DragEvent) => {
             const taskId = e.dataTransfer.getData("taskId");
             if (taskId) {
               deleteTask.mutate(taskId);
