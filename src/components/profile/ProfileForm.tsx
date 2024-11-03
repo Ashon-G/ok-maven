@@ -64,9 +64,22 @@ export const ProfileForm = () => {
         const fileExt = avatarFile.name.split('.').pop();
         const filePath = `${session?.user.id}/avatar.${fileExt}`;
 
+        // First, try to remove any existing avatar
+        try {
+          await supabase.storage
+            .from('avatars')
+            .remove([filePath]);
+        } catch (error) {
+          // Ignore error if file doesn't exist
+        }
+
+        // Upload new avatar
         const { error: uploadError } = await supabase.storage
           .from('avatars')
-          .upload(filePath, avatarFile, { upsert: true });
+          .upload(filePath, avatarFile, { 
+            upsert: true,
+            cacheControl: '3600'
+          });
 
         if (uploadError) throw uploadError;
 
