@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
+import CountdownTimer from "@/components/sales/CountdownTimer";
 
 const UpgradePlan = () => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const UpgradePlan = () => {
 
   return (
     <main className="min-h-screen bg-gray-50">
+      <CountdownTimer />
       <div className="container max-w-5xl py-16">
         <div className="mb-8 text-center">
           <span className="inline-block mb-4 px-4 py-1.5 bg-secondary/10 text-secondary rounded-full text-sm font-medium">
