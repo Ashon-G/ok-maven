@@ -30,6 +30,14 @@ export const SortableTask = ({ id, task, onClick }: SortableTaskProps) => {
     transition,
   };
 
+  const handleClick = (e: React.MouseEvent) => {
+    // Only trigger click if we're not dragging
+    if (!isDragging) {
+      e.stopPropagation();
+      onClick();
+    }
+  };
+
   return (
     <div 
       ref={setNodeRef} 
@@ -37,8 +45,9 @@ export const SortableTask = ({ id, task, onClick }: SortableTaskProps) => {
       {...attributes} 
       {...listeners}
       className={`${isDragging ? 'opacity-50' : ''}`}
+      onClick={handleClick}
     >
-      <TaskCard task={task} onClick={onClick} />
+      <TaskCard task={task} />
     </div>
   );
 };
