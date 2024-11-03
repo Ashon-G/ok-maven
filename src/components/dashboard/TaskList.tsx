@@ -4,8 +4,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { KanbanBoard } from "./kanban/KanbanBoard";
 import { CreateTaskDialog } from "./kanban/CreateTaskDialog";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
 
 export const TaskList = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,12 +44,6 @@ export const TaskList = () => {
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-2xl font-bold">Tasks</h2>
-        {userProfile?.user_type === "founder" && (
-          <Button onClick={() => setIsOpen(true)} className="w-full sm:w-auto">
-            <Plus className="h-4 w-4 mr-2" />
-            New Task
-          </Button>
-        )}
       </div>
 
       <KanbanBoard tasks={tasks || []} isLoading={isLoading} />
