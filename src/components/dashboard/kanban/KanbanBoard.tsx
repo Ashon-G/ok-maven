@@ -77,19 +77,19 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
 
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-      <ScrollArea className="w-full whitespace-nowrap rounded-md scrollbar-hide">
-        <div className="flex space-x-4 p-4">
-          <div className="min-w-[300px]">
+      <div className="overflow-x-auto scrollbar-hide">
+        <div className="flex space-x-4 p-4 min-w-max">
+          <div className="w-[300px]">
             <KanbanColumn title="To Do" tasks={columns.pending} status="pending" />
           </div>
-          <div className="min-w-[300px]">
+          <div className="w-[300px]">
             <KanbanColumn
               title="In Progress"
               tasks={columns["in-progress"]}
               status="in-progress"
             />
           </div>
-          <div className="min-w-[300px]">
+          <div className="w-[300px]">
             <KanbanColumn
               title="Completed"
               tasks={columns.completed}
@@ -97,7 +97,7 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
             />
           </div>
         </div>
-      </ScrollArea>
+      </div>
     </DndContext>
   );
 };
