@@ -30,13 +30,13 @@ const ProtectedRoute = ({ children, adminOnly = false }: { children: React.React
   }
 
   if (!session) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" replace />;
   }
 
   if (adminOnly) {
     const isAdmin = session.user.user_metadata.user_type === 'admin';
     if (!isAdmin) {
-      return <Navigate to="/dashboard" />;
+      return <Navigate to="/dashboard" replace />;
     }
   }
 
