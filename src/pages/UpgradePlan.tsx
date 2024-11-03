@@ -23,9 +23,10 @@ const UpgradePlan = () => {
             Supercharge Your Growth with Additional{" "}
             <span className="gradient-text">Mavens</span>
           </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Get access to two additional student Mavens for specialized support in
-            different areas of your startup.
+          <p className="text-lg max-w-2xl mx-auto text-foreground">
+            Transform your startup's potential with dedicated student Mavens who specialize
+            in critical areas of your business. Get personalized support worth thousands
+            for a fraction of the cost.
           </p>
         </div>
 
@@ -33,8 +34,8 @@ const UpgradePlan = () => {
           <div className="flex items-center justify-between mb-8 pb-8 border-b">
             <div>
               <h2 className="text-2xl font-semibold mb-2">Maven Plus Package</h2>
-              <p className="text-muted-foreground">
-                Additional expertise at a fraction of the cost
+              <p className="text-foreground">
+                Double your expertise, accelerate your success
               </p>
             </div>
             <div className="text-right">
@@ -48,8 +49,9 @@ const UpgradePlan = () => {
               <Check className="h-5 w-5 text-secondary mt-1 flex-shrink-0" />
               <div>
                 <p className="font-medium">Two Additional Maven Students</p>
-                <p className="text-muted-foreground text-sm">
-                  Get specialized support in different areas like marketing, development, or design
+                <p className="text-foreground text-sm">
+                  Unlock the power of specialized expertise with dedicated support in marketing,
+                  development, or design - tailored to your startup's unique needs
                 </p>
               </div>
             </div>
@@ -57,8 +59,9 @@ const UpgradePlan = () => {
               <Check className="h-5 w-5 text-secondary mt-1 flex-shrink-0" />
               <div>
                 <p className="font-medium">Diverse Skill Sets</p>
-                <p className="text-muted-foreground text-sm">
-                  Access students from different academic backgrounds for comprehensive support
+                <p className="text-foreground text-sm">
+                  Leverage the knowledge of top students from prestigious universities,
+                  bringing fresh perspectives and cutting-edge strategies to your business
                 </p>
               </div>
             </div>
@@ -66,8 +69,9 @@ const UpgradePlan = () => {
               <Check className="h-5 w-5 text-secondary mt-1 flex-shrink-0" />
               <div>
                 <p className="font-medium">Faster Progress</p>
-                <p className="text-muted-foreground text-sm">
-                  Accelerate your startup's growth with parallel support in multiple areas
+                <p className="text-foreground text-sm">
+                  Triple your execution speed with parallel support across multiple
+                  areas, turning your vision into reality faster than ever
                 </p>
               </div>
             </div>
@@ -75,8 +79,9 @@ const UpgradePlan = () => {
               <Check className="h-5 w-5 text-secondary mt-1 flex-shrink-0" />
               <div>
                 <p className="font-medium">Priority Support</p>
-                <p className="text-muted-foreground text-sm">
-                  Get faster response times and dedicated attention from your expanded Maven team
+                <p className="text-foreground text-sm">
+                  Get VIP treatment with faster response times and dedicated attention
+                  from your expanded Maven team, ensuring no opportunity is missed
                 </p>
               </div>
             </div>
@@ -90,7 +95,7 @@ const UpgradePlan = () => {
           </Button>
 
           <p className="text-center text-muted-foreground text-sm mt-4">
-            Cancel or modify your subscription anytime
+            No long-term commitment - cancel or modify your subscription anytime
           </p>
         </div>
       </div>
