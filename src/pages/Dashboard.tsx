@@ -1,5 +1,5 @@
 import { Outlet, NavLink } from "react-router-dom";
-import { MessageSquare, ListTodo, UserCircle, Settings, LogOut, Menu } from "lucide-react";
+import { UserCircle, LogOut, Menu } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
@@ -13,94 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useQuery } from "@tanstack/react-query";
-
-  const NavLinks = () => (
-    <>
-      <NavLink
-        to="tasks"
-        onClick={() => setOpen(false)}
-        className={({ isActive }) =>
-          `nav-link ${isActive ? "active" : ""}`
-        }
-      >
-        <ListTodo className="h-4 w-4" />
-        Tasks
-      </NavLink>
-      <NavLink
-        to="chat"
-        onClick={() => setOpen(false)}
-        className={({ isActive }) =>
-          `nav-link ${isActive ? "active" : ""}`
-        }
-      >
-        <MessageSquare className="h-4 w-4" />
-        Chat
-      </NavLink>
-      {isAdmin && (
-        <NavLink
-          to="admin"
-          onClick={() => setOpen(false)}
-          className={({ isActive }) =>
-            `nav-link ${isActive ? "active" : ""}`
-          }
-        >
-          <Settings className="h-4 w-4" />
-          Admin
-        </NavLink>
-      )}
-    </>
-  );
-
-  const MobileNavLinks = () => (
-    <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-around border-t border-gray-200 bg-white p-2 md:hidden">
-      <NavLink
-        to="tasks"
-        className={({ isActive }) =>
-          `flex flex-col items-center p-2 ${
-            isActive ? "text-blue-600" : "text-gray-600"
-          }`
-        }
-      >
-        <ListTodo className="h-5 w-5" />
-        <span className="text-xs">Tasks</span>
-      </NavLink>
-      <NavLink
-        to="chat"
-        className={({ isActive }) =>
-          `flex flex-col items-center p-2 ${
-            isActive ? "text-blue-600" : "text-gray-600"
-          }`
-        }
-      >
-        <MessageSquare className="h-5 w-5" />
-        <span className="text-xs">Chat</span>
-      </NavLink>
-      <NavLink
-        to="profile"
-        className={({ isActive }) =>
-          `flex flex-col items-center p-2 ${
-            isActive ? "text-blue-600" : "text-gray-600"
-          }`
-        }
-      >
-        <UserCircle className="h-5 w-5" />
-        <span className="text-xs">Profile</span>
-      </NavLink>
-      {isAdmin && (
-        <NavLink
-          to="admin"
-          className={({ isActive }) =>
-            `flex flex-col items-center p-2 ${
-              isActive ? "text-blue-600" : "text-gray-600"
-            }`
-          }
-        >
-          <Settings className="h-5 w-5" />
-          <span className="text-xs">Admin</span>
-        </NavLink>
-      )}
-    </div>
-  );
+import { NavLinks, MobileNavLinks } from "@/components/dashboard/Navigation";
 
 const Dashboard = () => {
   const { session } = useAuth();
@@ -139,24 +52,21 @@ const Dashboard = () => {
               </SheetTrigger>
               <SheetContent side="left" className="w-[240px] p-4">
                 <div className="flex flex-col gap-2 mt-4">
-                  <NavLinks />
+                  <NavLinks isAdmin={isAdmin} setOpen={setOpen} />
                 </div>
               </SheetContent>
             </Sheet>
 
-            {/* Desktop Menu */}
             <div className="hidden md:flex items-center gap-2">
-              <NavLinks />
+              <NavLinks isAdmin={isAdmin} setOpen={setOpen} />
             </div>
 
-            {/* Admin Impersonation */}
             {isAdmin && (
               <div className="hidden md:block">
                 <ImpersonateUser />
               </div>
             )}
 
-            {/* Profile Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger className="focus:outline-none">
                 <Avatar className="h-8 w-8">
@@ -193,7 +103,7 @@ const Dashboard = () => {
           <Outlet />
         </div>
       </div>
-      <MobileNavLinks />
+      <MobileNavLinks isAdmin={isAdmin} />
     </div>
   );
 };
