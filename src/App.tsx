@@ -43,6 +43,41 @@ const ProtectedRoute = ({ children, adminOnly = false }: { children: React.React
   return <>{children}</>;
 };
 
+const AppRoutes = () => {
+  const { loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingAnimation />
+      </div>
+    );
+  }
+
+  return (
+    <Routes>
+      <Route path="/" element={<Index />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/dashboard" element={
+        <ProtectedRoute>
+          <Dashboard />
+        </ProtectedRoute>
+      }>
+        <Route index element={<Navigate to="tasks" replace />} />
+        <Route path="tasks" element={<Tasks />} />
+        <Route path="chat" element={<Chat />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="admin" element={
+          <ProtectedRoute adminOnly>
+            <Admin />
+          </ProtectedRoute>
+        } />
+      </Route>
+    </Routes>
+  );
+};
+
 const App = () => (
   <BrowserRouter>
     <QueryClientProvider client={queryClient}>
@@ -51,26 +86,7 @@ const App = () => (
           <SplashScreen />
           <Toaster />
           <Sonner />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/dashboard" element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }>
-              <Route index element={<Navigate to="tasks" replace />} />
-              <Route path="tasks" element={<Tasks />} />
-              <Route path="chat" element={<Chat />} />
-              <Route path="profile" element={<Profile />} />
-              <Route path="admin" element={
-                <ProtectedRoute adminOnly>
-                  <Admin />
-                </ProtectedRoute>
-              } />
-            </Route>
-          </Routes>
+          <AppRoutes />
         </TooltipProvider>
       </AuthProvider>
     </QueryClientProvider>
