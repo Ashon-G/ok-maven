@@ -1,11 +1,3 @@
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { UserCircle } from "lucide-react";
 
 interface Task {
@@ -20,23 +12,21 @@ interface TaskCardProps {
 
 export const TaskCard = ({ task }: TaskCardProps) => {
   return (
-    <Card className="cursor-move">
-      <CardHeader className="p-4">
-        <CardTitle className="text-sm font-medium">{task.title}</CardTitle>
-        {task.description && (
-          <CardDescription className="text-xs mt-1">
-            {task.description}
-          </CardDescription>
-        )}
-      </CardHeader>
-      {task.assignee && (
-        <CardContent className="p-4 pt-0">
-          <div className="flex items-center text-xs text-gray-500">
-            <UserCircle className="h-3 w-3 mr-1" />
-            {task.assignee.full_name}
-          </div>
-        </CardContent>
+    <div className="bg-white rounded-[3px] shadow-sm hover:bg-gray-50 cursor-pointer p-2 group">
+      <div className="text-sm text-gray-700">{task.title}</div>
+      {task.description && (
+        <div className="text-xs text-gray-500 mt-1">
+          {task.description}
+        </div>
       )}
-    </Card>
+      {task.assignee && (
+        <div className="flex items-center mt-2 text-xs text-gray-500">
+          <div className="flex items-center gap-1 px-2 py-1 rounded-sm bg-gray-100">
+            <UserCircle className="h-3 w-3" />
+            <span>{task.assignee.full_name}</span>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };

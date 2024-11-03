@@ -21,6 +21,7 @@ export const SortableTask = ({ id, task }: SortableTaskProps) => {
     setNodeRef,
     transform,
     transition,
+    isDragging,
   } = useSortable({ id });
 
   const style = {
@@ -29,7 +30,13 @@ export const SortableTask = ({ id, task }: SortableTaskProps) => {
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div 
+      ref={setNodeRef} 
+      style={style} 
+      {...attributes} 
+      {...listeners}
+      className={`${isDragging ? 'opacity-50' : ''}`}
+    >
       <TaskCard task={task} />
     </div>
   );

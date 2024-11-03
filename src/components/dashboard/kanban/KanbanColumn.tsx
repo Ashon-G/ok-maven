@@ -1,6 +1,6 @@
 import { useDroppable } from "@dnd-kit/core";
-import { TaskCard } from "./TaskCard";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { Plus } from "lucide-react";
 import { SortableTask } from "./SortableTask";
 
 interface Task {
@@ -22,14 +22,26 @@ export const KanbanColumn = ({ title, status, tasks }: KanbanColumnProps) => {
   });
 
   return (
-    <div className="bg-gray-50 rounded-lg p-4 h-[calc(100vh-16rem)]">
-      <h3 className="font-semibold mb-4">{title}</h3>
-      <div ref={setNodeRef} className="space-y-3 h-full overflow-y-auto">
-        <SortableContext items={tasks.map(task => task.id)} strategy={verticalListSortingStrategy}>
-          {tasks.map((task) => (
-            <SortableTask key={task.id} id={task.id} task={task} />
-          ))}
-        </SortableContext>
+    <div className="w-[272px] flex-shrink-0">
+      <div className="bg-[#f1f2f4] rounded-[3px]">
+        <div className="flex items-center justify-between p-2 font-medium text-sm">
+          <h3>{title}</h3>
+          <button className="p-1.5 hover:bg-black/5 rounded-sm">
+            <Plus className="h-4 w-4" />
+          </button>
+        </div>
+        <div
+          ref={setNodeRef}
+          className="p-1 min-h-[1px]"
+        >
+          <SortableContext items={tasks.map(task => task.id)} strategy={verticalListSortingStrategy}>
+            <div className="flex flex-col gap-2">
+              {tasks.map((task) => (
+                <SortableTask key={task.id} id={task.id} task={task} />
+              ))}
+            </div>
+          </SortableContext>
+        </div>
       </div>
     </div>
   );

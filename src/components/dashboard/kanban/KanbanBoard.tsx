@@ -4,7 +4,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { KanbanColumn } from "./KanbanColumn";
 import { Loader2 } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface Task {
   id: string;
@@ -77,25 +76,23 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
 
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-      <div className="overflow-x-auto scrollbar-hide">
-        <div className="flex space-x-4 p-4 min-w-max">
-          <div className="w-[300px]">
-            <KanbanColumn title="To Do" tasks={columns.pending} status="pending" />
-          </div>
-          <div className="w-[300px]">
-            <KanbanColumn
-              title="In Progress"
-              tasks={columns["in-progress"]}
-              status="in-progress"
-            />
-          </div>
-          <div className="w-[300px]">
-            <KanbanColumn
-              title="Completed"
-              tasks={columns.completed}
-              status="completed"
-            />
-          </div>
+      <div className="overflow-x-auto min-h-[calc(100vh-12rem)] bg-[#f1f2f4] p-4">
+        <div className="flex gap-4">
+          <KanbanColumn 
+            title="To Do" 
+            tasks={columns.pending} 
+            status="pending" 
+          />
+          <KanbanColumn
+            title="In Progress"
+            tasks={columns["in-progress"]}
+            status="in-progress"
+          />
+          <KanbanColumn
+            title="Completed"
+            tasks={columns.completed}
+            status="completed"
+          />
         </div>
       </div>
     </DndContext>
