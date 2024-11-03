@@ -12,6 +12,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
+type ImpersonateResponse = {
+  id: string;
+  email: string;
+  user_metadata: string;
+};
+
 export const ImpersonateUser = () => {
   const [selectedUser, setSelectedUser] = useState("");
   const { toast } = useToast();
@@ -34,12 +40,13 @@ export const ImpersonateUser = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user?.id) throw new Error("No session found");
 
-      const { data, error } = await supabase.rpc('impersonate_user', {
+      const { data, error } = await supabase.rpc<ImpersonateResponse>('impersonate_user', {
         impersonator_id: session.user.id,
         target_user_id: targetUserId
       });
 
       if (error) throw error;
+      if (!data) throw new Error("No data returned from impersonation");
 
       // Sign in as the impersonated user
       await supabase.auth.signInWithPassword({
