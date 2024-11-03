@@ -4,6 +4,14 @@ import { useAuth } from "@/components/auth/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useQuery } from "@tanstack/react-query";
 
 const Dashboard = () => {
   const { session } = useAuth();
@@ -11,6 +19,20 @@ const Dashboard = () => {
   const appMetadataType = session?.user?.app_metadata?.user_type;
   const isAdmin = userMetadataType === 'admin' || appMetadataType === 'admin';
   const [open, setOpen] = useState(false);
+
+  const { data: profile } = useQuery({
+    queryKey: ["profile"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", session?.user.id)
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+  });
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -39,16 +61,6 @@ const Dashboard = () => {
         <MessageSquare className="h-4 w-4" />
         Chat
       </NavLink>
-      <NavLink
-        to="profile"
-        onClick={() => setOpen(false)}
-        className={({ isActive }) =>
-          `nav-link ${isActive ? "active" : ""}`
-        }
-      >
-        <UserCircle className="h-4 w-4" />
-        Profile
-      </NavLink>
       {isAdmin && (
         <NavLink
           to="admin"
@@ -61,13 +73,6 @@ const Dashboard = () => {
           Admin
         </NavLink>
       )}
-      <button
-        onClick={handleSignOut}
-        className="nav-link text-red-500 hover:bg-red-50"
-      >
-        <LogOut className="h-4 w-4" />
-        Sign Out
-      </button>
     </>
   );
 
@@ -75,7 +80,7 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gray-50/50 p-4 md:p-8">
       <div className="mx-auto max-w-7xl">
         <nav className="mb-8 rounded-2xl border border-black/5 bg-white p-2 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between gap-2">
             {/* Mobile Menu */}
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger className="md:hidden">
@@ -89,9 +94,33 @@ const Dashboard = () => {
             </Sheet>
 
             {/* Desktop Menu */}
-            <div className="hidden md:flex items-center gap-2 w-full">
+            <div className="hidden md:flex items-center gap-2">
               <NavLinks />
             </div>
+
+            {/* Profile Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger className="focus:outline-none">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={profile?.avatar_url || ""} />
+                  <AvatarFallback>
+                    {profile?.full_name?.charAt(0) || session?.user.email?.charAt(0) || "?"}
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <NavLink to="profile">
+                  <DropdownMenuItem className="cursor-pointer">
+                    <UserCircle className="mr-2 h-4 w-4" />
+                    Profile
+                  </DropdownMenuItem>
+                </NavLink>
+                <DropdownMenuItem className="cursor-pointer text-red-600" onClick={handleSignOut}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           <div className="mt-2 px-4 text-sm text-gray-500">
             Current user type: {userMetadataType || 'none'} (user metadata) / {appMetadataType || 'none'} (app metadata)
