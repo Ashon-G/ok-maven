@@ -1,13 +1,10 @@
-import { useState } from "react";
+import { DndContext, DragEndEvent, useSensor, useSensors, PointerSensor } from "@dnd-kit/core";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/components/ui/use-toast";
-import { FiPlus, FiTrash } from "react-icons/fi";
-import { FaFire } from "react-icons/fa";
-import { motion } from "framer-motion";
+import { KanbanColumn } from "./KanbanColumn";
+import { Loader2 } from "lucide-react";
+import { useState } from "react";
 import { TaskDialog } from "./TaskDialog";
-
-type ColumnType = "pending" | "in-progress" | "completed";
 
 interface Task {
   id: string;
@@ -25,10 +22,9 @@ interface KanbanBoardProps {
 }
 
 export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
-  const [active, setActive] = useState(false);
-  const { toast } = useToast();
   const queryClient = useQueryClient();
+  const sensors = useSensors(useSensor(PointerSensor));
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   const updateTaskStatus = useMutation({
     mutationFn: async ({ taskId, status }: { taskId: string; status: string }) => {
@@ -41,137 +37,68 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
-      toast({
-        title: "Success",
-        description: "Task status updated successfully",
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
     },
   });
 
-  const deleteTask = useMutation({
-    mutationFn: async (taskId: string) => {
-      const { error } = await supabase
-        .from("tasks")
-        .delete()
-        .eq("id", taskId);
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over) return;
 
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
-      toast({
-        title: "Success",
-        description: "Task deleted successfully",
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
-  });
+    const taskId = active.id as string;
+    const newStatus = over.id as string;
 
-  const columns = [
-    { id: "pending", title: "Backlog", headingColor: "text-neutral-500" },
-    { id: "in-progress", title: "In Progress", headingColor: "text-blue-200" },
-    { id: "completed", title: "Complete", headingColor: "text-emerald-200" },
-  ];
-
-  const handleDragEnd = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
-    const taskId = e.dataTransfer.getData("taskId");
-    if (taskId) {
-      updateTaskStatus.mutate({ taskId, status: columnId });
+    if (newStatus !== active.data.current?.status) {
+      updateTaskStatus.mutate({ taskId, status: newStatus });
     }
-    setActive(false);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
+
+  const columns = {
+    pending: tasks.filter((task) => task.status === "pending"),
+    "in-progress": tasks.filter((task) => task.status === "in-progress"),
+    completed: tasks.filter((task) => task.status === "completed"),
+  };
+
+  const handleTaskClick = (task: Task) => {
+    setSelectedTask(task);
   };
 
   return (
-    <div className="h-[calc(100vh-12rem)] w-full bg-neutral-900 text-neutral-50">
-      <div className="flex h-full w-full gap-3 overflow-scroll p-12">
-        {columns.map((column) => (
-          <div key={column.id} className="w-56 shrink-0">
-            <div className="mb-3 flex items-center justify-between">
-              <h3 className={`font-medium ${column.headingColor}`}>
-                {column.title}
-              </h3>
-              <span className="rounded text-sm text-neutral-400">
-                {tasks.filter((t) => t.status === column.id).length}
-              </span>
-            </div>
-            <div
-              onDragOver={(e: React.DragEvent<HTMLDivElement>) => {
-                e.preventDefault();
-                setActive(true);
-              }}
-              onDragLeave={() => setActive(false)}
-              onDrop={(e: React.DragEvent<HTMLDivElement>) => handleDragEnd(e, column.id)}
-              className={`h-full w-full transition-colors ${
-                active ? "bg-neutral-800/50" : "bg-neutral-800/0"
-              }`}
-            >
-              {tasks
-                .filter((task) => task.status === column.id)
-                .map((task) => (
-                  <motion.div
-                    key={task.id}
-                    layout
-                    layoutId={task.id}
-                    draggable="true"
-                    onDragStart={(e: React.DragEvent<HTMLDivElement>) => {
-                      e.dataTransfer.setData("taskId", task.id);
-                    }}
-                    onClick={() => setSelectedTask(task)}
-                    className="mb-3 cursor-grab rounded border border-neutral-700 bg-neutral-800 p-3 active:cursor-grabbing"
-                  >
-                    <p className="text-sm text-neutral-100">{task.title}</p>
-                    {task.assignee && (
-                      <p className="mt-2 text-xs text-neutral-400">
-                        {task.assignee.full_name}
-                      </p>
-                    )}
-                  </motion.div>
-                ))}
-            </div>
-          </div>
-        ))}
-
-        <div
-          onDragOver={(e: React.DragEvent<HTMLDivElement>) => {
-            e.preventDefault();
-            setActive(true);
-          }}
-          onDragLeave={() => setActive(false)}
-          onDrop={(e: React.DragEvent<HTMLDivElement>) => {
-            const taskId = e.dataTransfer.getData("taskId");
-            if (taskId) {
-              deleteTask.mutate(taskId);
-            }
-            setActive(false);
-          }}
-          className={`mt-10 grid h-56 w-56 shrink-0 place-content-center rounded border text-3xl ${
-            active
-              ? "border-red-800 bg-red-800/20 text-red-500"
-              : "border-neutral-500 bg-neutral-500/20 text-neutral-500"
-          }`}
-        >
-          {active ? <FaFire className="animate-bounce" /> : <FiTrash />}
+    <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+      <div className="min-h-[calc(100vh-12rem)] bg-[#f9fafc] p-6">
+        <div className="flex gap-4">
+          <KanbanColumn 
+            title="To Do" 
+            tasks={columns.pending} 
+            status="pending"
+            onTaskClick={handleTaskClick}
+          />
+          <KanbanColumn
+            title="In Progress"
+            tasks={columns["in-progress"]}
+            status="in-progress"
+            onTaskClick={handleTaskClick}
+          />
+          <KanbanColumn
+            title="Completed"
+            tasks={columns.completed}
+            status="completed"
+            onTaskClick={handleTaskClick}
+          />
         </div>
       </div>
-
       <TaskDialog
         task={selectedTask}
         open={!!selectedTask}
         onOpenChange={() => setSelectedTask(null)}
       />
-    </div>
+    </DndContext>
   );
 };
