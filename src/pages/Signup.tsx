@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const [userType, setUserType] = useState<"founder" | "maven">("founder");
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
   const handleSignup = async (e: React.FormEvent) => {
@@ -33,7 +35,7 @@ const Signup = () => {
         options: {
           data: {
             full_name: fullName,
-            user_type: 'founder',
+            user_type: userType,
           },
         },
       });
@@ -100,6 +102,24 @@ const Signup = () => {
                 onChange={(e) => setFullName(e.target.value)}
                 className="mt-1 bg-white/10 border border-black text-black placeholder:text-black/60"
               />
+            </div>
+
+            <div>
+              <Label className="text-black mb-2">I am a...</Label>
+              <RadioGroup
+                value={userType}
+                onValueChange={(value) => setUserType(value as "founder" | "maven")}
+                className="flex gap-4"
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="founder" id="founder" />
+                  <Label htmlFor="founder" className="text-black">Founder</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="maven" id="maven" />
+                  <Label htmlFor="maven" className="text-black">Maven</Label>
+                </div>
+              </RadioGroup>
             </div>
 
             <div>
