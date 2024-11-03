@@ -14,6 +14,7 @@ import Tasks from "./pages/dashboard/Tasks";
 import Chat from "./pages/dashboard/Chat";
 import Profile from "./pages/dashboard/Profile";
 import Admin from "./pages/dashboard/Admin";
+import UpgradePlan from "./pages/dashboard/UpgradePlan";
 import { useAuth } from "@/components/auth/AuthProvider";
 
 const queryClient = new QueryClient();
@@ -68,6 +69,7 @@ const AppRoutes = () => {
         <Route path="tasks" element={<Tasks />} />
         <Route path="chat" element={<Chat />} />
         <Route path="profile" element={<Profile />} />
+        <Route path="upgrade" element={<UpgradePlan />} />
         <Route path="admin" element={
           <ProtectedRoute adminOnly>
             <Admin />
