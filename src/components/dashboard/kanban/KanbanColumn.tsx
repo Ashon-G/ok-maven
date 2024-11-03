@@ -24,7 +24,7 @@ export const KanbanColumn = ({ title, status, tasks }: KanbanColumnProps) => {
   return (
     <div className="bg-gray-50 rounded-lg p-4">
       <h3 className="font-semibold mb-4">{title}</h3>
-      <div ref={setNodeRef} className="space-y-3">
+      <div ref={setNodeRef} className="space-y-3 min-h-[100px]">
         <SortableContext items={tasks.map(task => task.id)} strategy={verticalListSortingStrategy}>
           {tasks.map((task) => (
             <SortableTask key={task.id} id={task.id} task={task} />

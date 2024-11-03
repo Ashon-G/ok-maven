@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { KanbanColumn } from "./KanbanColumn";
 import { Loader2 } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface Task {
   id: string;
@@ -76,7 +77,8 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
 
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {/* Desktop View */}
+      <div className="hidden md:grid grid-cols-1 md:grid-cols-3 gap-4">
         <KanbanColumn title="To Do" tasks={columns.pending} status="pending" />
         <KanbanColumn
           title="In Progress"
@@ -88,6 +90,26 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
           tasks={columns.completed}
           status="completed"
         />
+      </div>
+
+      {/* Mobile View */}
+      <div className="md:hidden">
+        <Tabs defaultValue="pending" className="w-full">
+          <TabsList className="w-full">
+            <TabsTrigger value="pending" className="flex-1">To Do</TabsTrigger>
+            <TabsTrigger value="in-progress" className="flex-1">In Progress</TabsTrigger>
+            <TabsTrigger value="completed" className="flex-1">Completed</TabsTrigger>
+          </TabsList>
+          <TabsContent value="pending">
+            <KanbanColumn title="To Do" tasks={columns.pending} status="pending" />
+          </TabsContent>
+          <TabsContent value="in-progress">
+            <KanbanColumn title="In Progress" tasks={columns["in-progress"]} status="in-progress" />
+          </TabsContent>
+          <TabsContent value="completed">
+            <KanbanColumn title="Completed" tasks={columns.completed} status="completed" />
+          </TabsContent>
+        </Tabs>
       </div>
     </DndContext>
   );

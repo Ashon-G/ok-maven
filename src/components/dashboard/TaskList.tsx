@@ -44,10 +44,10 @@ export const TaskList = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-2xl font-bold">Tasks</h2>
         {userProfile?.user_type === "founder" && (
-          <Button onClick={() => setIsOpen(true)}>
+          <Button onClick={() => setIsOpen(true)} className="w-full sm:w-auto">
             <Plus className="h-4 w-4 mr-2" />
             New Task
           </Button>
