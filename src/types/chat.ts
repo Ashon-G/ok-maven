@@ -16,4 +16,5 @@ export type ChatUser = {
   id: string;
   full_name: string | null;
   user_type: string | null;
+  avatar_url: string | null;
 };
