@@ -45,11 +45,6 @@ export const VelocityHero = () => {
 const Nav = () => {
   return (
     <div className="relative mb-1 flex w-full justify-between p-6">
-      <p className="hidden text-xs text-white/40 md:block">
-        Maven
-        <br />
-        Marketplace
-      </p>
       <Logo />
       <Links />
     </div>
@@ -58,7 +53,7 @@ const Nav = () => {
 
 const Logo = () => {
   return (
-    <div className="absolute right-4 top-1/2 h-fit -translate-y-1/2 translate-x-0 text-2xl font-bold text-white md:right-1/2 md:translate-x-1/2">
+    <div className="text-2xl font-bold text-white">
       Maven<span className="text-secondary">.</span>
     </div>
   );
