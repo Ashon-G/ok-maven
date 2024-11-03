@@ -1,5 +1,4 @@
 import { DndContext, DragEndEvent, useSensor, useSensors, PointerSensor } from "@dnd-kit/core";
-import { useToast } from "@/components/ui/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { KanbanColumn } from "./KanbanColumn";
@@ -23,7 +22,6 @@ interface KanbanBoardProps {
 }
 
 export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
-  const { toast } = useToast();
   const queryClient = useQueryClient();
   const sensors = useSensors(useSensor(PointerSensor));
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -39,17 +37,6 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
-      toast({
-        title: "Success",
-        description: "Task status updated",
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
     },
   });
 
