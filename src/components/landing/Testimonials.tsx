@@ -10,7 +10,7 @@ const ScrollingTestimonials = () => {
           Success Stories
         </h3>
         <p className="text-center text-slate-300 text-sm mt-2 max-w-lg mx-auto">
-          Discover how founders are transforming their startups with expert guidance from our platform
+          See how student Mavens are helping founders innovate with fresh perspectives and cutting-edge knowledge
         </p>
       </div>
       <div className="p-4 overflow-x-hidden relative">
