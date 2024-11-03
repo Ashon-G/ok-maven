@@ -129,7 +129,7 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
                     onDragStart={(e: React.DragEvent<HTMLDivElement>) => {
                       e.dataTransfer.setData("taskId", task.id);
                     }}
-                    onMouseDown={() => setSelectedTask(task)}
+                    onClick={() => setSelectedTask(task)}
                     className="mb-3 cursor-grab rounded border border-neutral-700 bg-neutral-800 p-3 active:cursor-grabbing"
                   >
                     <p className="text-sm text-neutral-100">{task.title}</p>
