@@ -25,7 +25,7 @@ export const VelocityHero = () => {
 
   return (
     <section ref={targetRef} className="h-[500vh] bg-primary text-white">
-      <div className="sticky top-0 flex h-screen flex-col justify-between overflow-hidden">
+      <div className="fixed top-0 left-0 right-0 flex h-screen flex-col justify-between overflow-hidden">
         <Nav />
         <CenterCopy />
         <motion.p
