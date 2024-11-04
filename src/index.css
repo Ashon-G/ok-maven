@@ -3,8 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  /* Dashboard Theme */
-  .dashboard {
+  :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
@@ -27,7 +26,7 @@
     --radius: 0.5rem;
   }
 
-  .dashboard.dark {
+  .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
@@ -48,51 +47,42 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
   }
-
-  /* Landing Page Theme */
-  :root {
-    --landing-primary: #1a365d;
-    --landing-secondary: #4299e1;
-    --landing-accent: #2b6cb0;
-    --landing-background: #ffffff;
-    --landing-text: #2d3748;
-    --landing-muted: #718096;
-    --landing-border: #e2e8f0;
-  }
 }
 
 @layer components {
-  /* Landing Page Styles */
-  .landing-page {
-    @apply bg-[var(--landing-background)] text-[var(--landing-text)];
+  body {
+    @apply bg-background text-foreground antialiased;
   }
 
-  .landing-page .gradient-text {
-    @apply bg-gradient-to-r from-[var(--landing-primary)] to-[var(--landing-accent)] bg-clip-text text-transparent;
+  .gradient-text {
+    @apply bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent;
   }
 
-  .landing-page .modern-card {
-    @apply rounded-xl border border-[var(--landing-border)] bg-white p-6 shadow-sm transition-all hover:shadow-md;
+  /* Modern Card Styles */
+  .modern-card {
+    @apply rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:shadow-md;
   }
 
-  .landing-page .modern-button {
-    @apply rounded-lg border border-[var(--landing-border)] bg-[var(--landing-primary)] px-4 py-2 font-medium text-white shadow-sm transition-all hover:bg-[var(--landing-accent)] hover:shadow-md;
+  /* Modern Input Styles */
+  .modern-input {
+    @apply rounded-lg border border-input bg-background px-4 py-2 shadow-sm focus:border-secondary focus:ring-2 focus:ring-secondary/20;
   }
 
-  .landing-page .nav-link {
-    @apply flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-[var(--landing-text)] transition-all hover:text-[var(--landing-accent)];
+  /* Modern Button Styles */
+  .modern-button {
+    @apply rounded-lg border border-border bg-background px-4 py-2 font-medium shadow-sm transition-all hover:bg-muted hover:shadow-md;
   }
 
-  /* Dashboard Styles */
-  .dashboard {
-    @apply bg-background text-foreground;
+  /* Navigation Styles */
+  .nav-link {
+    @apply flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium transition-all hover:bg-muted;
   }
 
-  .dashboard .nav-link.active {
+  .nav-link.active {
     @apply border-secondary bg-card text-secondary shadow-sm;
   }
 
-  /* Shared Styles */
+  /* Hide scrollbar but keep functionality */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -100,5 +90,20 @@
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+
+  /* Tooltip Styles */
+  [data-radix-tooltip-content] {
+    @apply bg-white border border-border shadow-md text-foreground px-3 py-1.5 rounded-md;
+  }
+
+  /* Custom Tooltip Content */
+  .tooltip-content {
+    @apply bg-white text-foreground p-2 rounded-md shadow-lg border border-border;
+  }
+
+  /* Links within tooltips */
+  .tooltip-content a {
+    @apply text-blue-500 hover:underline block mt-1;
   }
 }

@@ -25,19 +25,13 @@ export const VelocityHero = () => {
   const x = useSpring(xRaw, { mass: 3, stiffness: 400, damping: 50 });
 
   return (
-    <section 
-      ref={targetRef} 
-      className="relative h-[500vh]"
-      style={{
-        background: `linear-gradient(rgba(26, 54, 93, 0.9), rgba(26, 54, 93, 0.9)), url('https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80') center/cover fixed`,
-      }}
-    >
+    <section ref={targetRef} className="h-[500vh] bg-primary text-white">
       <div className="sticky top-0 flex h-screen flex-col justify-between overflow-hidden">
         <Nav isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
         <CenterCopy />
         <motion.p
           style={{ skewX, x }}
-          className="origin-bottom-left whitespace-nowrap text-7xl font-black uppercase leading-[0.85] text-white/10 md:text-9xl md:leading-[0.85]"
+          className="origin-bottom-left whitespace-nowrap text-7xl font-black uppercase leading-[0.85] text-secondary/20 md:text-9xl md:leading-[0.85]"
         >
           Build your startup faster with expert Mavens. Access world-class talent
           for a fraction of the cost. Launch, grow, and succeed with proven
@@ -117,17 +111,17 @@ const CenterCopy = () => {
   return (
     <div className="flex items-center justify-center px-4 text-center">
       <div className="max-w-4xl">
-        <h1 className="mb-6 text-4xl font-bold text-white sm:text-6xl md:text-7xl">
+        <h1 className="mb-6 text-4xl font-bold sm:text-6xl md:text-7xl">
           Your Startup's Secret Weapon:{" "}
           <span className="gradient-text font-black">Expert Mavens</span>
         </h1>
-        <p className="mb-8 text-lg text-white/80 md:text-xl">
+        <p className="mb-8 text-lg text-white/60 md:text-xl">
           Access world-class talent to build and market your startup for just
           $500/month. No contracts, just results.
         </p>
         <a
           href="#pricing"
-          className="inline-block rounded-full bg-[var(--landing-secondary)] px-8 py-4 font-semibold text-white transition-all hover:bg-[var(--landing-accent)]"
+          className="inline-block rounded-full bg-secondary px-8 py-4 font-semibold text-white transition-all hover:bg-secondary/90"
         >
           Get Started Today
         </a>
@@ -139,11 +133,11 @@ const CenterCopy = () => {
 const ScrollArrow = () => {
   return (
     <>
-      <div className="absolute left-4 top-1/2 hidden -translate-y-1/2 text-xs text-white/60 lg:block">
+      <div className="absolute left-4 top-1/2 hidden -translate-y-1/2 text-xs text-white/40 lg:block">
         <span style={{ writingMode: "vertical-lr" }}>SCROLL</span>
         <FiArrowDown className="mx-auto mt-2" />
       </div>
-      <div className="absolute right-4 top-1/2 hidden -translate-y-1/2 text-xs text-white/60 lg:block">
+      <div className="absolute right-4 top-1/2 hidden -translate-y-1/2 text-xs text-white/40 lg:block">
         <span style={{ writingMode: "vertical-lr" }}>SCROLL</span>
         <FiArrowDown className="mx-auto mt-2" />
       </div>

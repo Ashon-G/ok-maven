@@ -44,7 +44,7 @@ const ProtectedRoute = ({ children, adminOnly = false }: { children: React.React
     }
   }
 
-  return <div className="dashboard">{children}</div>;
+  return <>{children}</>;
 };
 
 const AppRoutes = () => {
@@ -60,12 +60,12 @@ const AppRoutes = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<div className="landing-page"><Index /></div>} />
-      <Route path="/login" element={<div className="landing-page"><Login /></div>} />
-      <Route path="/signup" element={<div className="landing-page"><Signup /></div>} />
-      <Route path="/upgrade" element={<div className="landing-page"><UpgradePlan /></div>} />
-      <Route path="/compliance-packages" element={<div className="landing-page"><CompliancePackages /></div>} />
-      <Route path="/blog/:slug" element={<div className="landing-page"><BlogPost /></div>} />
+      <Route path="/" element={<Index />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/upgrade" element={<UpgradePlan />} />
+      <Route path="/compliance-packages" element={<CompliancePackages />} />
+      <Route path="/blog/:slug" element={<BlogPost />} />
       <Route path="/dashboard" element={
         <ProtectedRoute>
           <Dashboard />
