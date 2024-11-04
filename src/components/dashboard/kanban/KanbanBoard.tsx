@@ -23,6 +23,8 @@ interface KanbanBoardProps {
 
 export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
   const queryClient = useQueryClient();
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint: {
@@ -41,7 +43,6 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
       },
     })
   );
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   const updateTaskStatus = useMutation({
     mutationFn: async ({ taskId, status }: { taskId: string; status: string }) => {
@@ -116,11 +117,13 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
           />
         </div>
       </div>
-      <TaskDialog
-        task={selectedTask}
-        open={!!selectedTask}
-        onOpenChange={() => setSelectedTask(null)}
-      />
+      {selectedTask && (
+        <TaskDialog
+          task={selectedTask}
+          open={!!selectedTask}
+          onOpenChange={() => setSelectedTask(null)}
+        />
+      )}
     </DndContext>
   );
 };
