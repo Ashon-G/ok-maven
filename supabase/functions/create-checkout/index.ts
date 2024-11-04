@@ -1,19 +1,25 @@
 import Stripe from 'https://esm.sh/stripe@12.8.0?target=deno'
 
+console.log('Edge Function: create-checkout initialized')
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
 Deno.serve(async (req) => {
+  console.log('Received request:', req.method)
+  
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
+    console.log('Handling CORS preflight request')
     return new Response(null, { headers: corsHeaders })
   }
 
   try {
-    // Log all environment variables (excluding their values for security)
-    console.log('Available environment variables:', Object.keys(Deno.env.toObject()))
+    // Log environment check
+    const envVars = Object.keys(Deno.env.toObject())
+    console.log('Available environment variables:', envVars)
     
     const stripeKey = Deno.env.get('STRIPE_SECRET_KEY')
     console.log('Stripe key exists:', !!stripeKey)
@@ -22,13 +28,19 @@ Deno.serve(async (req) => {
       throw new Error('Missing Stripe secret key in environment variables')
     }
 
-    const stripe = Stripe(stripeKey)
+    // Initialize Stripe with proper configuration
+    const stripe = new Stripe(stripeKey, {
+      apiVersion: '2023-10-16',
+      httpClient: Stripe.createFetchHttpClient(),
+    })
     console.log('Stripe instance created successfully')
 
     const { user_id } = await req.json()
     console.log('Processing checkout for user:', user_id)
 
     const priceId = Deno.env.get('STRIPE_PRICE_ID')
+    console.log('Price ID exists:', !!priceId)
+    
     if (!priceId) {
       throw new Error('Missing Stripe price ID in environment variables')
     }
@@ -57,10 +69,11 @@ Deno.serve(async (req) => {
       }
     )
   } catch (error) {
-    console.error('Detailed error:', {
+    console.error('Error details:', {
+      name: error.name,
       message: error.message,
       stack: error.stack,
-      type: error.type,
+      cause: error.cause,
     })
     
     return new Response(
