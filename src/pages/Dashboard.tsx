@@ -44,13 +44,7 @@ const Dashboard = () => {
       <nav className="fixed top-0 left-0 right-0 z-50 mb-8 bg-white p-2 border-b border-black/5 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
         <div className="mx-auto max-w-7xl">
           <div className="flex items-center justify-between gap-2">
-            {isAdmin && (
-              <div className="hidden md:block">
-                <ImpersonateUser />
-              </div>
-            )}
-
-            <div className="ml-auto">
+            <div className="flex items-center gap-4">
               <DropdownMenu>
                 <DropdownMenuTrigger className="focus:outline-none">
                   <Avatar className="h-8 w-8">
@@ -60,7 +54,7 @@ const Dashboard = () => {
                     </AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 bg-white border border-gray-200 shadow-lg">
+                <DropdownMenuContent align="start" className="w-56 bg-white border border-gray-200 shadow-lg">
                   <NavLink to="profile">
                     <DropdownMenuItem className="cursor-pointer">
                       <UserCircle className="mr-2 h-4 w-4" />
@@ -78,6 +72,12 @@ const Dashboard = () => {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+
+              {isAdmin && (
+                <div className="hidden md:block">
+                  <ImpersonateUser />
+                </div>
+              )}
             </div>
           </div>
           <div className="mt-2 px-4 text-sm text-gray-500">
