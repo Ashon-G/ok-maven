@@ -1,6 +1,6 @@
 import Stripe from 'https://esm.sh/stripe@12.8.0?target=deno'
 
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') as string, {
+const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
   apiVersion: '2023-10-16',
   httpClient: Stripe.createFetchHttpClient(),
 })
@@ -17,6 +17,14 @@ Deno.serve(async (req) => {
 
   try {
     const { user_id } = await req.json()
+
+    if (!Deno.env.get('STRIPE_SECRET_KEY')) {
+      throw new Error('Missing Stripe secret key')
+    }
+
+    if (!Deno.env.get('STRIPE_PRICE_ID')) {
+      throw new Error('Missing Stripe price ID')
+    }
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
