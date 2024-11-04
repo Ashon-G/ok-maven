@@ -83,16 +83,6 @@ const CompliancePackages = () => {
       <div className="container max-w-6xl py-16">
         <ComplianceWarning />
 
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-center">
-            Select Your <span className="gradient-text">Compliance Support</span>
-          </h1>
-          <p className="text-lg max-w-2xl mx-auto text-black text-center">
-            Choose the support services you need. Our team will handle all compliance 
-            requirements, allowing you to focus on your program's success.
-          </p>
-        </div>
-
         <div className="space-y-6">
           {packages.map((pkg) => (
             <CompliancePackageCard
@@ -107,8 +97,7 @@ const CompliancePackages = () => {
         <div className="mt-8 bg-white rounded-xl p-6 shadow-sm">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h3 className="text-xl font-semibold">Total Investment</h3>
-              <p className="text-black mt-1">
+              <p className="text-black">
                 Selected packages: {selectedPackages.length}
               </p>
             </div>

@@ -61,25 +61,23 @@ export const TaskList = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h2 className="text-2xl font-bold">Tasks</h2>
-        <div className="flex items-center gap-2">
-          {userProfile?.user_type === "founder" && (
-            <>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setIsJiraOpen(true)}
-              >
-                <Settings className="h-4 w-4 mr-2" />
-                {jiraIntegration ? "Update Jira Settings" : "Connect to Jira"}
-              </Button>
-              <Button onClick={() => setIsCreateOpen(true)} size="sm">
-                Create Task
-              </Button>
-            </>
-          )}
-        </div>
+      <div className="flex justify-end">
+        {userProfile?.user_type === "founder" && (
+          <>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsJiraOpen(true)}
+              className="mr-2"
+            >
+              <Settings className="h-4 w-4 mr-2" />
+              {jiraIntegration ? "Update Jira Settings" : "Connect to Jira"}
+            </Button>
+            <Button onClick={() => setIsCreateOpen(true)} size="sm">
+              Create Task
+            </Button>
+          </>
+        )}
       </div>
 
       <KanbanBoard tasks={tasks || []} isLoading={isLoading} />

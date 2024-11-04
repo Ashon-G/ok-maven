@@ -24,15 +24,6 @@ const UpgradePlan = () => {
           <span className="inline-block mb-4 px-4 py-1.5 bg-secondary/10 text-secondary rounded-full text-sm font-medium">
             Limited Time Offer - Only 5 Spots Left!
           </span>
-          <h1 className="text-4xl font-bold mb-4">
-            Supercharge Your Growth with Additional{" "}
-            <span className="gradient-text">Mavens</span>
-          </h1>
-          <p className="text-lg max-w-2xl mx-auto text-foreground">
-            Transform your startup's potential with dedicated student Mavens who specialize
-            in critical areas of your business. Get personalized support worth thousands
-            for a fraction of the cost.
-          </p>
           <p className="mt-4 text-secondary font-medium">
             🔥 Over 50 founders upgraded this month - Don't miss out!
           </p>
@@ -41,7 +32,6 @@ const UpgradePlan = () => {
         <div className="bg-white rounded-2xl border border-secondary p-8 shadow-lg max-w-2xl mx-auto">
           <div className="flex items-center justify-between mb-8 pb-8 border-b">
             <div>
-              <h2 className="text-2xl font-semibold mb-2">Maven Plus Package</h2>
               <p className="text-foreground">
                 Double your expertise, accelerate your success
               </p>
