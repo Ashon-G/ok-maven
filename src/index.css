@@ -69,4 +69,9 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /* Tooltip Styles */
+  [data-radix-tooltip-content] {
+    @apply bg-background border border-border shadow-md text-foreground;
+  }
 }
