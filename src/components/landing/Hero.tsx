@@ -25,25 +25,7 @@ export const VelocityHero = () => {
   const x = useSpring(xRaw, { mass: 3, stiffness: 400, damping: 50 });
 
   return (
-    <section ref={targetRef} className="relative h-[500vh] bg-primary">
-      {/* Background Video */}
-      <div className="fixed inset-0 w-full h-screen overflow-hidden -z-10">
-        <div className="absolute inset-0 bg-black/60 z-10" /> {/* Overlay */}
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover"
-        >
-          <source
-            src="https://cdn.pixabay.com/vimeo/147860386/abstract-5165.mp4?width=1280&hash=4c0f1104d0c5c5d4f14b54f6a96d8d0e8a743c24"
-            type="video/mp4"
-          />
-          Your browser does not support the video tag.
-        </video>
-      </div>
-
+    <section ref={targetRef} className="h-[500vh] bg-primary text-white">
       <div className="sticky top-0 flex h-screen flex-col justify-between overflow-hidden">
         <Nav isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
         <CenterCopy />
