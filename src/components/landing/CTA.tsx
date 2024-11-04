@@ -1,8 +1,18 @@
 export const CTA = () => {
   return (
-    <section id="contact" className="bg-primary py-24 text-primary-foreground">
-      <div className="container text-center">
-        <h2 className="mb-6 text-4xl font-bold">
+    <section
+      id="contact"
+      className="relative bg-cover bg-center bg-no-repeat py-24"
+      style={{
+        backgroundImage:
+          "url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80')",
+      }}
+    >
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-primary/90" />
+      
+      <div className="container relative text-center">
+        <h2 className="mb-6 text-4xl font-bold text-white">
           Ready to <span className="gradient-text">Transform</span> Your Startup?
         </h2>
         <p className="mx-auto mb-8 max-w-2xl text-primary-foreground/60">
