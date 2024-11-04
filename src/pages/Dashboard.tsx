@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { UserCircle, LogOut, Settings } from "lucide-react";
+import { UserCircle, LogOut, Settings, Moon, Sun } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { ImpersonateUser } from "@/components/admin/ImpersonateUser";
@@ -8,6 +8,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useQuery } from "@tanstack/react-query";
@@ -16,9 +17,11 @@ import AnimatedNavigation from "@/components/dashboard/AnimatedNavigation";
 import { Button } from "@/components/ui/button";
 import { JiraIntegrationDialog } from "@/components/dashboard/jira/JiraIntegrationDialog";
 import { useState } from "react";
+import { useTheme } from "next-themes";
 
 const Dashboard = () => {
   const { session } = useAuth();
+  const { theme, setTheme } = useTheme();
   const userMetadataType = session?.user?.user_metadata?.user_type;
   const appMetadataType = session?.user?.app_metadata?.user_type;
   const isAdmin = userMetadataType === 'admin' || appMetadataType === 'admin';
@@ -59,8 +62,8 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50/50 no-scrollbar">
-      <nav className="fixed top-0 left-0 right-0 z-50 mb-8 bg-white p-2 border-b border-black/5 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
+    <div className="min-h-screen bg-background text-foreground no-scrollbar">
+      <nav className="fixed top-0 left-0 right-0 z-50 mb-8 bg-background p-2 border-b border-border shadow-sm">
         <div className="mx-auto max-w-7xl">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-4">
@@ -73,19 +76,35 @@ const Dashboard = () => {
                     </AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-56 bg-white border border-gray-200 shadow-lg">
+                <DropdownMenuContent align="start" className="w-56">
                   <NavLink to="profile">
                     <DropdownMenuItem className="cursor-pointer">
                       <UserCircle className="mr-2 h-4 w-4" />
                       Profile
                     </DropdownMenuItem>
                   </NavLink>
+                  
+                  <DropdownMenuItem 
+                    className="cursor-pointer"
+                    onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                  >
+                    {theme === "dark" ? (
+                      <Sun className="mr-2 h-4 w-4" />
+                    ) : (
+                      <Moon className="mr-2 h-4 w-4" />
+                    )}
+                    {theme === "dark" ? "Light Mode" : "Dark Mode"}
+                  </DropdownMenuItem>
+
                   {isAdmin && (
                     <div className="md:hidden p-2">
                       <ImpersonateUser />
                     </div>
                   )}
-                  <DropdownMenuItem className="cursor-pointer text-red-600" onClick={handleSignOut}>
+                  
+                  <DropdownMenuSeparator />
+                  
+                  <DropdownMenuItem className="cursor-pointer text-destructive" onClick={handleSignOut}>
                     <LogOut className="mr-2 h-4 w-4" />
                     Sign Out
                   </DropdownMenuItem>
@@ -111,7 +130,7 @@ const Dashboard = () => {
               )}
             </div>
           </div>
-          <div className="mt-2 px-4 text-sm text-gray-500">
+          <div className="mt-2 px-4 text-sm text-muted-foreground">
             Current user type: {userMetadataType || 'none'} (user metadata) / {appMetadataType || 'none'} (app metadata)
           </div>
         </div>

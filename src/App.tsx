@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { SplashScreen } from "@/components/ui/splash-screen";
 import { LoadingAnimation } from "@/components/ui/loading-animation";
+import { ThemeProvider } from "next-themes";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -87,14 +88,16 @@ const AppRoutes = () => {
 const App = () => (
   <BrowserRouter>
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <TooltipProvider>
-          <SplashScreen />
-          <Toaster />
-          <Sonner />
-          <AppRoutes />
-        </TooltipProvider>
-      </AuthProvider>
+      <ThemeProvider attribute="class" defaultTheme="light">
+        <AuthProvider>
+          <TooltipProvider>
+            <SplashScreen />
+            <Toaster />
+            <Sonner />
+            <AppRoutes />
+          </TooltipProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   </BrowserRouter>
 );
