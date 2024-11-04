@@ -4,13 +4,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { KanbanBoard } from "./kanban/KanbanBoard";
 import { CreateTaskDialog } from "./kanban/CreateTaskDialog";
-import { Button } from "@/components/ui/button";
-import { Settings } from "lucide-react";
 import { JiraIntegrationDialog } from "./jira/JiraIntegrationDialog";
+import { useSearchParams } from "react-router-dom";
 
 export const TaskList = () => {
+  const [searchParams] = useSearchParams();
+  const showJiraDialog = searchParams.get("jira") === "true";
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [isJiraOpen, setIsJiraOpen] = useState(false);
+  const [isJiraOpen, setIsJiraOpen] = useState(showJiraDialog);
   const { session } = useAuth();
 
   const { data: userProfile } = useQuery({
@@ -44,42 +45,8 @@ export const TaskList = () => {
     },
   });
 
-  const { data: jiraIntegration } = useQuery({
-    queryKey: ["jiraIntegration", session?.user.id],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("jira_integrations")
-        .select("*")
-        .eq("user_id", session?.user.id)
-        .maybeSingle();
-
-      if (error) throw error;
-      return data;
-    },
-    enabled: !!session?.user.id,
-  });
-
   return (
     <div className="space-y-4">
-      <div className="flex justify-end">
-        {userProfile?.user_type === "founder" && (
-          <>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setIsJiraOpen(true)}
-              className="mr-2"
-            >
-              <Settings className="h-4 w-4 mr-2" />
-              {jiraIntegration ? "Update Jira Settings" : "Connect to Jira"}
-            </Button>
-            <Button onClick={() => setIsCreateOpen(true)} size="sm">
-              Create Task
-            </Button>
-          </>
-        )}
-      </div>
-
       <KanbanBoard tasks={tasks || []} isLoading={isLoading} />
       
       {userProfile?.user_type === "founder" && (

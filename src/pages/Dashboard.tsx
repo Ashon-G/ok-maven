@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { UserCircle, LogOut } from "lucide-react";
+import { UserCircle, LogOut, Settings } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { ImpersonateUser } from "@/components/admin/ImpersonateUser";
@@ -13,6 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useQuery } from "@tanstack/react-query";
 import { NavLink } from "react-router-dom";
 import AnimatedNavigation from "@/components/dashboard/AnimatedNavigation";
+import { Button } from "@/components/ui/button";
 
 const Dashboard = () => {
   const { session } = useAuth();
@@ -32,6 +33,21 @@ const Dashboard = () => {
       if (error) throw error;
       return data;
     },
+  });
+
+  const { data: jiraIntegration } = useQuery({
+    queryKey: ["jiraIntegration", session?.user.id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("jira_integrations")
+        .select("*")
+        .eq("user_id", session?.user.id)
+        .maybeSingle();
+
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!session?.user.id,
   });
 
   const handleSignOut = async () => {
@@ -77,6 +93,18 @@ const Dashboard = () => {
                 <div className="hidden md:block">
                   <ImpersonateUser />
                 </div>
+              )}
+
+              {profile?.user_type === "founder" && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => window.location.href = "/dashboard/tasks?jira=true"}
+                  className="ml-4"
+                >
+                  <Settings className="h-4 w-4 mr-2" />
+                  {jiraIntegration ? "Update Jira Settings" : "Connect to Jira"}
+                </Button>
               )}
             </div>
           </div>
