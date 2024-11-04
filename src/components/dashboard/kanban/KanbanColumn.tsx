@@ -21,7 +21,9 @@ interface KanbanColumnProps {
 }
 
 export const KanbanColumn = ({ title, status, tasks, onTaskClick }: KanbanColumnProps) => {
-  const { setNodeRef } = useDroppable({ id: status });
+  const { setNodeRef } = useDroppable({ 
+    id: status,
+  });
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const { session } = useAuth();
 
@@ -39,7 +41,7 @@ export const KanbanColumn = ({ title, status, tasks, onTaskClick }: KanbanColumn
         </div>
         <div
           ref={setNodeRef}
-          className="px-1 pb-1"
+          className="px-1 pb-1 min-h-[50px]"
         >
           <SortableContext items={tasks.map(task => task.id)} strategy={verticalListSortingStrategy}>
             <div className="flex flex-col gap-2">

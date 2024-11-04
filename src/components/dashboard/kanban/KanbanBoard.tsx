@@ -1,4 +1,4 @@
-import { DndContext, DragEndEvent, useSensor, useSensors, PointerSensor } from "@dnd-kit/core";
+import { DndContext, DragEndEvent, useSensor, useSensors, PointerSensor, MouseSensor, TouchSensor } from "@dnd-kit/core";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { KanbanColumn } from "./KanbanColumn";
@@ -23,7 +23,24 @@ interface KanbanBoardProps {
 
 export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
   const queryClient = useQueryClient();
-  const sensors = useSensors(useSensor(PointerSensor));
+  const sensors = useSensors(
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 10,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 250,
+        tolerance: 5,
+      },
+    }),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 10,
+      },
+    })
+  );
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   const updateTaskStatus = useMutation({
@@ -73,7 +90,10 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
   };
 
   return (
-    <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+    <DndContext 
+      sensors={sensors} 
+      onDragEnd={handleDragEnd}
+    >
       <div className="min-h-[calc(100vh-12rem)] bg-[#f9fafc] p-6">
         <div className="flex gap-4 overflow-x-auto pb-4">
           <KanbanColumn 
