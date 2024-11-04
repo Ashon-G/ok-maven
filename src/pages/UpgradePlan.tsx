@@ -2,18 +2,67 @@ import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
+import { useAuth } from "@/components/auth/AuthProvider";
+import { loadStripe } from "@stripe/stripe-js";
 import CountdownTimer from "@/components/sales/CountdownTimer";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const UpgradePlan = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { session } = useAuth();
 
-  const handleUpgrade = () => {
-    // TODO: Implement Stripe checkout
-    toast({
-      title: "Coming soon!",
-      description: "Payment integration will be available soon.",
-    });
+  const handleUpgrade = async () => {
+    if (!session?.user) {
+      toast({
+        title: "Please login first",
+        description: "You need to be logged in to upgrade your plan.",
+        variant: "destructive",
+      });
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const stripe = await stripePromise;
+      if (!stripe) throw new Error('Stripe failed to load');
+
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-checkout`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({
+            user_id: session.user.id,
+          }),
+        }
+      );
+
+      const { sessionId, error } = await response.json();
+      if (error) throw new Error(error);
+
+      const { error: stripeError } = await stripe.redirectToCheckout({
+        sessionId,
+      });
+
+      if (stripeError) {
+        toast({
+          title: "Error",
+          description: stripeError.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
   };
 
   return (
