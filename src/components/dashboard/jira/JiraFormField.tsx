@@ -31,8 +31,8 @@ export const JiraFormField = ({
           <TooltipTrigger>
             <HelpCircle className="h-4 w-4" />
           </TooltipTrigger>
-          <TooltipContent>
-            <p className="max-w-xs">{tooltip}</p>
+          <TooltipContent className="bg-popover border border-border shadow-md">
+            <p className="max-w-xs text-popover-foreground">{tooltip}</p>
           </TooltipContent>
         </Tooltip>
       </div>
