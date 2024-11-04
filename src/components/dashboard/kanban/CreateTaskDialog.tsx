@@ -58,19 +58,54 @@ export const CreateTaskDialog = ({
     enabled: !!userId,
   });
 
+  const { data: jiraIntegration } = useQuery({
+    queryKey: ["jiraIntegration", userId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("jira_integrations")
+        .select("*")
+        .eq("user_id", userId)
+        .single();
+
+      if (error && error.code !== "PGRST116") throw error;
+      return data;
+    },
+    enabled: !!userId,
+  });
+
   const createTask = useMutation({
     mutationFn: async () => {
       if (!userId) throw new Error("No user found");
 
-      const { error } = await supabase.from("tasks").insert({
+      const { data, error } = await supabase.from("tasks").insert({
         title,
         description,
         created_by: userId,
         assigned_to: selectedMaven || null,
         status: defaultStatus,
-      });
+      }).select().single();
 
       if (error) throw error;
+
+      // If Jira integration exists, create Jira issue
+      if (jiraIntegration) {
+        const response = await fetch("/api/jira/create-issue", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            taskId: data.id,
+            title,
+            description,
+            jiraConfig: jiraIntegration,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to create Jira issue");
+        }
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
@@ -133,11 +168,12 @@ export const CreateTaskDialog = ({
           <Button
             onClick={() => createTask.mutate()}
             disabled={!title || createTask.isPending}
+            className="w-full"
           >
             {createTask.isPending && (
               <Loader2 className="h-4 w-4 mr-2 animate-spin" />
             )}
-            Create Task
+            Create Task {jiraIntegration && "& Jira Issue"}
           </Button>
         </div>
       </DialogContent>

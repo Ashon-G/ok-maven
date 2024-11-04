@@ -14,6 +14,7 @@ interface Task {
   due_date: string | null;
   assignee?: { full_name: string } | null;
   created_by: string;
+  jira_issue_key: string | null;
 }
 
 interface KanbanBoardProps {

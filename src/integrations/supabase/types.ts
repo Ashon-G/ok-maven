@@ -55,6 +55,47 @@ export type Database = {
           },
         ]
       }
+      jira_integrations: {
+        Row: {
+          api_token: string
+          created_at: string
+          email: string
+          hosting_type: Database["public"]["Enums"]["jira_hosting_type"]
+          id: string
+          jira_host: string
+          jira_project_key: string
+          user_id: string
+        }
+        Insert: {
+          api_token: string
+          created_at?: string
+          email: string
+          hosting_type?: Database["public"]["Enums"]["jira_hosting_type"]
+          id?: string
+          jira_host: string
+          jira_project_key: string
+          user_id: string
+        }
+        Update: {
+          api_token?: string
+          created_at?: string
+          email?: string
+          hosting_type?: Database["public"]["Enums"]["jira_hosting_type"]
+          id?: string
+          jira_host?: string
+          jira_project_key?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "jira_integrations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       messages: {
         Row: {
           content: string
@@ -135,6 +176,7 @@ export type Database = {
           description: string | null
           due_date: string | null
           id: string
+          jira_issue_key: string | null
           status: string
           title: string
         }
@@ -145,6 +187,7 @@ export type Database = {
           description?: string | null
           due_date?: string | null
           id?: string
+          jira_issue_key?: string | null
           status?: string
           title: string
         }
@@ -155,6 +198,7 @@ export type Database = {
           description?: string | null
           due_date?: string | null
           id?: string
+          jira_issue_key?: string | null
           status?: string
           title?: string
         }
@@ -189,6 +233,7 @@ export type Database = {
       }
     }
     Enums: {
+      jira_hosting_type: "cloud" | "server"
       user_type_enum: "founder" | "maven" | "admin"
     }
     CompositeTypes: {
