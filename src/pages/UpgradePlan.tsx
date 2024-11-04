@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { CountdownTimer } from "@/components/sales/CountdownTimer";
+import CountdownTimer from "@/components/sales/CountdownTimer"; // Updated import
 
 const UpgradePlan = () => {
   return (

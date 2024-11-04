@@ -84,4 +84,5 @@ const useTimer = (unit: Units) => {
   return { ref, time };
 };
 
+// Ensure the component is exported correctly
 export default CountdownTimer;
