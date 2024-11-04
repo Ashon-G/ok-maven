@@ -12,17 +12,6 @@ async function handleOptions() {
   })
 }
 
-const stripeKey = Deno.env.get('STRIPE_SECRET_KEY')
-if (!stripeKey) {
-  console.error('Missing Stripe secret key in environment variables')
-  throw new Error('Missing Stripe secret key')
-}
-
-const stripe = new Stripe(stripeKey, {
-  apiVersion: '2023-10-16',
-  httpClient: Stripe.createFetchHttpClient(),
-})
-
 Deno.serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -30,6 +19,17 @@ Deno.serve(async (req) => {
   }
 
   try {
+    const stripeKey = Deno.env.get('STRIPE_SECRET_KEY')
+    if (!stripeKey) {
+      console.error('Missing Stripe secret key in environment variables')
+      throw new Error('Missing Stripe secret key')
+    }
+
+    const stripe = new Stripe(stripeKey, {
+      apiVersion: '2023-10-16',
+      httpClient: Stripe.createFetchHttpClient(),
+    })
+
     const { user_id } = await req.json()
     console.log('Processing checkout for user:', user_id)
 
