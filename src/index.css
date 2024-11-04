@@ -74,4 +74,14 @@
   [data-radix-tooltip-content] {
     @apply bg-white border border-border shadow-md text-foreground px-3 py-1.5 rounded-md;
   }
+
+  /* Custom Tooltip Content */
+  .tooltip-content {
+    @apply bg-white text-foreground p-2 rounded-md shadow-lg border border-border;
+  }
+
+  /* Links within tooltips */
+  .tooltip-content a {
+    @apply text-blue-500 hover:underline block mt-1;
+  }
 }
