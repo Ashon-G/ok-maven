@@ -52,15 +52,18 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
       if (description !== undefined) updateData.description = description;
       if (status !== undefined) updateData.status = status;
 
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("tasks")
         .update(updateData)
-        .eq("id", task.id);
+        .eq("id", task.id)
+        .select();
 
       if (error) {
         console.error("Error updating task:", error);
-        throw error;
+        throw new Error(error.message);
       }
+
+      return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
@@ -74,7 +77,7 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
       console.error("Mutation error:", error);
       toast({
         title: "Error",
-        description: error.message,
+        description: "You don't have permission to update this task",
         variant: "destructive",
       });
     },
@@ -89,7 +92,7 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
 
       if (error) {
         console.error("Error deleting task:", error);
-        throw error;
+        throw new Error(error.message);
       }
     },
     onSuccess: () => {
@@ -104,7 +107,7 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
       console.error("Delete error:", error);
       toast({
         title: "Error",
-        description: error.message,
+        description: "You don't have permission to delete this task",
         variant: "destructive",
       });
     },
@@ -129,7 +132,6 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
 
   const handleStatusChange = (newStatus: string) => {
     if (newStatus === task.status) return;
-    console.log("Updating status to:", newStatus);
     updateTask.mutate({ status: newStatus });
   };
 
