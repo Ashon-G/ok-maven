@@ -47,9 +47,7 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
     const taskId = active.id as string;
     const newStatus = over.id as string;
 
-    if (newStatus !== active.data.current?.status) {
-      updateTaskStatus.mutate({ taskId, status: newStatus });
-    }
+    updateTaskStatus.mutate({ taskId, status: newStatus });
   };
 
   if (isLoading) {
@@ -73,7 +71,7 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <div className="min-h-[calc(100vh-12rem)] bg-[#f9fafc] p-6">
-        <div className="flex gap-4">
+        <div className="flex gap-4 overflow-x-auto pb-4">
           <KanbanColumn 
             title="To Do" 
             tasks={columns.pending} 
