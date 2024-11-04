@@ -1,5 +1,5 @@
+import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { useState } from "react";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import useMeasure from "react-use-measure";
 
