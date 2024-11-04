@@ -42,12 +42,16 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
+    
     if (!over) return;
 
     const taskId = active.id as string;
     const newStatus = over.id as string;
-
-    updateTaskStatus.mutate({ taskId, status: newStatus });
+    const task = tasks.find(t => t.id === taskId);
+    
+    if (task && task.status !== newStatus) {
+      updateTaskStatus.mutate({ taskId, status: newStatus });
+    }
   };
 
   if (isLoading) {
