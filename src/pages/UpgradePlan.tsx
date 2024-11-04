@@ -1,112 +1,70 @@
 import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { useToast } from "@/components/ui/use-toast";
-import CountdownTimer from "@/components/sales/CountdownTimer";
+import { CountdownTimer } from "@/components/sales/CountdownTimer";
 
 const UpgradePlan = () => {
-  const navigate = useNavigate();
-  const { toast } = useToast();
-
-  const handleUpgrade = () => {
-    // TODO: Implement Stripe checkout
-    toast({
-      title: "Coming soon!",
-      description: "Payment integration will be available soon.",
-    });
-  };
-
   return (
-    <main className="min-h-screen bg-gray-50">
-      <CountdownTimer />
-      <div className="container max-w-5xl py-16">
-        <div className="mb-8 text-center">
-          <span className="inline-block mb-4 px-4 py-1.5 bg-secondary/10 text-secondary rounded-full text-sm font-medium">
-            Limited Time Offer - Only 5 Spots Left!
-          </span>
-          <p className="mt-4 text-secondary font-medium">
-            🔥 Over 50 founders upgraded this month - Don't miss out!
+    <div className="min-h-screen bg-gradient-to-b from-primary/95 to-primary">
+      <div className="container mx-auto px-4 py-16">
+        <div className="mb-12 text-center">
+          <h1 className="mb-4 text-4xl font-bold text-white md:text-6xl">
+            Upgrade to Maven Pro
+          </h1>
+          <p className="mx-auto max-w-2xl text-lg text-white/80">
+            Get unlimited access to expert Mavens and accelerate your startup's growth
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl border border-secondary p-8 shadow-lg max-w-2xl mx-auto">
-          <div className="flex items-center justify-between mb-8 pb-8 border-b">
-            <div>
-              <p className="text-foreground">
-                Double your expertise, accelerate your success
-              </p>
-            </div>
-            <div className="text-right">
-              <div className="text-sm text-secondary line-through mb-1">$299/month</div>
-              <div className="text-4xl font-bold">$99</div>
-              <div className="text-muted-foreground">/month</div>
-              <div className="text-xs text-secondary font-medium mt-1">Early adopter pricing</div>
-            </div>
+        <div className="mx-auto max-w-4xl rounded-2xl bg-white p-8 shadow-xl">
+          <div className="mb-8 text-center">
+            <span className="mb-2 inline-block rounded-full bg-secondary/20 px-4 py-1 text-sm font-medium text-secondary">
+              Limited Time Offer
+            </span>
+            <h2 className="mb-2 text-3xl font-bold text-primary">
+              $500<span className="text-lg font-normal text-gray-600">/month</span>
+            </h2>
+            <CountdownTimer />
           </div>
 
-          <div className="space-y-4 mb-8">
-            <div className="flex items-start gap-3">
-              <Check className="h-5 w-5 text-secondary mt-1 flex-shrink-0" />
-              <div>
-                <p className="font-medium">Two Additional Maven Students</p>
-                <p className="text-foreground text-sm">
-                  Unlock the power of specialized expertise with dedicated support in marketing,
-                  development, or design - tailored to your startup's unique needs
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <Check className="h-5 w-5 text-secondary mt-1 flex-shrink-0" />
-              <div>
-                <p className="font-medium">Diverse Skill Sets</p>
-                <p className="text-foreground text-sm">
-                  Leverage the knowledge of top students from prestigious universities,
-                  bringing fresh perspectives and cutting-edge strategies to your business
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <Check className="h-5 w-5 text-secondary mt-1 flex-shrink-0" />
-              <div>
-                <p className="font-medium">Faster Progress</p>
-                <p className="text-foreground text-sm">
-                  Triple your execution speed with parallel support across multiple
-                  areas, turning your vision into reality faster than ever
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <Check className="h-5 w-5 text-secondary mt-1 flex-shrink-0" />
-              <div>
-                <p className="font-medium">Priority Support</p>
-                <p className="text-foreground text-sm">
-                  Get VIP treatment with faster response times and dedicated attention
-                  from your expanded Maven team, ensuring no opportunity is missed
-                </p>
-              </div>
-            </div>
+          <div className="mb-8 space-y-4">
+            <Feature text="Access to pre-vetted, experienced startup professionals" />
+            <Feature text="Unlimited consultations and support" />
+            <Feature text="Priority response times" />
+            <Feature text="Custom growth strategies" />
+            <Feature text="Monthly progress reviews" />
+            <Feature text="Cancel anytime - no long-term contracts" />
           </div>
 
-          <div className="bg-secondary/5 p-4 rounded-lg mb-8">
-            <p className="text-sm text-foreground">
-              <span className="font-medium">⚡ Act fast:</span> This special pricing is only available for the next 48 hours. Join the 200+ founders who have already accelerated their growth with Maven Plus.
+          <div className="text-center">
+            <Button size="lg" className="w-full max-w-md bg-secondary text-white hover:bg-secondary/90">
+              Upgrade Now
+            </Button>
+            <p className="mt-4 text-sm text-gray-600">
+              30-day money-back guarantee. No questions asked.
             </p>
           </div>
-
-          <Button
-            onClick={handleUpgrade}
-            className="w-full bg-secondary text-white hover:bg-secondary/90 py-6 text-lg"
-          >
-            Upgrade Now - Limited Spots Available
-          </Button>
-
-          <p className="text-center text-muted-foreground text-sm mt-4">
-            No long-term commitment - cancel or modify your subscription anytime
-          </p>
         </div>
       </div>
-    </main>
+    </div>
   );
 };
+
+const Feature = ({ text }: { text: string }) => (
+  <div className="flex items-center gap-3">
+    <svg
+      className="h-5 w-5 text-secondary"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M5 13l4 4L19 7"
+      />
+    </svg>
+    <span className="text-gray-700">{text}</span>
+  </div>
+);
 
 export default UpgradePlan;
