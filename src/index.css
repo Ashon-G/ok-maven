@@ -72,6 +72,6 @@
 
   /* Tooltip Styles */
   [data-radix-tooltip-content] {
-    @apply bg-popover border border-border shadow-md text-popover-foreground px-3 py-1.5 rounded-md;
+    @apply bg-white border border-border shadow-md text-foreground px-3 py-1.5 rounded-md;
   }
 }
