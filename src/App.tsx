@@ -16,6 +16,7 @@ import Profile from "./pages/dashboard/Profile";
 import Admin from "./pages/dashboard/Admin";
 import UpgradePlan from "./pages/UpgradePlan";
 import CompliancePackages from "./pages/CompliancePackages";
+import BlogPost from "./pages/blog/[slug]";
 import { useAuth } from "@/components/auth/AuthProvider";
 
 const queryClient = new QueryClient();
@@ -63,6 +64,7 @@ const AppRoutes = () => {
       <Route path="/signup" element={<Signup />} />
       <Route path="/upgrade" element={<UpgradePlan />} />
       <Route path="/compliance-packages" element={<CompliancePackages />} />
+      <Route path="/blog/:slug" element={<BlogPost />} />
       <Route path="/dashboard" element={
         <ProtectedRoute>
           <Dashboard />
