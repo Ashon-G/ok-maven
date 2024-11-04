@@ -24,7 +24,7 @@ interface Task {
 }
 
 interface TaskDialogProps {
-  task: Task | null;
+  task: Task;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
@@ -34,8 +34,8 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [isEditing, setIsEditing] = useState(false);
-  const [editedTitle, setEditedTitle] = useState(task?.title || "");
-  const [editedDescription, setEditedDescription] = useState(task?.description || "");
+  const [editedTitle, setEditedTitle] = useState(task.title);
+  const [editedDescription, setEditedDescription] = useState(task.description || "");
 
   const updateTask = useMutation({
     mutationFn: async ({ 
@@ -43,19 +43,19 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
       description, 
       status 
     }: { 
-      title: string; 
-      description: string;
+      title?: string; 
+      description?: string;
       status?: string;
     }) => {
-      const updateData: any = { title, description };
-      if (status) {
-        updateData.status = status;
-      }
+      const updateData: any = {};
+      if (title !== undefined) updateData.title = title;
+      if (description !== undefined) updateData.description = description;
+      if (status !== undefined) updateData.status = status;
 
       const { error } = await supabase
         .from("tasks")
         .update(updateData)
-        .eq("id", task?.id);
+        .eq("id", task.id);
 
       if (error) throw error;
     },
@@ -81,7 +81,7 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
       const { error } = await supabase
         .from("tasks")
         .delete()
-        .eq("id", task?.id);
+        .eq("id", task.id);
 
       if (error) throw error;
     },
@@ -102,8 +102,6 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
     },
   });
 
-  if (!task) return null;
-
   const canEdit = session?.user.id === task.created_by;
 
   const handleSave = () => {
@@ -120,11 +118,7 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
 
   const handleStatusChange = (newStatus: string) => {
     if (newStatus === task.status) return;
-    updateTask.mutate({ 
-      title: task.title, 
-      description: task.description || "", 
-      status: newStatus 
-    });
+    updateTask.mutate({ status: newStatus });
   };
 
   return (
