@@ -57,7 +57,10 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
         .update(updateData)
         .eq("id", task.id);
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error updating task:", error);
+        throw error;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
@@ -67,7 +70,8 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
         description: "Task updated successfully",
       });
     },
-    onError: (error) => {
+    onError: (error: Error) => {
+      console.error("Mutation error:", error);
       toast({
         title: "Error",
         description: error.message,
@@ -83,7 +87,10 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
         .delete()
         .eq("id", task.id);
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error deleting task:", error);
+        throw error;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
@@ -93,7 +100,8 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
         description: "Task deleted successfully",
       });
     },
-    onError: (error) => {
+    onError: (error: Error) => {
+      console.error("Delete error:", error);
       toast({
         title: "Error",
         description: error.message,
@@ -113,11 +121,15 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
       });
       return;
     }
-    updateTask.mutate({ title: editedTitle, description: editedDescription });
+    updateTask.mutate({ 
+      title: editedTitle, 
+      description: editedDescription 
+    });
   };
 
   const handleStatusChange = (newStatus: string) => {
     if (newStatus === task.status) return;
+    console.log("Updating status to:", newStatus);
     updateTask.mutate({ status: newStatus });
   };
 
