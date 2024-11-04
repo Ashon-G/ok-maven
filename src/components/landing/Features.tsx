@@ -10,12 +10,12 @@ export const Features = () => {
     {
       title: "Fixed Monthly Rate",
       description: "Predictable pricing at $500/month with no hidden fees or long-term contracts",
-      image: "https://images.unsplash.com/photo-1580518324671-c2f0833a3af3",
+      image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
     },
     {
       title: "Full-Stack Support",
       description: "From product development to marketing strategy and everything in between",
-      image: "https://images.unsplash.com/photo-1518770660439-4636190af475",
+      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
     },
     {
       title: "Rapid Execution",
