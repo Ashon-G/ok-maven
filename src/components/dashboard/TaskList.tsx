@@ -51,9 +51,9 @@ export const TaskList = () => {
         .from("jira_integrations")
         .select("*")
         .eq("user_id", session?.user.id)
-        .single();
+        .maybeSingle(); // Changed from single() to maybeSingle()
 
-      if (error && error.code !== "PGRST116") throw error;
+      if (error) throw error;
       return data;
     },
     enabled: !!session?.user.id,

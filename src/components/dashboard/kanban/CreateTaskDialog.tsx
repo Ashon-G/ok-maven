@@ -65,9 +65,9 @@ export const CreateTaskDialog = ({
         .from("jira_integrations")
         .select("*")
         .eq("user_id", userId)
-        .single();
+        .maybeSingle(); // Changed from single() to maybeSingle()
 
-      if (error && error.code !== "PGRST116") throw error;
+      if (error) throw error;
       return data;
     },
     enabled: !!userId,
