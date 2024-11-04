@@ -101,10 +101,8 @@ const Dashboard = () => {
         </div>
       </nav>
 
-      <div className="mx-auto max-w-7xl pt-24 p-4 pb-20 md:p-8">
-        <div className="rounded-2xl border border-black/5 bg-white p-4 md:p-8 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
-          <Outlet />
-        </div>
+      <div className="pt-24 pb-20">
+        <Outlet />
       </div>
       <MobileNavLinks isAdmin={isAdmin} />
     </div>
