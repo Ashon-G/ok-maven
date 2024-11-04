@@ -76,7 +76,7 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin" />
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
       </div>
     );
   }
@@ -96,7 +96,7 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
       sensors={sensors} 
       onDragEnd={handleDragEnd}
     >
-      <div className="min-h-[calc(100vh-12rem)] bg-[#f9fafc] p-6">
+      <div className="min-h-[calc(100vh-12rem)] bg-background p-6">
         <div className="flex gap-4 overflow-x-auto pb-4">
           <KanbanColumn 
             title="To Do" 

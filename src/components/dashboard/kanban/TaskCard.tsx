@@ -18,17 +18,17 @@ export const TaskCard = ({ task }: TaskCardProps) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="bg-white rounded-lg shadow-sm hover:bg-gray-50 cursor-pointer p-2.5 group transition-all hover:shadow-md"
+      className="bg-card text-card-foreground rounded-lg shadow-sm hover:bg-muted cursor-pointer p-2.5 group transition-all hover:shadow-md border border-border"
     >
-      <div className="text-sm text-[#172b4d] font-medium">{task.title}</div>
+      <div className="text-sm font-medium">{task.title}</div>
       {task.description && (
-        <div className="text-xs text-[#5e6c84] mt-2 line-clamp-2">
+        <div className="text-xs text-muted-foreground mt-2 line-clamp-2">
           {task.description}
         </div>
       )}
       {task.assignee && (
         <div className="flex items-center mt-2">
-          <div className="flex items-center gap-1 px-2 py-1 rounded-sm bg-[#ebecf0] text-xs text-[#5e6c84]">
+          <div className="flex items-center gap-1 px-2 py-1 rounded-sm bg-muted text-xs text-muted-foreground">
             <UserCircle className="h-3 w-3" />
             <span>{task.assignee.full_name}</span>
           </div>
