@@ -26,7 +26,7 @@
     --radius: 0.5rem;
   }
 
-  .dashboard.dark {
+  .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
@@ -58,18 +58,22 @@
     @apply bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent;
   }
 
+  /* Modern Card Styles */
   .modern-card {
     @apply rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:shadow-md;
   }
 
+  /* Modern Input Styles */
   .modern-input {
     @apply rounded-lg border border-input bg-background px-4 py-2 shadow-sm focus:border-secondary focus:ring-2 focus:ring-secondary/20;
   }
 
+  /* Modern Button Styles */
   .modern-button {
     @apply rounded-lg border border-border bg-background px-4 py-2 font-medium shadow-sm transition-all hover:bg-muted hover:shadow-md;
   }
 
+  /* Navigation Styles */
   .nav-link {
     @apply flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium transition-all hover:bg-muted;
   }
@@ -78,6 +82,7 @@
     @apply border-secondary bg-card text-secondary shadow-sm;
   }
 
+  /* Hide scrollbar but keep functionality */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -85,5 +90,20 @@
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+
+  /* Tooltip Styles */
+  [data-radix-tooltip-content] {
+    @apply bg-white border border-border shadow-md text-foreground px-3 py-1.5 rounded-md;
+  }
+
+  /* Custom Tooltip Content */
+  .tooltip-content {
+    @apply bg-white text-foreground p-2 rounded-md shadow-lg border border-border;
+  }
+
+  /* Links within tooltips */
+  .tooltip-content a {
+    @apply text-blue-500 hover:underline block mt-1;
   }
 }

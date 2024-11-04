@@ -44,7 +44,7 @@ const ProtectedRoute = ({ children, adminOnly = false }: { children: React.React
     }
   }
 
-  return <div className="dashboard">{children}</div>;
+  return <>{children}</>;
 };
 
 const AppRoutes = () => {
