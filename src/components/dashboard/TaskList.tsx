@@ -51,7 +51,7 @@ export const TaskList = () => {
         .from("jira_integrations")
         .select("*")
         .eq("user_id", session?.user.id)
-        .maybeSingle(); // Changed from single() to maybeSingle()
+        .maybeSingle();
 
       if (error) throw error;
       return data;
@@ -74,10 +74,7 @@ export const TaskList = () => {
                 <Settings className="h-4 w-4 mr-2" />
                 {jiraIntegration ? "Update Jira Settings" : "Connect to Jira"}
               </Button>
-              <Button
-                onClick={() => setIsCreateOpen(true)}
-                size="sm"
-              >
+              <Button onClick={() => setIsCreateOpen(true)} size="sm">
                 Create Task
               </Button>
             </>

@@ -65,7 +65,7 @@ export const CreateTaskDialog = ({
         .from("jira_integrations")
         .select("*")
         .eq("user_id", userId)
-        .maybeSingle(); // Changed from single() to maybeSingle()
+        .maybeSingle();
 
       if (error) throw error;
       return data;
