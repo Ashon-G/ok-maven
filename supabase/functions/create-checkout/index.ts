@@ -5,38 +5,32 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-// Handle CORS preflight requests
-async function handleOptions() {
-  return new Response(null, {
-    headers: corsHeaders
-  })
-}
-
 Deno.serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return handleOptions()
+    return new Response(null, { headers: corsHeaders })
   }
 
   try {
+    // Log all environment variables (excluding their values for security)
+    console.log('Available environment variables:', Object.keys(Deno.env.toObject()))
+    
     const stripeKey = Deno.env.get('STRIPE_SECRET_KEY')
+    console.log('Stripe key exists:', !!stripeKey)
+    
     if (!stripeKey) {
-      console.error('Missing Stripe secret key in environment variables')
-      throw new Error('Missing Stripe secret key')
+      throw new Error('Missing Stripe secret key in environment variables')
     }
 
-    const stripe = new Stripe(stripeKey, {
-      apiVersion: '2023-10-16',
-      httpClient: Stripe.createFetchHttpClient(),
-    })
+    const stripe = Stripe(stripeKey)
+    console.log('Stripe instance created successfully')
 
     const { user_id } = await req.json()
     console.log('Processing checkout for user:', user_id)
 
     const priceId = Deno.env.get('STRIPE_PRICE_ID')
     if (!priceId) {
-      console.error('Missing Stripe price ID in environment variables')
-      throw new Error('Missing Stripe price ID')
+      throw new Error('Missing Stripe price ID in environment variables')
     }
 
     console.log('Creating checkout session with price ID:', priceId)
@@ -63,7 +57,12 @@ Deno.serve(async (req) => {
       }
     )
   } catch (error) {
-    console.error('Error in create-checkout function:', error)
+    console.error('Detailed error:', {
+      message: error.message,
+      stack: error.stack,
+      type: error.type,
+    })
+    
     return new Response(
       JSON.stringify({ error: error.message }),
       {
