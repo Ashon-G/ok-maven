@@ -7,6 +7,7 @@ import { Pricing } from "@/components/landing/Pricing";
 import { CTA } from "@/components/landing/CTA";
 import ScrollFeatures from "@/components/landing/ScrollFeatures";
 import { BlogPostCarousel } from "@/components/landing/BlogPostCarousel";
+import { Footer } from "@/components/layout/Footer";
 
 const Index = () => {
   return (
@@ -20,6 +21,7 @@ const Index = () => {
       <Testimonials />
       <Pricing />
       <CTA />
+      <Footer />
     </main>
   );
 };
