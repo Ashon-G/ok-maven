@@ -6,6 +6,7 @@ import { Testimonials } from "@/components/landing/Testimonials";
 import { Pricing } from "@/components/landing/Pricing";
 import { CTA } from "@/components/landing/CTA";
 import ScrollFeatures from "@/components/landing/ScrollFeatures";
+import { BlogPostCarousel } from "@/components/landing/BlogPostCarousel";
 
 const Index = () => {
   return (
@@ -15,6 +16,7 @@ const Index = () => {
       <ScrollFeatures />
       <HowItWorks />
       <Features />
+      <BlogPostCarousel />
       <Testimonials />
       <Pricing />
       <CTA />
