@@ -25,7 +25,7 @@ export const VelocityHero = () => {
   const x = useSpring(xRaw, { mass: 3, stiffness: 400, damping: 50 });
 
   return (
-    <section ref={targetRef} className="relative h-[500vh]">
+    <section ref={targetRef} className="relative h-[500vh] bg-primary">
       {/* Background Video */}
       <div className="fixed inset-0 w-full h-screen overflow-hidden -z-10">
         <div className="absolute inset-0 bg-black/60 z-10" /> {/* Overlay */}
