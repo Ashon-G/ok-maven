@@ -14,12 +14,15 @@ import { useQuery } from "@tanstack/react-query";
 import { NavLink } from "react-router-dom";
 import AnimatedNavigation from "@/components/dashboard/AnimatedNavigation";
 import { Button } from "@/components/ui/button";
+import { JiraIntegrationDialog } from "@/components/dashboard/jira/JiraIntegrationDialog";
+import { useState } from "react";
 
 const Dashboard = () => {
   const { session } = useAuth();
   const userMetadataType = session?.user?.user_metadata?.user_type;
   const appMetadataType = session?.user?.app_metadata?.user_type;
   const isAdmin = userMetadataType === 'admin' || appMetadataType === 'admin';
+  const [isJiraOpen, setIsJiraOpen] = useState(false);
 
   const { data: profile } = useQuery({
     queryKey: ["profile"],
@@ -99,7 +102,7 @@ const Dashboard = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => window.location.href = "/dashboard/tasks?jira=true"}
+                  onClick={() => setIsJiraOpen(true)}
                   className="ml-4"
                 >
                   <Settings className="h-4 w-4 mr-2" />
@@ -119,6 +122,13 @@ const Dashboard = () => {
       <div className="pt-24 pb-20">
         <Outlet />
       </div>
+
+      {profile?.user_type === "founder" && (
+        <JiraIntegrationDialog
+          open={isJiraOpen}
+          onOpenChange={setIsJiraOpen}
+        />
+      )}
     </div>
   );
 };
