@@ -9,41 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      profiles: {
-        Row: {
-          id: string
-          username: string | null
-          full_name: string | null
-          avatar_url: string | null
-          created_at: string
-          bio: string | null
-          settings: Json | null
-          user_type: "founder" | "maven" | "admin" | null
-          maven_skillset: "Developer" | "Marketer" | "Copywriter" | "Designer" | "Accounting" | "Sales" | "Other" | null
-        }
-        Insert: {
-          id: string
-          username?: string | null
-          full_name?: string | null
-          avatar_url?: string | null
-          created_at?: string
-          bio?: string | null
-          settings?: Json | null
-          user_type?: "founder" | "maven" | "admin" | null
-          maven_skillset?: "Developer" | "Marketer" | "Copywriter" | "Designer" | "Accounting" | "Sales" | "Other" | null
-        }
-        Update: {
-          id?: string
-          username?: string | null
-          full_name?: string | null
-          avatar_url?: string | null
-          created_at?: string
-          bio?: string | null
-          settings?: Json | null
-          user_type?: "founder" | "maven" | "admin" | null
-          maven_skillset?: "Developer" | "Marketer" | "Copywriter" | "Designer" | "Accounting" | "Sales" | "Other" | null
-        }
-      }
       founder_maven_assignments: {
         Row: {
           assigned_by: string
@@ -170,6 +135,48 @@ export type Database = {
           },
         ]
       }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          maven_skillset:
+            | Database["public"]["Enums"]["maven_skillset_enum"]
+            | null
+          settings: Json | null
+          user_type: Database["public"]["Enums"]["user_type_enum"] | null
+          username: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          full_name?: string | null
+          id: string
+          maven_skillset?:
+            | Database["public"]["Enums"]["maven_skillset_enum"]
+            | null
+          settings?: Json | null
+          user_type?: Database["public"]["Enums"]["user_type_enum"] | null
+          username?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          maven_skillset?:
+            | Database["public"]["Enums"]["maven_skillset_enum"]
+            | null
+          settings?: Json | null
+          user_type?: Database["public"]["Enums"]["user_type_enum"] | null
+          username?: string | null
+        }
+        Relationships: []
+      }
       subscriptions: {
         Row: {
           cancel_at_period_end: boolean
@@ -286,6 +293,14 @@ export type Database = {
     }
     Enums: {
       jira_hosting_type: "cloud" | "server"
+      maven_skillset_enum:
+        | "Developer"
+        | "Marketer"
+        | "Copywriter"
+        | "Designer"
+        | "Accounting"
+        | "Sales"
+        | "Other"
       subscription_status: "active" | "canceled" | "past_due" | "incomplete"
       user_type_enum: "founder" | "maven" | "admin"
     }
@@ -304,7 +319,7 @@ export type Tables<
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
         Database[PublicTableNameOrOptions["schema"]]["Views"])
-    : never,
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
@@ -316,10 +331,10 @@ export type Tables<
         PublicSchema["Views"])
     ? (PublicSchema["Tables"] &
         PublicSchema["Views"])[PublicTableNameOrOptions] extends {
-      Row: infer R
-    }
-    ? R
-    : never
+        Row: infer R
+      }
+      ? R
+      : never
     : never
 
 export type TablesInsert<
