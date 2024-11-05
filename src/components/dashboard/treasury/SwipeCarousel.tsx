@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { motion, useMotionValue } from "framer-motion";
 
 const imgs = [
-  "/imgs/nature/1.jpg",
-  "/imgs/nature/2.jpg",
-  "/imgs/nature/3.jpg",
-  "/imgs/nature/4.jpg",
-  "/imgs/nature/5.jpg",
-  "/imgs/nature/6.jpg",
-  "/imgs/nature/7.jpg",
+  "https://images.unsplash.com/photo-1649972904349-6e44c42644a7", // Woman using laptop
+  "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b", // Gray laptop computer
+  "https://images.unsplash.com/photo-1518770660439-4636190af475", // Black circuit board
+  "https://images.unsplash.com/photo-1461749280684-dccba630e2f6", // Monitor showing Java
+  "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d", // Person using MacBook Pro
+  "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158", // Woman using laptop
+  "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7", // Colorful software code
 ];
 
 const ONE_SECOND = 1000;
