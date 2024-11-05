@@ -7,6 +7,13 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
 import { AvatarUpload } from "./AvatarUpload";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type UserType = "founder" | "maven";
 
@@ -24,6 +31,7 @@ export const SignupForm = ({ userType, title }: SignupFormProps) => {
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarError, setAvatarError] = useState<string>("");
   const [isUploading, setIsUploading] = useState(false);
+  const [mavenSkillset, setMavenSkillset] = useState<string>("");
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,6 +39,15 @@ export const SignupForm = ({ userType, title }: SignupFormProps) => {
 
     if (!avatarFile) {
       setAvatarError("Profile picture is required");
+      return;
+    }
+
+    if (userType === "maven" && !mavenSkillset) {
+      toast({
+        title: "Error",
+        description: "Please select your skillset",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -49,6 +66,7 @@ export const SignupForm = ({ userType, title }: SignupFormProps) => {
           data: {
             full_name: fullName,
             user_type: userType,
+            maven_skillset: userType === "maven" ? mavenSkillset : null,
           },
         },
       });
@@ -126,6 +144,30 @@ export const SignupForm = ({ userType, title }: SignupFormProps) => {
                 required
               />
             </div>
+
+            {userType === "maven" && (
+              <div>
+                <Label htmlFor="skillset" className="text-black">Skillset</Label>
+                <Select
+                  value={mavenSkillset}
+                  onValueChange={setMavenSkillset}
+                  required
+                >
+                  <SelectTrigger className="w-full border-black border-[1px]">
+                    <SelectValue placeholder="Select your skillset" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Developer">Developer</SelectItem>
+                    <SelectItem value="Marketer">Marketer</SelectItem>
+                    <SelectItem value="Copywriter">Copywriter</SelectItem>
+                    <SelectItem value="Designer">Designer</SelectItem>
+                    <SelectItem value="Accounting">Accounting</SelectItem>
+                    <SelectItem value="Sales">Sales</SelectItem>
+                    <SelectItem value="Other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
 
             <div>
               <Label htmlFor="email" className="text-black">Email</Label>

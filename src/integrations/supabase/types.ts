@@ -9,6 +9,41 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      profiles: {
+        Row: {
+          id: string
+          username: string | null
+          full_name: string | null
+          avatar_url: string | null
+          created_at: string
+          bio: string | null
+          settings: Json | null
+          user_type: "founder" | "maven" | "admin" | null
+          maven_skillset: "Developer" | "Marketer" | "Copywriter" | "Designer" | "Accounting" | "Sales" | "Other" | null
+        }
+        Insert: {
+          id: string
+          username?: string | null
+          full_name?: string | null
+          avatar_url?: string | null
+          created_at?: string
+          bio?: string | null
+          settings?: Json | null
+          user_type?: "founder" | "maven" | "admin" | null
+          maven_skillset?: "Developer" | "Marketer" | "Copywriter" | "Designer" | "Accounting" | "Sales" | "Other" | null
+        }
+        Update: {
+          id?: string
+          username?: string | null
+          full_name?: string | null
+          avatar_url?: string | null
+          created_at?: string
+          bio?: string | null
+          settings?: Json | null
+          user_type?: "founder" | "maven" | "admin" | null
+          maven_skillset?: "Developer" | "Marketer" | "Copywriter" | "Designer" | "Accounting" | "Sales" | "Other" | null
+        }
+      }
       founder_maven_assignments: {
         Row: {
           assigned_by: string
@@ -134,39 +169,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      profiles: {
-        Row: {
-          avatar_url: string | null
-          bio: string | null
-          created_at: string
-          full_name: string | null
-          id: string
-          settings: Json | null
-          user_type: Database["public"]["Enums"]["user_type_enum"] | null
-          username: string | null
-        }
-        Insert: {
-          avatar_url?: string | null
-          bio?: string | null
-          created_at?: string
-          full_name?: string | null
-          id: string
-          settings?: Json | null
-          user_type?: Database["public"]["Enums"]["user_type_enum"] | null
-          username?: string | null
-        }
-        Update: {
-          avatar_url?: string | null
-          bio?: string | null
-          created_at?: string
-          full_name?: string | null
-          id?: string
-          settings?: Json | null
-          user_type?: Database["public"]["Enums"]["user_type_enum"] | null
-          username?: string | null
-        }
-        Relationships: []
       }
       subscriptions: {
         Row: {
@@ -302,7 +304,7 @@ export type Tables<
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
         Database[PublicTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
@@ -314,10 +316,10 @@ export type Tables<
         PublicSchema["Views"])
     ? (PublicSchema["Tables"] &
         PublicSchema["Views"])[PublicTableNameOrOptions] extends {
-        Row: infer R
-      }
-      ? R
-      : never
+      Row: infer R
+    }
+    ? R
+    : never
     : never
 
 export type TablesInsert<

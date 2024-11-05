@@ -11,6 +11,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Loader2 } from "lucide-react";
+import { MavenSkillsetBadge } from "./MavenSkillsetBadge";
 
 export const AdminUserList = () => {
   const { data: users, isLoading } = useQuery({
@@ -41,6 +42,7 @@ export const AdminUserList = () => {
           <TableRow>
             <TableHead>User</TableHead>
             <TableHead>Type</TableHead>
+            <TableHead>Skillset</TableHead>
             <TableHead>Created At</TableHead>
           </TableRow>
         </TableHeader>
@@ -74,6 +76,11 @@ export const AdminUserList = () => {
                 >
                   {user.user_type}
                 </Badge>
+              </TableCell>
+              <TableCell>
+                {user.user_type === "maven" && (
+                  <MavenSkillsetBadge skillset={user.maven_skillset} />
+                )}
               </TableCell>
               <TableCell>
                 {new Date(user.created_at).toLocaleDateString()}
