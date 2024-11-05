@@ -1,7 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { IconType } from "react-icons";
-import { FiDollarSign, FiEye, FiPlay, FiSearch } from "react-icons/fi";
+import { FiCode, FiTrendingUp, FiUsers, FiDollarSign } from "react-icons/fi";
 
 const ScrollFeatures = () => {
   return <SwapColumnFeatures />;
@@ -93,14 +93,6 @@ const Content = ({
           <p className="my-3 text-5xl font-bold">{featureInView.title}</p>
           <p className="text-slate-600">{featureInView.description}</p>
         </motion.div>
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="mt-8 block md:hidden"
-        >
-          <ExampleFeature featureInView={featureInView} />
-        </motion.div>
       </div>
     </section>
   );
@@ -116,12 +108,8 @@ const ExampleFeature = ({ featureInView }: { featureInView: FeatureType }) => {
       </div>
       <div className="p-2">
         <p className="font-mono text-sm text-slate-200">
-          <span className="text-green-300">~</span> Show a part of your product
-          that explains what{" "}
-          <span className="inline-block rounded bg-secondary px-1 font-semibold">
-            "{featureInView.title}"
-          </span>{" "}
-          means.
+          <span className="text-green-300">~</span>{" "}
+          {featureInView.description}
         </p>
       </div>
       <span className="absolute left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] text-9xl text-slate-700">
@@ -143,37 +131,33 @@ type FeatureType = {
 const features: FeatureType[] = [
   {
     id: 1,
-    callout: "Get noticed",
-    title: "Expert Guidance",
-    description:
-      "Get personalized guidance from experienced startup founders and industry experts who understand your challenges and goals.",
+    callout: "Student Developers",
+    title: "Build with Fresh Talent",
+    description: "Access ambitious student developers who bring the latest tech skills and innovative thinking to your project",
     contentPosition: "r",
-    Icon: FiEye,
+    Icon: FiCode,
   },
   {
     id: 2,
-    callout: "Find solutions",
-    title: "Proven Methods",
-    description:
-      "Access battle-tested frameworks and methodologies that have helped hundreds of startups succeed in their market.",
+    callout: "Student Marketers",
+    title: "Growth-Focused",
+    description: "Work with student marketers who understand your target audience and know how to reach them effectively",
     contentPosition: "l",
-    Icon: FiSearch,
+    Icon: FiTrendingUp,
   },
   {
     id: 3,
-    callout: "Move fast",
-    title: "Rapid Execution",
-    description:
-      "Turn your ideas into reality quickly with our streamlined processes and dedicated support team working alongside you.",
+    callout: "Collaboration",
+    title: "Perfect Match",
+    description: "Get matched with students whose skills and interests align perfectly with your project needs",
     contentPosition: "r",
-    Icon: FiPlay,
+    Icon: FiUsers,
   },
   {
     id: 4,
-    callout: "Scale up",
-    title: "Growth Focus",
-    description:
-      "Leverage our expertise to scale your startup efficiently while maintaining sustainable growth and profitability.",
+    callout: "Affordable",
+    title: "Student-Friendly Rates",
+    description: "Access quality talent at rates that work for both founders and students",
     contentPosition: "l",
     Icon: FiDollarSign,
   },

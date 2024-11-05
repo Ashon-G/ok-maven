@@ -3,23 +3,23 @@ import { CheckCircle } from "lucide-react";
 export const Features = () => {
   const features = [
     {
-      title: "Expert Mavens",
-      description: "Access to pre-vetted, experienced professionals who've built successful startups",
-      image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
+      title: "Student Talent Pool",
+      description: "Access pre-vetted, ambitious students from top universities with fresh perspectives and cutting-edge skills",
+      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c",
     },
     {
-      title: "Fixed Monthly Rate",
-      description: "Predictable pricing at $500/month with no hidden fees or long-term contracts",
+      title: "Affordable Rates",
+      description: "Get high-quality development and marketing work at student-friendly prices that work for your startup budget",
       image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
     },
     {
       title: "Full-Stack Support",
-      description: "From product development to marketing strategy and everything in between",
+      description: "From product development to growth marketing, our student Mavens cover all aspects of building and launching",
       image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
     },
     {
-      title: "Rapid Execution",
-      description: "Get your projects moving quickly with proven methodologies and frameworks",
+      title: "Quick Execution",
+      description: "Students bring energy and dedication to ship features fast, helping you validate and iterate quickly",
       image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
     },
   ];

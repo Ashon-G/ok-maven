@@ -33,9 +33,7 @@ export const VelocityHero = () => {
           style={{ skewX, x }}
           className="origin-bottom-left whitespace-nowrap text-7xl font-black uppercase leading-[0.85] text-secondary/20 md:text-9xl md:leading-[0.85]"
         >
-          Build your startup faster with expert Mavens. Access world-class talent
-          for a fraction of the cost. Launch, grow, and succeed with proven
-          expertise by your side.
+          Connect with student talent. Build innovative products. Launch faster than ever before.
         </motion.p>
         <ScrollArrow />
       </div>
@@ -112,18 +110,18 @@ const CenterCopy = () => {
     <div className="flex items-center justify-center px-4 text-center">
       <div className="max-w-4xl">
         <h1 className="mb-6 text-4xl font-bold sm:text-6xl md:text-7xl">
-          Your Startup's Secret Weapon:{" "}
-          <span className="gradient-text font-black">Expert Mavens</span>
+          Connect with Student Talent to{" "}
+          <span className="gradient-text font-black">Build Your Next Big Thing</span>
         </h1>
         <p className="mb-8 text-lg text-white/60 md:text-xl">
-          Access world-class talent to build and market your startup for just
-          $500/month. No contracts, just results.
+          Access ambitious student developers and marketers ready to help build and launch your product. 
+          Get high-quality work at student-friendly rates.
         </p>
         <a
           href="#pricing"
           className="inline-block rounded-full bg-secondary px-8 py-4 font-semibold text-white transition-all hover:bg-secondary/90"
         >
-          Get Started Today
+          Start Building Today
         </a>
       </div>
     </div>

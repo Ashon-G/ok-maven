@@ -2,20 +2,20 @@ export const HowItWorks = () => {
   const steps = [
     {
       number: "01",
-      title: "Tell Us Your Needs",
-      description: "Share your startup's goals and challenges with our team",
+      title: "Share Your Vision",
+      description: "Tell us about your product idea and what kind of student talent you need",
       image: "https://images.unsplash.com/photo-1642790595397-7047dc98fa72",
     },
     {
       number: "02",
-      title: "Get Matched",
-      description: "We'll pair you with the perfect Maven for your project",
+      title: "Match with Students",
+      description: "Get paired with skilled student developers and marketers who align with your goals",
       image: "https://images.unsplash.com/photo-1573497161161-c3e73707e25c",
     },
     {
       number: "03",
-      title: "Start Building",
-      description: "Begin working with your Maven to bring your vision to life",
+      title: "Build Together",
+      description: "Collaborate with your student team to bring your product vision to life",
       image: "https://images.unsplash.com/photo-1603871165848-0aa92c869fa1",
     },
   ];
