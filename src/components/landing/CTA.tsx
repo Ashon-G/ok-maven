@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
+
 export const CTA = () => {
   return (
     <section
