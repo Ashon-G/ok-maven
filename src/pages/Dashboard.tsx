@@ -23,6 +23,7 @@ const Dashboard = () => {
   const userMetadataType = session?.user?.user_metadata?.user_type;
   const appMetadataType = session?.user?.app_metadata?.user_type;
   const isAdmin = userMetadataType === 'admin' || appMetadataType === 'admin';
+  const isFounder = userMetadataType === 'founder' || appMetadataType === 'founder';
   const [isJiraOpen, setIsJiraOpen] = useState(false);
 
   const { data: profile } = useQuery({
@@ -81,16 +82,18 @@ const Dashboard = () => {
                       Profile
                     </DropdownMenuItem>
                   </NavLink>
-                  <a 
-                    href="https://billing.stripe.com/p/login/fZeaHygAY2ID9I4cMM" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                  >
-                    <DropdownMenuItem className="cursor-pointer">
-                      <CreditCard className="mr-2 h-4 w-4" />
-                      Billing Portal
-                    </DropdownMenuItem>
-                  </a>
+                  {isFounder && (
+                    <a 
+                      href="https://billing.stripe.com/p/login/fZeaHygAY2ID9I4cMM" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                    >
+                      <DropdownMenuItem className="cursor-pointer">
+                        <CreditCard className="mr-2 h-4 w-4" />
+                        Billing Portal
+                      </DropdownMenuItem>
+                    </a>
+                  )}
                   {isAdmin && (
                     <div className="md:hidden p-2">
                       <ImpersonateUser />
