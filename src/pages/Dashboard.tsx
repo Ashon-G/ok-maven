@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { UserCircle, LogOut, Settings } from "lucide-react";
+import { UserCircle, LogOut, Settings, CreditCard } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { ImpersonateUser } from "@/components/admin/ImpersonateUser";
@@ -8,6 +8,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useQuery } from "@tanstack/react-query";
@@ -80,11 +81,22 @@ const Dashboard = () => {
                       Profile
                     </DropdownMenuItem>
                   </NavLink>
+                  <a 
+                    href="https://billing.stripe.com/p/login/fZeaHygAY2ID9I4cMM" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                  >
+                    <DropdownMenuItem className="cursor-pointer">
+                      <CreditCard className="mr-2 h-4 w-4" />
+                      Billing Portal
+                    </DropdownMenuItem>
+                  </a>
                   {isAdmin && (
                     <div className="md:hidden p-2">
                       <ImpersonateUser />
                     </div>
                   )}
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem className="cursor-pointer text-red-600" onClick={handleSignOut}>
                     <LogOut className="mr-2 h-4 w-4" />
                     Sign Out
