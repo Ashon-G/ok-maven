@@ -8,7 +8,6 @@ import { SplashScreen } from "@/components/ui/splash-screen";
 import { LoadingAnimation } from "@/components/ui/loading-animation";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
-import SignupChoice from "./pages/signup/SignupChoice";
 import FounderSignup from "./pages/signup/FounderSignup";
 import MavenSignup from "./pages/signup/MavenSignup";
 import Dashboard from "./pages/Dashboard";
@@ -63,7 +62,6 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<Index />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<SignupChoice />} />
       <Route path="/signup/founder" element={<FounderSignup />} />
       <Route path="/signup/maven" element={<MavenSignup />} />
       <Route path="/upgrade" element={<UpgradePlan />} />
@@ -84,6 +82,8 @@ const AppRoutes = () => {
           </ProtectedRoute>
         } />
       </Route>
+      {/* Redirect /signup to /signup/founder as default */}
+      <Route path="/signup" element={<Navigate to="/signup/founder" replace />} />
     </Routes>
   );
 };
