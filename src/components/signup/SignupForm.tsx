@@ -22,10 +22,18 @@ export const SignupForm = ({ userType, title }: SignupFormProps) => {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarError, setAvatarError] = useState<string>("");
   const [isUploading, setIsUploading] = useState(false);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    setAvatarError("");
+
+    if (!avatarFile) {
+      setAvatarError("Profile picture is required");
+      return;
+    }
+
     setIsUploading(true);
 
     try {
@@ -33,26 +41,21 @@ export const SignupForm = ({ userType, title }: SignupFormProps) => {
         throw new Error("Please fill in all required fields");
       }
 
-      let avatarUrl = null;
-      if (avatarFile) {
-        const fileExt = avatarFile.name.split('.').pop();
-        const filePath = `${crypto.randomUUID()}/avatar.${fileExt}`;
+      const fileExt = avatarFile.name.split('.').pop();
+      const filePath = `${crypto.randomUUID()}/avatar.${fileExt}`;
 
-        const { error: uploadError } = await supabase.storage
-          .from('avatars')
-          .upload(filePath, avatarFile, {
-            upsert: true,
-            cacheControl: '3600'
-          });
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, avatarFile, {
+          upsert: true,
+          cacheControl: '3600'
+        });
 
-        if (uploadError) throw uploadError;
+      if (uploadError) throw uploadError;
 
-        const { data: { publicUrl } } = supabase.storage
-          .from('avatars')
-          .getPublicUrl(filePath);
-
-        avatarUrl = publicUrl;
-      }
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath);
 
       const { error } = await supabase.auth.signUp({
         email,
@@ -61,7 +64,7 @@ export const SignupForm = ({ userType, title }: SignupFormProps) => {
           data: {
             full_name: fullName,
             user_type: userType,
-            avatar_url: avatarUrl,
+            avatar_url: publicUrl,
           },
         },
       });
@@ -95,7 +98,11 @@ export const SignupForm = ({ userType, title }: SignupFormProps) => {
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSignup}>
           <div className="rounded-md shadow-sm space-y-4">
-            <AvatarUpload fullName={fullName} onAvatarChange={setAvatarFile} />
+            <AvatarUpload 
+              fullName={fullName} 
+              onAvatarChange={setAvatarFile} 
+              error={avatarError}
+            />
 
             <div>
               <Label htmlFor="fullName" className="text-black">Full Name</Label>

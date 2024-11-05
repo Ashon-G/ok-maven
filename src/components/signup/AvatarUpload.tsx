@@ -7,9 +7,10 @@ import { Upload } from "lucide-react";
 type AvatarUploadProps = {
   fullName: string;
   onAvatarChange: (file: File) => void;
+  error?: string;
 };
 
-export const AvatarUpload = ({ fullName, onAvatarChange }: AvatarUploadProps) => {
+export const AvatarUpload = ({ fullName, onAvatarChange, error }: AvatarUploadProps) => {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
   const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,8 +39,10 @@ export const AvatarUpload = ({ fullName, onAvatarChange }: AvatarUploadProps) =>
           accept="image/*"
           onChange={handleAvatarChange}
           className="hidden"
+          required
         />
-        <p className="text-sm text-gray-500 mt-1">Optional</p>
+        <p className="text-sm text-red-500 mt-1">{error}</p>
+        <p className="text-sm text-gray-500 mt-1">Required</p>
       </div>
     </div>
   );
