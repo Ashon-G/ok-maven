@@ -54,7 +54,7 @@ export const SwipeCarousel = () => {
   };
 
   return (
-    <div className="relative overflow-hidden bg-neutral-950 py-8">
+    <div className="relative overflow-hidden py-8">
       <motion.div
         drag="x"
         dragConstraints={{
@@ -96,7 +96,7 @@ const Images = ({ imgIndex }: { imgIndex: number }) => {
               scale: imgIndex === idx ? 0.95 : 0.85,
             }}
             transition={SPRING_OPTIONS}
-            className="aspect-video w-screen shrink-0 rounded-xl bg-neutral-800 object-cover"
+            className="aspect-video w-screen shrink-0 rounded-xl bg-gray-100 object-cover"
           />
         );
       })}
@@ -113,7 +113,7 @@ const Dots = ({ imgIndex, setImgIndex }: { imgIndex: number; setImgIndex: (index
             key={idx}
             onClick={() => setImgIndex(idx)}
             className={`h-3 w-3 rounded-full transition-colors ${
-              idx === imgIndex ? "bg-neutral-50" : "bg-neutral-500"
+              idx === imgIndex ? "bg-gray-700" : "bg-gray-400"
             }`}
           />
         );
@@ -125,8 +125,10 @@ const Dots = ({ imgIndex, setImgIndex }: { imgIndex: number; setImgIndex: (index
 const GradientEdges = () => {
   return (
     <>
-      <div className="pointer-events-none absolute bottom-0 left-0 top-0 w-[10vw] max-w-[100px] bg-gradient-to-r from-neutral-950/50 to-neutral-950/0" />
-      <div className="pointer-events-none absolute bottom-0 right-0 top-0 w-[10vw] max-w-[100px] bg-gradient-to-l from-neutral-950/50 to-neutral-950/0" />
+      <div className="pointer-events-none absolute bottom-0 left-0 top-0 w-[10vw] max-w-[100px] bg-gradient-to-r from-white/50 to-white/0" />
+      <div className="pointer-events-none absolute bottom-0 right-0 top-0 w-[10vw] max-w-[100px] bg-gradient-to-l from-white/50 to-white/0" />
     </>
   );
 };
+
+export default SwipeCarousel;
