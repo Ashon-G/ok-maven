@@ -1,4 +1,18 @@
+import { useEffect } from "react";
+
 export const Pricing = () => {
+  useEffect(() => {
+    // Ensure the Stripe script is loaded
+    const script = document.createElement("script");
+    script.src = "https://js.stripe.com/v3/pricing-table.js";
+    script.async = true;
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+
   return (
     <section id="pricing" className="bg-white py-24">
       <div className="container">
@@ -12,7 +26,6 @@ export const Pricing = () => {
           </stripe-pricing-table>
         </div>
       </div>
-      <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
     </section>
   );
 };
