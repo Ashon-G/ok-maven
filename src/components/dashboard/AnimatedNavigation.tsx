@@ -22,8 +22,9 @@ const AnimatedNavigation = () => {
   const navItems = [
     { position: 1, title: "Tasks", path: "/dashboard/tasks" },
     { position: 8, title: "Chat", path: "/dashboard/chat" },
-    { position: 15, title: "Profile", path: "/dashboard/profile" },
-    ...(isAdmin ? [{ position: 22, title: "Admin", path: "/dashboard/admin" }] : []),
+    { position: 15, title: "Treasury", path: "/dashboard/treasury" },
+    { position: 22, title: "Profile", path: "/dashboard/profile" },
+    ...(isAdmin ? [{ position: 29, title: "Admin", path: "/dashboard/admin" }] : []),
   ];
 
   const [isHovered, setIsHovered] = useState(false);

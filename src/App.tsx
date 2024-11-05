@@ -15,6 +15,7 @@ import Tasks from "./pages/dashboard/Tasks";
 import Chat from "./pages/dashboard/Chat";
 import Profile from "./pages/dashboard/Profile";
 import Admin from "./pages/dashboard/Admin";
+import Treasury from "./pages/dashboard/Treasury";
 import UpgradePlan from "./pages/UpgradePlan";
 import CompliancePackages from "./pages/CompliancePackages";
 import BlogPost from "./pages/blog/[slug]";
@@ -75,6 +76,7 @@ const AppRoutes = () => {
         <Route index element={<Navigate to="tasks" replace />} />
         <Route path="tasks" element={<Tasks />} />
         <Route path="chat" element={<Chat />} />
+        <Route path="treasury" element={<Treasury />} />
         <Route path="profile" element={<Profile />} />
         <Route path="admin" element={
           <ProtectedRoute adminOnly>
@@ -82,7 +84,6 @@ const AppRoutes = () => {
           </ProtectedRoute>
         } />
       </Route>
-      {/* Redirect /signup to /signup/founder as default */}
       <Route path="/signup" element={<Navigate to="/signup/founder" replace />} />
     </Routes>
   );
