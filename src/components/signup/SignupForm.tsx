@@ -41,8 +41,25 @@ export const SignupForm = ({ userType, title }: SignupFormProps) => {
         throw new Error("Please fill in all required fields");
       }
 
+      // First create the user
+      const { data: authData, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+            user_type: userType,
+          },
+        },
+      });
+
+      if (signUpError) throw signUpError;
+
+      if (!authData.user) throw new Error("No user data returned");
+
+      // Now that we have a user, upload the avatar
       const fileExt = avatarFile.name.split('.').pop();
-      const filePath = `${crypto.randomUUID()}/avatar.${fileExt}`;
+      const filePath = `${authData.user.id}/avatar.${fileExt}`;
 
       const { error: uploadError } = await supabase.storage
         .from('avatars')
@@ -57,19 +74,13 @@ export const SignupForm = ({ userType, title }: SignupFormProps) => {
         .from('avatars')
         .getPublicUrl(filePath);
 
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            full_name: fullName,
-            user_type: userType,
-            avatar_url: publicUrl,
-          },
-        },
-      });
+      // Update the user's profile with the avatar URL
+      const { error: updateError } = await supabase
+        .from("profiles")
+        .update({ avatar_url: publicUrl })
+        .eq("id", authData.user.id);
 
-      if (error) throw error;
+      if (updateError) throw updateError;
 
       toast({
         title: "Success!",
