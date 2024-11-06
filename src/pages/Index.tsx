@@ -38,7 +38,7 @@ const Index = () => {
 
       <main className="flex min-h-screen flex-col items-center gap-20 px-4 pt-[180px] pb-[120px]">
         <div className="flex max-w-[863px] flex-col gap-10">
-          <h1 className="text-[96px] font-extrabold leading-[96px] tracking-tight">
+          <h1 className="text-[96px] font-bold leading-[96px] tracking-tight">
             Connect with Student Talent to{" "}
             <span className="gradient-text">Build Your Next Big Thing</span>
           </h1>
