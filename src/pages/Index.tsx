@@ -38,9 +38,9 @@ const Index = () => {
 
       <main className="flex min-h-screen flex-col items-center gap-20 px-4 pt-[180px] pb-[120px]">
         <div className="flex max-w-[863px] flex-col gap-10">
-          <h1 className="text-[96px] font-bold leading-[96px] tracking-tight">
-            Connect with Student Talent to{" "}
-            <span className="gradient-text">Build Your Next Big Thing</span>
+          <h1 className="text-[80px] font-bold leading-[96px] tracking-tight">
+           Use Maven To Build & Market{" "}
+            <span className="gradient-text">Your Next Big Thing</span>
           </h1>
 
           <div className="flex items-center gap-4">
@@ -57,7 +57,7 @@ const Index = () => {
 
         <div className="relative w-full max-w-[1079px] overflow-hidden rounded-[42px]">
           <img
-            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c"
+            src="/images/screen.png"
             alt="Team Collaboration"
             className="h-auto w-full"
           />
@@ -72,7 +72,7 @@ const Index = () => {
 
           <Card className="absolute left-8 top-[130px] h-[425px] w-[288px] overflow-hidden bg-[rgba(51,51,51,0.8)] backdrop-blur-[40px]">
             <img
-              src="https://images.unsplash.com/photo-1531403009284-440f080d1e12"
+              src="/images/tasks.avif"
               alt="Developer Profile"
               className="h-full w-full object-cover"
             />
