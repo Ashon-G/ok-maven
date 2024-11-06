@@ -9,7 +9,12 @@ const Index = () => {
     <div className="min-h-screen bg-white">
       <header className="fixed top-0 left-0 right-0 z-50 flex h-[100px] items-center justify-between bg-white/80 px-10 backdrop-blur-[40px]">
         <div className="flex items-center gap-2.5">
-          <span className="text-2xl font-bold">Maven<span className="text-secondary">.</span></span>
+          <img
+            src="/maven-logo.svg"
+            alt="Maven Logo"
+            className="h-9 w-9 rounded-xl"
+          />
+          <span className="text-2xl font-bold">Maven</span>
         </div>
 
         <div className="flex items-center gap-8">
@@ -58,11 +63,11 @@ const Index = () => {
           />
 
           <div className="absolute right-7 top-5 h-12 w-[220px] overflow-hidden rounded-full backdrop-blur-[10px]">
-            <div className="bg-secondary/20 h-full w-full" />
+            <div className="bg-black/20 h-full w-full" />
           </div>
 
           <div className="absolute left-5 top-5 h-12 w-12 overflow-hidden rounded-full backdrop-blur-[10px]">
-            <div className="bg-secondary/20 h-full w-full" />
+            <div className="bg-black/20 h-full w-full" />
           </div>
 
           <Card className="absolute left-8 top-[130px] h-[425px] w-[288px] overflow-hidden bg-[rgba(51,51,51,0.8)] backdrop-blur-[40px]">
