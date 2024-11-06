@@ -20,7 +20,8 @@ const Index = () => {
             Login
           </Link>
           <Button
-            className="bg-secondary hover:bg-secondary/90 text-white"
+            className="bg-black/3 hover:bg-black/5"
+            variant="ghost"
             asChild
           >
             <Link to="/signup">
@@ -31,15 +32,15 @@ const Index = () => {
       </header>
 
       <main className="flex min-h-screen flex-col items-center gap-20 px-4 pt-[180px] pb-[120px]">
-        <div className="flex max-w-[863px] flex-col gap-10 text-center">
-          <h1 className="text-[72px] font-bold leading-[1.1] tracking-tight">
+        <div className="flex max-w-[863px] flex-col gap-10">
+          <h1 className="text-[96px] font-bold leading-[96px] tracking-tight">
             Connect with Student Talent to{" "}
             <span className="gradient-text">Build Your Next Big Thing</span>
           </h1>
 
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex items-center gap-4">
             <Button
-              className="h-[63px] w-[225px] bg-secondary hover:bg-secondary/90 text-lg"
+              className="h-[63px] w-[225px] bg-[#1f1f1f] text-lg hover:bg-black"
               asChild
             >
               <Link to="/signup">
@@ -56,7 +57,15 @@ const Index = () => {
             className="h-auto w-full"
           />
 
-          <Card className="absolute left-8 top-[130px] h-[425px] w-[288px] overflow-hidden bg-white/80 backdrop-blur-[40px]">
+          <div className="absolute right-7 top-5 h-12 w-[220px] overflow-hidden rounded-full backdrop-blur-[10px]">
+            <div className="bg-secondary/20 h-full w-full" />
+          </div>
+
+          <div className="absolute left-5 top-5 h-12 w-12 overflow-hidden rounded-full backdrop-blur-[10px]">
+            <div className="bg-secondary/20 h-full w-full" />
+          </div>
+
+          <Card className="absolute left-8 top-[130px] h-[425px] w-[288px] overflow-hidden bg-[rgba(51,51,51,0.8)] backdrop-blur-[40px]">
             <img
               src="https://images.unsplash.com/photo-1531403009284-440f080d1e12"
               alt="Developer Profile"
@@ -77,20 +86,22 @@ const Index = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, i) => (
               <div key={i} className="flex flex-col items-center gap-3">
-                <div className="h-20 w-20 flex items-center justify-center text-4xl text-secondary">
+                <div className="h-20 w-20 flex items-center justify-center text-4xl">
                   {feature.icon}
                 </div>
                 <h3 className="text-center text-2xl font-bold">
                   {feature.title}
                 </h3>
-                <p className="text-center text-muted">{feature.description}</p>
+                <p className="text-center text-muted">
+                  {feature.description}
+                </p>
               </div>
             ))}
           </div>
         </ScrollArea>
 
         <Button
-          className="h-[63px] w-[225px] bg-secondary hover:bg-secondary/90 text-lg"
+          className="h-[63px] w-[225px] bg-[#1f1f1f] text-lg hover:bg-black"
           asChild
         >
           <Link to="/signup">
