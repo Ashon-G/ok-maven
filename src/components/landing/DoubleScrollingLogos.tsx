@@ -35,7 +35,7 @@ const TranslateWrapper = ({
       initial={{ translateX: reverse ? "-100%" : "0%" }}
       animate={{ translateX: reverse ? "0%" : "-100%" }}
       transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
-      className="flex gap-4 px-2"
+      className="flex gap-8 px-4"
     >
       {children}
     </motion.div>
@@ -44,14 +44,9 @@ const TranslateWrapper = ({
 
 const LogoItem = ({ Icon }: { Icon: IconType }) => {
   return (
-    <a
-      href="/"
-      rel="nofollow"
-      target="_blank"
-      className="w-16 md:w-24 h-16 md:h-24 flex justify-center items-center hover:bg-slate-200 text-black transition-colors"
-    >
-      <Icon className="text-4xl md:text-5xl" />
-    </a>
+    <div className="w-20 h-20 md:w-24 md:h-24 flex justify-center items-center hover:bg-slate-200 text-black transition-colors">
+      <Icon className="text-3xl md:text-4xl" />
+    </div>
   );
 };
 
@@ -87,7 +82,7 @@ const LogoItemsBottom = () => (
 
 const DoubleScrollingLogos = () => {
   return (
-    <section className="bg-white py-4">
+    <section className="bg-white py-8">
       <div className="flex overflow-hidden">
         <TranslateWrapper>
           <LogoItemsTop />
@@ -95,14 +90,8 @@ const DoubleScrollingLogos = () => {
         <TranslateWrapper>
           <LogoItemsTop />
         </TranslateWrapper>
-        <TranslateWrapper>
-          <LogoItemsTop />
-        </TranslateWrapper>
       </div>
-      <div className="flex overflow-hidden mt-4">
-        <TranslateWrapper reverse>
-          <LogoItemsBottom />
-        </TranslateWrapper>
+      <div className="flex overflow-hidden mt-8">
         <TranslateWrapper reverse>
           <LogoItemsBottom />
         </TranslateWrapper>
