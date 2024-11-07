@@ -3,29 +3,29 @@ import { CheckCircle } from "lucide-react";
 export const Features = () => {
   const features = [
     {
-      title: "Student Talent Pool",
-      description: "Access pre-vetted, ambitious students from top universities with fresh perspectives and cutting-edge skills",
+      title: "Student Talent",
+      description: "Connect with ambitious student developers and marketers",
       image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c",
     },
     {
       title: "Affordable Rates",
-      description: "Get high-quality development and marketing work at student-friendly prices that work for your startup budget",
+      description: "Get quality work at student-friendly prices",
       image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
     },
     {
-      title: "Flexible Payment Terms",
-      description: "We offer Net 30-90 payment terms for businesses, making it easier to manage your cash flow while scaling your startup",
-      image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f",
+      title: "Fast Development",
+      description: "Launch your projects faster than ever before",
+      image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
     },
     {
-      title: "Full-Stack Support",
-      description: "From product development to growth marketing, our student Mavens cover all aspects of building and launching",
+      title: "Quality Work",
+      description: "Vetted students with proven skills and passion",
       image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
     },
     {
-      title: "Quick Execution",
-      description: "Students bring energy and dedication to ship features fast, helping you validate and iterate quickly",
-      image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
+      title: "Flexible Payment Terms",
+      description: "We offer Net 30-90 payment terms for businesses, making it easier to manage your cash flow",
+      image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f",
     },
   ];
 
