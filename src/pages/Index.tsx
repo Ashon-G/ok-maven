@@ -72,15 +72,15 @@ const Index = () => {
 
           <Card className="absolute left-8 top-[130px] h-[425px] w-[288px] overflow-hidden bg-[rgba(51,51,51,0.8)] backdrop-blur-[40px]">
             <img
-              src="/images/tasks.avif"
+              src="/images/chat.svg"
               alt="Developer Profile"
               className="h-full w-full object-cover"
             />
           </Card>
 
-          <Card className="absolute right-[-36px] top-[77px] h-[282px] w-[280px] overflow-hidden bg-white/80 backdrop-blur-[50px]">
+          <Card className="absolute right-[6px] top-[77px] h-[282px] w-[280px] bg-white/80 backdrop-blur-[50px]">
             <img
-              src="https://images.unsplash.com/photo-1553877522-43269d4ea984"
+              src="/images/board column.svg"
               alt="Project Stats"
               className="h-full w-full object-cover"
             />
