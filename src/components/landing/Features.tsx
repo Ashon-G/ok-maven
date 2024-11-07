@@ -35,17 +35,17 @@ export const Features = () => {
         <h2 className="mb-12 text-center text-4xl font-bold">
           Why Choose <span className="gradient-text">Maven</span>?
         </h2>
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => (
             <div
               key={feature.title}
-              className="group flex flex-col rounded-lg border border-gray-200 p-6 transition-all hover:border-secondary"
+              className="group flex h-full flex-col rounded-lg border border-gray-200 p-6 transition-all hover:border-secondary"
             >
-              <div className="mb-4 overflow-hidden rounded-lg">
+              <div className="mb-4 h-48 overflow-hidden rounded-lg">
                 <img 
                   src={feature.image} 
                   alt={feature.title}
-                  className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
               <CheckCircle className="mb-4 h-8 w-8 text-secondary" />
