@@ -38,7 +38,7 @@ const Index = () => {
           <span className="text-lg font-bold">Maven</span>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           <Link to="/login" className="text-sm font-bold hover:underline">
             Login
           </Link>
@@ -56,19 +56,21 @@ const Index = () => {
 
       <main className="flex min-h-screen flex-col items-center gap-8 pb-8 px-4">
         <div className="pt-24 flex flex-col items-center">
-          <div className="w-full overflow-hidden">
-            <DoubleScrollingLogos />
+          <div className="w-full max-w-full overflow-hidden">
+            <div className="px-4 sm:px-0">
+              <DoubleScrollingLogos />
+            </div>
           </div>
           
-          <div className="flex max-w-[863px] flex-col gap-6 mt-8">
-            <h1 className="text-3xl sm:text-4xl font-bold leading-tight tracking-tight text-center break-words">
+          <div className="flex max-w-[863px] flex-col gap-4 mt-8 px-4">
+            <h1 className="text-2xl sm:text-4xl font-bold leading-tight tracking-tight text-center break-words">
               Use Maven To Build & Market{" "}
               <span className="gradient-text">Your Next Big Thing</span>
             </h1>
 
             <div className="flex items-center justify-center gap-4 flex-wrap">
               <Button
-                className="h-12 w-auto px-6 bg-[#1f1f1f] text-base hover:bg-black"
+                className="h-10 px-4 sm:h-12 sm:px-6 bg-[#1f1f1f] text-sm sm:text-base hover:bg-black w-auto"
                 asChild
               >
                 <Link to="/signup">
@@ -79,7 +81,7 @@ const Index = () => {
             </div>
           </div>
 
-          <div className="relative w-full max-w-[800px] overflow-hidden rounded-lg mt-12 px-4">
+          <div className="relative w-full max-w-[600px] overflow-hidden rounded-lg mt-8 sm:mt-12 px-4">
             <img
               src="/images/screen.png"
               alt="Team Collaboration"
@@ -94,7 +96,7 @@ const Index = () => {
               <div className="bg-black/20 h-full w-full" />
             </div>
 
-            <Card className="absolute left-4 top-[60px] h-[150px] w-[100px] overflow-hidden bg-[rgba(51,51,51,0.8)] backdrop-blur-[40px]">
+            <Card className="absolute left-4 top-[60px] h-[100px] w-[80px] sm:h-[150px] sm:w-[100px] overflow-hidden bg-[rgba(51,51,51,0.8)] backdrop-blur-[40px]">
               <img
                 src="/images/chat.svg"
                 alt="Developer Profile"
@@ -102,7 +104,7 @@ const Index = () => {
               />
             </Card>
 
-            <Card className="absolute right-4 top-[40px] h-[100px] w-[100px] bg-white/80 backdrop-blur-[50px]">
+            <Card className="absolute right-4 top-[40px] h-[80px] w-[80px] sm:h-[100px] sm:w-[100px] bg-white/80 backdrop-blur-[50px]">
               <img
                 src="/images/board column.svg"
                 alt="Project Stats"
@@ -111,16 +113,16 @@ const Index = () => {
             </Card>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-12 w-full max-w-[1000px]">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 sm:mt-12 w-full max-w-[1000px] px-4">
             {features.map((feature, i) => (
-              <div key={i} className="flex flex-col items-center gap-2 p-3">
-                <div className="h-8 w-8 flex items-center justify-center text-xl">
+              <div key={i} className="flex flex-col items-center gap-2 p-2 sm:p-3">
+                <div className="h-6 w-6 sm:h-8 sm:w-8 flex items-center justify-center text-lg sm:text-xl">
                   {feature.icon}
                 </div>
-                <h3 className="text-center text-sm font-bold">
+                <h3 className="text-center text-xs sm:text-sm font-bold">
                   {feature.title}
                 </h3>
-                <p className="text-center text-xs text-muted">
+                <p className="text-center text-[10px] sm:text-xs text-muted">
                   {feature.description}
                 </p>
               </div>
@@ -133,7 +135,7 @@ const Index = () => {
         </div>
 
         <Button
-          className="h-12 w-auto px-6 bg-[#1f1f1f] text-base hover:bg-black"
+          className="h-10 px-4 sm:h-12 sm:px-6 bg-[#1f1f1f] text-sm sm:text-base hover:bg-black w-auto"
           asChild
         >
           <Link to="/signup">
