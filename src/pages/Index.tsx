@@ -11,7 +11,7 @@ const TiltChipLink = () => {
       <a
         href="#"
         rel="nofollow"
-        className="flex origin-top-left items-center rounded-full border border-zinc-900 bg-white p-0.5 text-sm transition-transform hover:-rotate-2"
+        className="flex origin-top-left items-center rounded-full border border-zinc-900 bg-white p-0.5 text-xs sm:text-sm transition-transform hover:-rotate-2"
       >
         <span className="rounded-full bg-[#FF6154] px-2 py-0.5 font-medium text-white">
           HEY!
@@ -27,26 +27,26 @@ const TiltChipLink = () => {
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-white">
-      <header className="fixed top-0 left-0 right-0 z-50 flex h-[70px] md:h-[100px] items-center justify-between bg-white/80 px-4 md:px-10 backdrop-blur-[40px]">
+    <div className="min-h-screen bg-white overflow-x-hidden">
+      <header className="fixed top-0 left-0 right-0 z-50 flex h-16 md:h-[70px] items-center justify-between bg-white/80 px-4 md:px-10 backdrop-blur-[40px]">
         <div className="flex items-center gap-2">
           <img
             src="/maven-logo.svg"
             alt="Maven Logo"
-            className="h-8 w-8 md:h-9 md:w-9 rounded-xl"
+            className="h-8 w-8 rounded-xl"
           />
-          <span className="text-xl md:text-2xl font-bold">Maven</span>
+          <span className="text-lg md:text-2xl font-bold">Maven</span>
         </div>
 
-        <div className="flex items-center gap-4 md:gap-8">
-          <a href="#contact" className="text-base md:text-lg font-bold hover:underline hidden sm:block">
+        <div className="flex items-center gap-2 md:gap-8">
+          <a href="#contact" className="text-sm md:text-lg font-bold hover:underline hidden sm:block">
             Contact
           </a>
-          <Link to="/login" className="text-base md:text-lg font-bold hover:underline">
+          <Link to="/login" className="text-sm md:text-lg font-bold hover:underline">
             Login
           </Link>
           <Button
-            className="bg-black/3 hover:bg-black/5"
+            className="bg-black/3 hover:bg-black/5 text-sm"
             variant="ghost"
             asChild
           >
@@ -57,18 +57,21 @@ const Index = () => {
         </div>
       </header>
 
-      <main className="flex min-h-screen flex-col items-center gap-12 md:gap-20 pb-[60px] md:pb-[120px]">
-        <div className="px-4 pt-[120px] md:pt-[180px] flex flex-col items-center">
-          <DoubleScrollingLogos />
-          <div className="flex max-w-[863px] flex-col gap-6 md:gap-10">
-            <h1 className="text-4xl md:text-6xl lg:text-[80px] font-bold leading-tight md:leading-[96px] tracking-tight text-center">
+      <main className="flex min-h-screen flex-col items-center gap-8 md:gap-20 pb-8 md:pb-[120px]">
+        <div className="px-4 pt-24 md:pt-[180px] flex flex-col items-center">
+          <div className="w-full overflow-hidden">
+            <DoubleScrollingLogos />
+          </div>
+          
+          <div className="flex max-w-[863px] flex-col gap-6 md:gap-10 mt-8 md:mt-16">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-[80px] font-bold leading-tight md:leading-[1.2] tracking-tight text-center px-2">
               Use Maven To Build & Market{" "}
               <span className="gradient-text">Your Next Big Thing</span>
             </h1>
 
-            <div className="flex items-center justify-center gap-4 flex-wrap">
+            <div className="flex items-center justify-center gap-4 flex-wrap px-4">
               <Button
-                className="h-[50px] md:h-[63px] w-full sm:w-[225px] bg-[#1f1f1f] text-base md:text-lg hover:bg-black"
+                className="h-12 md:h-[63px] w-full sm:w-[225px] bg-[#1f1f1f] text-base md:text-lg hover:bg-black"
                 asChild
               >
                 <Link to="/signup">
@@ -79,22 +82,22 @@ const Index = () => {
             </div>
           </div>
 
-          <div className="relative w-full max-w-[1079px] overflow-hidden rounded-[20px] md:rounded-[42px] mt-12 md:mt-20">
+          <div className="relative w-full max-w-[1079px] overflow-hidden rounded-lg md:rounded-[42px] mt-12 md:mt-20 px-4">
             <img
               src="/images/screen.png"
               alt="Team Collaboration"
               className="h-auto w-full"
             />
 
-            <div className="absolute right-4 md:right-7 top-3 md:top-5 h-8 md:h-12 w-[160px] md:w-[220px] overflow-hidden rounded-full backdrop-blur-[10px]">
+            <div className="absolute right-6 top-3 md:top-5 h-6 md:h-12 w-[120px] md:w-[220px] overflow-hidden rounded-full backdrop-blur-[10px]">
               <div className="bg-black/20 h-full w-full" />
             </div>
 
-            <div className="absolute left-3 md:left-5 top-3 md:top-5 h-8 md:h-12 w-8 md:w-12 overflow-hidden rounded-full backdrop-blur-[10px]">
+            <div className="absolute left-6 top-3 md:top-5 h-6 md:h-12 w-6 md:w-12 overflow-hidden rounded-full backdrop-blur-[10px]">
               <div className="bg-black/20 h-full w-full" />
             </div>
 
-            <Card className="absolute left-4 md:left-8 top-[80px] md:top-[130px] h-[300px] md:h-[425px] w-[200px] md:w-[288px] overflow-hidden bg-[rgba(51,51,51,0.8)] backdrop-blur-[40px]">
+            <Card className="absolute left-4 md:left-8 top-[60px] md:top-[130px] h-[200px] md:h-[425px] w-[140px] md:w-[288px] overflow-hidden bg-[rgba(51,51,51,0.8)] backdrop-blur-[40px]">
               <img
                 src="/images/chat.svg"
                 alt="Developer Profile"
@@ -102,7 +105,7 @@ const Index = () => {
               />
             </Card>
 
-            <Card className="absolute right-[6px] top-[50px] md:top-[77px] h-[200px] md:h-[282px] w-[200px] md:w-[280px] bg-white/80 backdrop-blur-[50px]">
+            <Card className="absolute right-4 top-[40px] md:top-[77px] h-[140px] md:h-[282px] w-[140px] md:w-[280px] bg-white/80 backdrop-blur-[50px]">
               <img
                 src="/images/board column.svg"
                 alt="Project Stats"
@@ -113,11 +116,11 @@ const Index = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-4 mt-12 md:mt-20 w-full max-w-[1200px]">
             {features.map((feature, i) => (
-              <div key={i} className="flex flex-col items-center gap-3">
-                <div className="h-16 w-16 md:h-20 md:w-20 flex items-center justify-center text-3xl md:text-4xl">
+              <div key={i} className="flex flex-col items-center gap-3 p-4">
+                <div className="h-12 w-12 md:h-16 md:w-16 flex items-center justify-center text-2xl md:text-3xl">
                   {feature.icon}
                 </div>
-                <h3 className="text-center text-xl md:text-2xl font-bold">
+                <h3 className="text-center text-lg md:text-xl font-bold">
                   {feature.title}
                 </h3>
                 <p className="text-center text-sm md:text-base text-muted">
@@ -133,7 +136,7 @@ const Index = () => {
         </div>
 
         <Button
-          className="h-[50px] md:h-[63px] w-[200px] md:w-[225px] bg-[#1f1f1f] text-base md:text-lg hover:bg-black"
+          className="h-12 md:h-[63px] w-[200px] md:w-[225px] bg-[#1f1f1f] text-base md:text-lg hover:bg-black"
           asChild
         >
           <Link to="/signup">
