@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Link } from "react-router-dom";
 import { FoldingLogos } from "@/components/landing/FoldingLogos";
 import { FiArrowUpRight } from "react-icons/fi";
@@ -112,23 +111,21 @@ const Index = () => {
             </Card>
           </div>
 
-          <ScrollArea className="w-full max-w-[863px] mt-12 md:mt-20">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-4">
-              {features.map((feature, i) => (
-                <div key={i} className="flex flex-col items-center gap-3">
-                  <div className="h-16 w-16 md:h-20 md:w-20 flex items-center justify-center text-3xl md:text-4xl">
-                    {feature.icon}
-                  </div>
-                  <h3 className="text-center text-xl md:text-2xl font-bold">
-                    {feature.title}
-                  </h3>
-                  <p className="text-center text-sm md:text-base text-muted">
-                    {feature.description}
-                  </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-4 mt-12 md:mt-20 w-full max-w-[1200px]">
+            {features.map((feature, i) => (
+              <div key={i} className="flex flex-col items-center gap-3">
+                <div className="h-16 w-16 md:h-20 md:w-20 flex items-center justify-center text-3xl md:text-4xl">
+                  {feature.icon}
                 </div>
-              ))}
-            </div>
-          </ScrollArea>
+                <h3 className="text-center text-xl md:text-2xl font-bold">
+                  {feature.title}
+                </h3>
+                <p className="text-center text-sm md:text-base text-muted">
+                  {feature.description}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="w-full">
