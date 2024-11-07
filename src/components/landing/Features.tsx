@@ -31,11 +31,11 @@ export const Features = () => {
 
   return (
     <section className="bg-white py-24">
-      <div className="container">
+      <div className="container mx-auto px-4">
         <h2 className="mb-12 text-center text-4xl font-bold">
           Why Choose <span className="gradient-text">Maven</span>?
         </h2>
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => (
             <div
               key={feature.title}
