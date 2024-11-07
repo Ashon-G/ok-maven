@@ -13,6 +13,11 @@ export const Features = () => {
       image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
     },
     {
+      title: "Flexible Payment Terms",
+      description: "We offer Net 30-90 payment terms for businesses, making it easier to manage your cash flow while scaling your startup",
+      image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f",
+    },
+    {
       title: "Full-Stack Support",
       description: "From product development to growth marketing, our student Mavens cover all aspects of building and launching",
       image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
@@ -30,7 +35,7 @@ export const Features = () => {
         <h2 className="mb-12 text-center text-4xl font-bold">
           Why Choose <span className="gradient-text">Maven</span>?
         </h2>
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => (
             <div
               key={feature.title}
