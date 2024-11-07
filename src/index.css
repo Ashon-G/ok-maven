@@ -26,8 +26,10 @@
     --radius: 0.75rem;
   }
 
-  html, body {
-    @apply no-scrollbar overflow-x-hidden;
+  @media (max-width: 640px) {
+    html, body {
+      @apply no-scrollbar overflow-x-hidden;
+    }
   }
 }
 
