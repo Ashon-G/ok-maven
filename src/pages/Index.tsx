@@ -3,6 +3,27 @@ import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Link } from "react-router-dom";
 import { FoldingLogos } from "@/components/landing/FoldingLogos";
+import { FiArrowUpRight } from "react-icons/fi";
+
+const TiltChipLink = () => {
+  return (
+    <div className="mb-1.5 w-fit rounded-full bg-zinc-600">
+      <a
+        href="#"
+        rel="nofollow"
+        className="flex origin-top-left items-center rounded-full border border-zinc-900 bg-white p-0.5 text-sm transition-transform hover:-rotate-2"
+      >
+        <span className="rounded-full bg-[#FF6154] px-2 py-0.5 font-medium text-white">
+          HEY!
+        </span>
+        <span className="ml-1.5 mr-1 inline-block">
+          We're live on Product Hunt!
+        </span>
+        <FiArrowUpRight className="mr-2 inline-block" />
+      </a>
+    </div>
+  );
+};
 
 const Index = () => {
   return (
@@ -44,7 +65,7 @@ const Index = () => {
               <span className="gradient-text">Your Next Big Thing</span>
             </h1>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 flex-wrap">
               <Button
                 className="h-[63px] w-[225px] bg-[#1f1f1f] text-lg hover:bg-black"
                 asChild
@@ -53,6 +74,7 @@ const Index = () => {
                   Start Building Today
                 </Link>
               </Button>
+              <TiltChipLink />
             </div>
           </div>
 
