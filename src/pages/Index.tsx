@@ -4,6 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Link } from "react-router-dom";
 import { FoldingLogos } from "@/components/landing/FoldingLogos";
 import { FiArrowUpRight } from "react-icons/fi";
+import DoubleScrollingLogos from "@/components/landing/DoubleScrollingLogos";
 
 const TiltChipLink = () => {
   return (
@@ -59,6 +60,7 @@ const Index = () => {
 
       <main className="flex min-h-screen flex-col items-center gap-20 pb-[120px]">
         <div className="px-4 pt-[180px] flex flex-col items-center">
+          <DoubleScrollingLogos />
           <div className="flex max-w-[863px] flex-col gap-10">
             <h1 className="text-[80px] font-bold leading-[96px] tracking-tight">
               Use Maven To Build & Market{" "}
