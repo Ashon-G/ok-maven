@@ -36,26 +36,27 @@ const Index = () => {
         </div>
       </header>
 
-      <main className="flex min-h-screen flex-col items-center gap-20 px-4 pt-[180px] pb-[120px]">
-        <div className="flex max-w-[863px] flex-col gap-10">
-          <h1 className="text-[80px] font-bold leading-[96px] tracking-tight">
-           Use Maven To Build & Market{" "}
-            <span className="gradient-text">Your Next Big Thing</span>
-          </h1>
+      <main className="flex min-h-screen flex-col items-center gap-20 pb-[120px]">
+        <div className="px-4 pt-[180px] flex flex-col items-center">
+          <div className="flex max-w-[863px] flex-col gap-10">
+            <h1 className="text-[80px] font-bold leading-[96px] tracking-tight">
+              Use Maven To Build & Market{" "}
+              <span className="gradient-text">Your Next Big Thing</span>
+            </h1>
 
-          <div className="flex items-center gap-4">
-            <Button
-              className="h-[63px] w-[225px] bg-[#1f1f1f] text-lg hover:bg-black"
-              asChild
-            >
-              <Link to="/signup">
-                Start Building Today
-              </Link>
-            </Button>
+            <div className="flex items-center gap-4">
+              <Button
+                className="h-[63px] w-[225px] bg-[#1f1f1f] text-lg hover:bg-black"
+                asChild
+              >
+                <Link to="/signup">
+                  Start Building Today
+                </Link>
+              </Button>
+            </div>
           </div>
-        </div>
 
-        <div className="relative w-full max-w-[1079px] overflow-hidden rounded-[42px]">
+          <div className="relative w-full max-w-[1079px] overflow-hidden rounded-[42px] mt-20">
           <img
             src="/images/screen.png"
             alt="Team Collaboration"
@@ -85,11 +86,11 @@ const Index = () => {
               className="h-full w-full object-cover"
             />
           </Card>
-        </div>
+          </div>
 
-        <ScrollArea className="w-full max-w-[863px]">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, i) => (
+          <ScrollArea className="w-full max-w-[863px] mt-20">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {features.map((feature, i) => (
               <div key={i} className="flex flex-col items-center gap-3">
                 <div className="h-20 w-20 flex items-center justify-center text-4xl">
                   {feature.icon}
@@ -101,11 +102,14 @@ const Index = () => {
                   {feature.description}
                 </p>
               </div>
-            ))}
-          </div>
-        </ScrollArea>
+              ))}
+            </div>
+          </ScrollArea>
+        </div>
 
-        <FoldingLogos />
+        <div className="w-full">
+          <FoldingLogos />
+        </div>
 
         <Button
           className="h-[63px] w-[225px] bg-[#1f1f1f] text-lg hover:bg-black"
