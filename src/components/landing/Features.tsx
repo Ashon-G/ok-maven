@@ -30,7 +30,7 @@ export const Features = () => {
   ];
 
   return (
-    <section className="bg-white py-24">
+    <section className="w-full bg-white py-24">
       <div className="container mx-auto px-4">
         <h2 className="mb-12 text-center text-4xl font-bold">
           Why Choose <span className="gradient-text">Maven</span>?
@@ -39,7 +39,7 @@ export const Features = () => {
           {features.map((feature) => (
             <div
               key={feature.title}
-              className="group rounded-lg border border-gray-200 p-6 transition-all hover:border-secondary"
+              className="group flex flex-col rounded-lg border border-gray-200 p-6 transition-all hover:border-secondary"
             >
               <div className="mb-4 overflow-hidden rounded-lg">
                 <img 
