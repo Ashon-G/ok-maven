@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Link } from "react-router-dom";
-import { Footer } from "@/components/layout/Footer";
 
 const Index = () => {
   return (
@@ -113,8 +112,6 @@ const Index = () => {
             Get Started Now
           </Link>
         </Button>
-
-        <Footer />
       </main>
     </div>
   );
