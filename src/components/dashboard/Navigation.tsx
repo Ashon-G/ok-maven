@@ -44,7 +44,7 @@ export const NavLinks = ({ isAdmin, setOpen }: NavigationProps) => (
 );
 
 export const MobileNavLinks = ({ isAdmin }: { isAdmin: boolean }) => (
-  <div className="fixed bottom-0 left-0 right-0 z-50 hidden justify-around border-t border-gray-200 bg-white p-2 md:hidden">
+  <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-around border-t border-gray-200 bg-white p-2 md:hidden">
     <NavLink
       to="tasks"
       className={({ isActive }) =>

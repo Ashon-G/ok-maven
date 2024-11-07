@@ -25,6 +25,10 @@
     --ring: 222.2 84% 4.9%;
     --radius: 0.75rem;
   }
+
+  html, body {
+    @apply no-scrollbar overflow-x-hidden;
+  }
 }
 
 @layer components {
