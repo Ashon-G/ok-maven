@@ -7,19 +7,17 @@ import DoubleScrollingLogos from "@/components/landing/DoubleScrollingLogos";
 
 const TiltChipLink = () => {
   return (
-    <div className="mb-1.5 w-fit rounded-full bg-zinc-600">
+    <div className="rounded-full bg-zinc-600">
       <a
         href="#"
         rel="nofollow"
-        className="flex origin-top-left items-center rounded-full border border-zinc-900 bg-white p-0.5 text-xs transition-transform hover:-rotate-2"
+        className="flex items-center rounded-full border border-zinc-900 bg-white p-0.5 text-xs"
       >
         <span className="rounded-full bg-[#FF6154] px-2 py-0.5 font-medium text-white">
           HEY!
         </span>
-        <span className="ml-1.5 mr-1 inline-block">
-          We're live on Product Hunt!
-        </span>
-        <FiArrowUpRight className="mr-2 inline-block" />
+        <span className="mx-2">We're live on Product Hunt!</span>
+        <FiArrowUpRight className="mr-2" />
       </a>
     </div>
   );
@@ -28,119 +26,79 @@ const TiltChipLink = () => {
 const Index = () => {
   return (
     <div className="min-h-screen bg-white">
-      <header className="fixed top-0 left-0 right-0 z-50 flex h-16 items-center justify-between bg-white/80 px-4 backdrop-blur-[40px]">
+      <header className="fixed top-0 left-0 right-0 z-50 flex h-16 items-center justify-between border-b bg-white/80 px-4 backdrop-blur-md">
         <div className="flex items-center gap-2">
-          <img
-            src="/maven-logo.svg"
-            alt="Maven Logo"
-            className="h-6 w-6 rounded-lg"
-          />
-          <span className="text-lg font-bold">Maven</span>
+          <img src="/maven-logo.svg" alt="Maven Logo" className="h-6 w-6" />
+          <span className="font-bold">Maven</span>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Link to="/login" className="text-sm font-bold hover:underline">
-            Login
-          </Link>
-          <Button
-            className="bg-black/3 hover:bg-black/5 text-sm"
-            variant="ghost"
-            asChild
-          >
-            <Link to="/signup">
-              Get Started
-            </Link>
+        <div className="flex items-center gap-4">
+          <Link to="/login" className="text-sm hover:underline">Login</Link>
+          <Button variant="ghost" asChild>
+            <Link to="/signup">Get Started</Link>
           </Button>
         </div>
       </header>
 
-      <main className="flex min-h-screen flex-col items-center gap-8 pb-8 px-4">
-        <div className="pt-24 flex flex-col items-center">
-          <div className="w-full max-w-full overflow-hidden">
-            <div className="px-4 sm:px-0">
-              <DoubleScrollingLogos />
-            </div>
-          </div>
-          
-          <div className="flex max-w-[863px] flex-col gap-4 mt-8 px-4">
-            <h1 className="text-2xl sm:text-4xl font-bold leading-tight tracking-tight text-center break-words">
-              Use Maven To Build & Market{" "}
-              <span className="gradient-text">Your Next Big Thing</span>
-            </h1>
+      <main className="container mx-auto flex flex-col items-center px-4 pt-24">
+        <DoubleScrollingLogos />
+        
+        <div className="mt-12 max-w-2xl text-center">
+          <h1 className="mb-6 text-3xl font-bold md:text-4xl">
+            Use Maven To Build & Market{" "}
+            <span className="gradient-text">Your Next Big Thing</span>
+          </h1>
 
-            <div className="flex items-center justify-center gap-4 flex-wrap">
-              <Button
-                className="h-10 px-4 sm:h-12 sm:px-6 bg-[#1f1f1f] text-sm sm:text-base hover:bg-black w-auto"
-                asChild
-              >
-                <Link to="/signup">
-                  Start Building Today
-                </Link>
-              </Button>
-              <TiltChipLink />
-            </div>
-          </div>
-
-          <div className="relative w-full max-w-[600px] overflow-hidden rounded-lg mt-8 sm:mt-12 px-4">
-            <img
-              src="/images/screen.png"
-              alt="Team Collaboration"
-              className="h-auto w-full"
-            />
-
-            <div className="absolute right-4 top-3 h-6 w-[100px] overflow-hidden rounded-full backdrop-blur-[10px]">
-              <div className="bg-black/20 h-full w-full" />
-            </div>
-
-            <div className="absolute left-4 top-3 h-6 w-6 overflow-hidden rounded-full backdrop-blur-[10px]">
-              <div className="bg-black/20 h-full w-full" />
-            </div>
-
-            <Card className="absolute left-4 top-[60px] h-[100px] w-[80px] sm:h-[150px] sm:w-[100px] overflow-hidden bg-[rgba(51,51,51,0.8)] backdrop-blur-[40px]">
-              <img
-                src="/images/chat.svg"
-                alt="Developer Profile"
-                className="h-full w-full object-cover"
-              />
-            </Card>
-
-            <Card className="absolute right-4 top-[40px] h-[80px] w-[80px] sm:h-[100px] sm:w-[100px] bg-white/80 backdrop-blur-[50px]">
-              <img
-                src="/images/board column.svg"
-                alt="Project Stats"
-                className="h-full w-full object-cover"
-              />
-            </Card>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 sm:mt-12 w-full max-w-[1000px] px-4">
-            {features.map((feature, i) => (
-              <div key={i} className="flex flex-col items-center gap-2 p-2 sm:p-3">
-                <div className="h-6 w-6 sm:h-8 sm:w-8 flex items-center justify-center text-lg sm:text-xl">
-                  {feature.icon}
-                </div>
-                <h3 className="text-center text-xs sm:text-sm font-bold">
-                  {feature.title}
-                </h3>
-                <p className="text-center text-[10px] sm:text-xs text-muted">
-                  {feature.description}
-                </p>
-              </div>
-            ))}
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <Button className="bg-primary hover:bg-primary/90" asChild>
+              <Link to="/signup">Start Building Today</Link>
+            </Button>
+            <TiltChipLink />
           </div>
         </div>
 
-        <div className="w-full">
+        <div className="relative mt-12 w-full max-w-xl">
+          <img
+            src="/images/screen.png"
+            alt="Team Collaboration"
+            className="w-full rounded-lg"
+          />
+
+          <Card className="absolute left-4 top-12 h-24 w-20 overflow-hidden bg-black/80 backdrop-blur-md md:h-32 md:w-24">
+            <img
+              src="/images/chat.svg"
+              alt="Developer Profile"
+              className="h-full w-full object-cover"
+            />
+          </Card>
+
+          <Card className="absolute right-4 top-8 h-20 w-20 bg-white/80 backdrop-blur-md md:h-24 md:w-24">
+            <img
+              src="/images/board column.svg"
+              alt="Project Stats"
+              className="h-full w-full object-cover"
+            />
+          </Card>
+        </div>
+
+        <div className="mt-12 grid w-full max-w-4xl grid-cols-2 gap-6 md:grid-cols-4">
+          {features.map((feature, i) => (
+            <div key={i} className="text-center">
+              <div className="mx-auto mb-3 h-8 w-8 text-xl">
+                {feature.icon}
+              </div>
+              <h3 className="mb-2 font-semibold">{feature.title}</h3>
+              <p className="text-sm text-muted">{feature.description}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="my-12 w-full">
           <FoldingLogos />
         </div>
 
-        <Button
-          className="h-10 px-4 sm:h-12 sm:px-6 bg-[#1f1f1f] text-sm sm:text-base hover:bg-black w-auto"
-          asChild
-        >
-          <Link to="/signup">
-            Get Started Now
-          </Link>
+        <Button className="mb-12 bg-primary hover:bg-primary/90" asChild>
+          <Link to="/signup">Get Started Now</Link>
         </Button>
       </main>
     </div>
