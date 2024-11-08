@@ -23,6 +23,13 @@ const TiltChipLink = () => {
   );
 };
 
+const FeatureCard = ({ title, description }: { title: string; description: string }) => (
+  <Card className="p-6 hover:shadow-lg transition-shadow">
+    <h3 className="text-xl font-semibold mb-3">{title}</h3>
+    <p className="text-muted-foreground">{description}</p>
+  </Card>
+);
+
 const Index = () => {
   return (
     <div className="min-h-screen bg-white">
@@ -81,17 +88,58 @@ const Index = () => {
           </Card>
         </div>
 
-        <div className="mt-12 grid w-full max-w-4xl grid-cols-2 gap-6 md:grid-cols-4">
-          {features.map((feature, i) => (
-            <div key={i} className="text-center">
-              <div className="mx-auto mb-3 h-8 w-8 text-xl">
-                {feature.icon}
-              </div>
-              <h3 className="mb-2 font-semibold">{feature.title}</h3>
-              <p className="text-sm text-muted">{feature.description}</p>
+        {/* New Content Section */}
+        <section className="py-24 w-full bg-slate-50 mt-24">
+          <div className="container mx-auto">
+            <div className="max-w-3xl mx-auto text-center mb-16">
+              <h2 className="text-4xl font-bold mb-6">
+                You Define the Project, <span className="gradient-text">We Handle the Rest</span>
+              </h2>
+              <p className="text-lg text-muted-foreground mb-8">
+                Once your project goals are set, our team of experts takes over the design, management, and support, allowing you to focus on what you do best. Enjoy the exciting parts like guest lectures and engaging with mavens, while we curate the best results for you.
+              </p>
+              <p className="text-lg text-muted-foreground">
+                Our programs are fully customizable to fit your needs—just let us know what you want, and we'll take care of the details!
+              </p>
             </div>
-          ))}
-        </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <FeatureCard
+                title="Dedicated Program Manager"
+                description="An experienced manager oversees the entire project, provides maven support, and handles all administrative tasks—so you don't have to."
+              />
+              <FeatureCard
+                title="Scale Effortlessly"
+                description="Engage hundreds of mavens in a fraction of the time it takes to manage a single intern."
+              />
+              <FeatureCard
+                title="Tailored Maven Selection"
+                description="Our dedicated recruiting team finds and selects the perfect mavens based on your team's specific needs."
+              />
+              <FeatureCard
+                title="Comprehensive Support"
+                description="Mavens receive thorough training, mentorship, and ongoing support from teaching assistants."
+              />
+              <FeatureCard
+                title="Curated Results"
+                description="We sift through the work to present you with the best outputs, tailored to your project's goals."
+              />
+              <FeatureCard
+                title="Real-Time Progress Tracking"
+                description="A centralized hub gives you full visibility into project progress and maven performance, with actionable insights and data at your fingertips."
+              />
+            </div>
+
+            <div className="text-center mt-12">
+              <p className="text-xl font-medium text-muted-foreground mb-8">
+                Let us manage the logistics so you can enjoy the impact.
+              </p>
+              <Button className="bg-secondary hover:bg-secondary/90" size="lg" asChild>
+                <Link to="/signup">Get Started Now</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
 
         <div className="my-12 w-full">
           <FoldingLogos />
@@ -104,40 +152,5 @@ const Index = () => {
     </div>
   );
 };
-
-const features = [
-  {
-    title: "Student Talent",
-    description: "Connect with ambitious student developers and marketers",
-    icon: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-8">
-      <path d="M5.223 2.25c-.497 0-.974.198-1.325.55l-1.3 1.298A3.75 3.75 0 0 0 7.5 9.75c.627.47 1.406.75 2.25.75.844 0 1.624-.28 2.25-.75.626.47 1.406.75 2.25.75.844 0 1.623-.28 2.25-.75a3.75 3.75 0 0 0 4.902-5.652l-1.3-1.299a1.875 1.875 0 0 0-1.325-.549H5.223Z" />
-      <path fillRule="evenodd" d="M3 20.25v-8.755c1.42.674 3.08.673 4.5 0A5.234 5.234 0 0 0 9.75 12c.804 0 1.568-.182 2.25-.506a5.234 5.234 0 0 0 2.25.506c.804 0 1.567-.182 2.25-.506 1.42.674 3.08.675 4.5.001v8.755h.75a.75.75 0 0 1 0 1.5H2.25a.75.75 0 0 1 0-1.5H3Zm3-6a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-.75.75h-3a.75.75 0 0 1-.75-.75v-3Zm8.25-.75a.75.75 0 0 0-.75.75v5.25c0 .414.336.75.75.75h3a.75.75 0 0 0 .75-.75v-5.25a.75.75 0 0 0-.75-.75h-3Z" clipRule="evenodd" />
-    </svg>,
-  },
-  {
-    title: "Affordable Rates",
-    description: "Get quality work at student-friendly prices",
-    icon: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-8">
-      <path d="M12 7.5a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" />
-      <path fillRule="evenodd" d="M1.5 4.875C1.5 3.839 2.34 3 3.375 3h17.25c1.035 0 1.875.84 1.875 1.875v9.75c0 1.036-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 0 1 1.5 14.625v-9.75ZM8.25 9.75a3.75 3.75 0 1 1 7.5 0 3.75 3.75 0 0 1-7.5 0ZM18.75 9a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75V9.75a.75.75 0 0 0-.75-.75h-.008ZM4.5 9.75A.75.75 0 0 1 5.25 9h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H5.25a.75.75 0 0 1-.75-.75V9.75Z" clipRule="evenodd" />
-      <path d="M2.25 18a.75.75 0 0 0 0 1.5c5.4 0 10.63.722 15.6 2.075 1.19.324 2.4-.558 2.4-1.82V18.75a.75.75 0 0 0-.75-.75H2.25Z" />
-    </svg>,
-  },
-  {
-    title: "Fast Development",
-    description: "Launch your projects faster than ever before",
-    icon: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-8">
-      <path fillRule="evenodd" d="M9.315 7.584C12.195 3.883 16.695 1.5 21.75 1.5a.75.75 0 0 1 .75.75c0 5.056-2.383 9.555-6.084 12.436A6.75 6.75 0 0 1 9.75 22.5a.75.75 0 0 1-.75-.75v-4.131A15.838 15.838 0 0 1 6.382 15H2.25a.75.75 0 0 1-.75-.75 6.75 6.75 0 0 1 7.815-6.666ZM15 6.75a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" clipRule="evenodd" />
-      <path d="M5.26 17.242a.75.75 0 1 0-.897-1.203 5.243 5.243 0 0 0-2.05 5.022.75.75 0 0 0 .625.627 5.243 5.243 0 0 0 5.022-2.051.75.75 0 1 0-1.202-.897 3.744 3.744 0 0 1-3.008 1.51c0-1.23.592-2.323 1.51-3.008Z" />
-    </svg>,
-  },
-  {
-    title: "Quality Work",
-    description: "Vetted students with proven skills and passion",
-    icon: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-8">
-      <path fillRule="evenodd" d="M9 4.5a.75.75 0 0 1 .721.544l.813 2.846a3.75 3.75 0 0 0 2.576 2.576l2.846.813a.75.75 0 0 1 0 1.442l-2.846.813a3.75 3.75 0 0 0-2.576 2.576l-.813 2.846a.75.75 0 0 1-1.442 0l-.813-2.846a3.75 3.75 0 0 0-2.576-2.576l-2.846-.813a.75.75 0 0 1 0-1.442l2.846-.813A3.75 3.75 0 0 0 7.466 7.89l.813-2.846A.75.75 0 0 1 9 4.5ZM18 1.5a.75.75 0 0 1 .728.568l.258 1.036c.236.94.97 1.674 1.91 1.91l1.036.258a.75.75 0 0 1 0 1.456l-1.036.258c-.94.236-1.674.97-1.91 1.91l-.258 1.036a.75.75 0 0 1-1.456 0l-.258-1.036a2.625 2.625 0 0 0-1.91-1.91l-1.036-.258a.75.75 0 0 1 0-1.456l1.036-.258a2.625 2.625 0 0 0 1.91-1.91l.258-1.036A.75.75 0 0 1 18 1.5ZM16.5 15a.75.75 0 0 1 .712.513l.394 1.183c.15.447.5.799.948.948l1.183.395a.75.75 0 0 1 0 1.422l-1.183.395c-.447.15-.799.5-.948.948l-.395 1.183a.75.75 0 0 1-1.422 0l-.395-1.183a1.5 1.5 0 0 0-.948-.948l-1.183-.395a.75.75 0 0 1 0-1.422l1.183-.395c.447-.15.799-.5.948-.948l.395-1.183A.75.75 0 0 1 16.5 15Z" clipRule="evenodd" />
-    </svg>,
-  },
-];
 
 export default Index;
