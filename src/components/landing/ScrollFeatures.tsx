@@ -90,8 +90,8 @@ const Content = ({
           <span className="rounded-full bg-secondary px-2 py-1.5 text-xs font-medium text-white">
             {featureInView.callout}
           </span>
-          <p className="my-3 text-5xl font-bold">{featureInView.title}</p>
-          <p className="text-slate-600">{featureInView.description}</p>
+          <p className="my-3 text-5xl font-bold text-black">{featureInView.title}</p>
+          <p className="text-black/80">{featureInView.description}</p>
         </motion.div>
       </div>
     </section>
@@ -112,7 +112,7 @@ const ExampleFeature = ({ featureInView }: { featureInView: FeatureType }) => {
           {featureInView.description}
         </p>
       </div>
-      <span className="absolute left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] text-9xl text-slate-700">
+      <span className="absolute left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] text-9xl text-black">
         <featureInView.Icon />
       </span>
     </div>

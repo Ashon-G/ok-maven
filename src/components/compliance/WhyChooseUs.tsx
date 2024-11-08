@@ -22,16 +22,16 @@ const benefits = [
 
 export const WhyChooseUs = () => (
   <div className="mt-12 bg-secondary/5 rounded-xl p-8 max-w-3xl mx-auto">
-    <h3 className="text-xl font-semibold mb-4 text-center">
+    <h3 className="text-xl font-semibold mb-4 text-center text-black">
       Why Choose Our Compliance Support?
     </h3>
     <div className="grid gap-6 md:grid-cols-2">
       {benefits.map((benefit) => (
         <div key={benefit.title} className="flex items-start gap-3">
-          <Check className="h-5 w-5 text-secondary mt-1 flex-shrink-0" />
+          <Check className="h-5 w-5 text-black mt-1 flex-shrink-0" />
           <div>
             <p className="font-medium text-black">{benefit.title}</p>
-            <p className="text-sm text-black">
+            <p className="text-sm text-black/80">
               {benefit.description}
             </p>
           </div>
