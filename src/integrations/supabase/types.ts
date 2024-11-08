@@ -57,22 +57,40 @@ export type Database = {
       }
       founder_projects: {
         Row: {
+          budget: string | null
           created_at: string
           description: string
           founder_id: string
+          goals: string[] | null
           id: string
+          status: Database["public"]["Enums"]["project_status_enum"]
+          target_audience: string | null
+          timeline: string | null
+          title: string
         }
         Insert: {
+          budget?: string | null
           created_at?: string
           description: string
           founder_id: string
+          goals?: string[] | null
           id?: string
+          status?: Database["public"]["Enums"]["project_status_enum"]
+          target_audience?: string | null
+          timeline?: string | null
+          title?: string
         }
         Update: {
+          budget?: string | null
           created_at?: string
           description?: string
           founder_id?: string
+          goals?: string[] | null
           id?: string
+          status?: Database["public"]["Enums"]["project_status_enum"]
+          target_audience?: string | null
+          timeline?: string | null
+          title?: string
         }
         Relationships: [
           {
@@ -330,6 +348,7 @@ export type Database = {
         | "Accounting"
         | "Sales"
         | "Other"
+      project_status_enum: "draft" | "active" | "completed" | "archived"
       subscription_status: "active" | "canceled" | "past_due" | "incomplete"
       user_type_enum: "founder" | "maven" | "admin"
     }
