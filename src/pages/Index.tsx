@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { FoldingLogos } from "@/components/landing/FoldingLogos";
 import { FiArrowUpRight } from "react-icons/fi";
 import DoubleScrollingLogos from "@/components/landing/DoubleScrollingLogos";
+import { Store, DollarSign, Rocket, Sparkles } from "lucide-react";
 
 const TiltChipLink = () => {
   return (
@@ -96,44 +97,45 @@ const Index = () => {
                 You Define the Project, <span className="gradient-text">We Handle the Rest</span>
               </h2>
               <p className="text-lg text-muted-foreground mb-8">
-                Once your project goals are set, our team of experts takes over the design, management, and support, allowing you to focus on what you do best. Enjoy the exciting parts like guest lectures and engaging with mavens, while we curate the best results for you.
-              </p>
-              <p className="text-lg text-muted-foreground">
-                Our programs are fully customizable to fit your needs—just let us know what you want, and we'll take care of the details!
+                Once your project goals are set, our team of experts takes over the design, management, and support, allowing you to focus on what you do best.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <FeatureCard
-                title="Dedicated Program Manager"
-                description="An experienced manager oversees the entire project, provides maven support, and handles all administrative tasks—so you don't have to."
-              />
-              <FeatureCard
-                title="Scale Effortlessly"
-                description="Engage hundreds of mavens in a fraction of the time it takes to manage a single intern."
-              />
-              <FeatureCard
-                title="Tailored Maven Selection"
-                description="Our dedicated recruiting team finds and selects the perfect mavens based on your team's specific needs."
-              />
-              <FeatureCard
-                title="Comprehensive Support"
-                description="Mavens receive thorough training, mentorship, and ongoing support from teaching assistants."
-              />
-              <FeatureCard
-                title="Curated Results"
-                description="We sift through the work to present you with the best outputs, tailored to your project's goals."
-              />
-              <FeatureCard
-                title="Real-Time Progress Tracking"
-                description="A centralized hub gives you full visibility into project progress and maven performance, with actionable insights and data at your fingertips."
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+              <div className="text-center">
+                <div className="flex justify-center mb-4">
+                  <Store className="w-12 h-12 text-secondary" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2">Student Talent</h3>
+                <p className="text-muted-foreground">Connect with ambitious student developers and marketers</p>
+              </div>
+
+              <div className="text-center">
+                <div className="flex justify-center mb-4">
+                  <DollarSign className="w-12 h-12 text-secondary" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2">Affordable Rates</h3>
+                <p className="text-muted-foreground">Get quality work at student-friendly prices</p>
+              </div>
+
+              <div className="text-center">
+                <div className="flex justify-center mb-4">
+                  <Rocket className="w-12 h-12 text-secondary" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2">Fast Development</h3>
+                <p className="text-muted-foreground">Launch your projects faster than ever before</p>
+              </div>
+
+              <div className="text-center">
+                <div className="flex justify-center mb-4">
+                  <Sparkles className="w-12 h-12 text-secondary" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2">Quality Work</h3>
+                <p className="text-muted-foreground">Vetted students with proven skills and passion</p>
+              </div>
             </div>
 
-            <div className="text-center mt-12">
-              <p className="text-xl font-medium text-muted-foreground mb-8">
-                Let us manage the logistics so you can enjoy the impact.
-              </p>
+            <div className="text-center">
               <Button className="bg-secondary hover:bg-secondary/90" size="lg" asChild>
                 <Link to="/signup">Get Started Now</Link>
               </Button>
