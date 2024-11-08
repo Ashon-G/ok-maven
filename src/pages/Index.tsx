@@ -88,7 +88,7 @@ const Index = () => {
           </Card>
         </div>
 
-        {/* New Content Section */}
+        {/* Features Section */}
         <section className="py-24 w-full bg-slate-50 mt-24">
           <div className="container mx-auto">
             <div className="max-w-3xl mx-auto text-center mb-16">
