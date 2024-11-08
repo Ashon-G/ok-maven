@@ -55,6 +55,35 @@ export type Database = {
           },
         ]
       }
+      founder_projects: {
+        Row: {
+          created_at: string
+          description: string
+          founder_id: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          founder_id: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          founder_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "founder_projects_founder_id_fkey"
+            columns: ["founder_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       jira_integrations: {
         Row: {
           api_token: string
