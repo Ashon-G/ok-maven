@@ -83,8 +83,6 @@ const Index = () => {
           </Card>
         </div>
 
-        <BenefitsGrid />
-
         <div className="mt-12 grid w-full max-w-4xl grid-cols-2 gap-6 md:grid-cols-4">
           {features.map((feature, i) => (
             <div key={i} className="text-center">
@@ -108,6 +106,8 @@ const Index = () => {
         <Button className="mb-12 bg-primary hover:bg-primary/90" asChild>
           <Link to="/signup">Get Started Now</Link>
         </Button>
+
+        <BenefitsGrid />
       </main>
     </div>
   );
