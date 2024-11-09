@@ -22,19 +22,25 @@ export const GenerateTasksButton = ({ projectId, founderId }: GenerateTasksButto
         body: { projectId, founderId },
       });
 
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
+
+      if (!data?.tasks) {
+        throw new Error('No tasks were generated');
+      }
 
       await queryClient.invalidateQueries({ queryKey: ['tasks'] });
       
       toast({
         title: "Tasks Generated",
-        description: "AI has created new tasks for your project.",
+        description: `Successfully created ${data.tasks.length} tasks for your project.`,
       });
     } catch (error) {
       console.error('Error generating tasks:', error);
       toast({
         title: "Error",
-        description: "Failed to generate tasks. Please try again.",
+        description: error.message || "Failed to generate tasks. Please try again.",
         variant: "destructive",
       });
     } finally {

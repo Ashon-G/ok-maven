@@ -15,12 +15,22 @@ serve(async (req) => {
 
   try {
     const { projectId, founderId } = await req.json();
-    console.log('Received request for project:', projectId, 'from founder:', founderId);
+    console.log('Starting task generation for project:', projectId, 'founder:', founderId);
+
+    if (!projectId || !founderId) {
+      throw new Error('Project ID and Founder ID are required');
+    }
 
     // Initialize Supabase client
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+
+    if (!supabaseUrl || !supabaseKey) {
+      throw new Error('Missing Supabase configuration');
+    }
+
     const supabase = createClient(supabaseUrl, supabaseKey);
+    console.log('Supabase client initialized');
 
     // Fetch project details
     const { data: project, error: projectError } = await supabase
@@ -31,15 +41,23 @@ serve(async (req) => {
 
     if (projectError) {
       console.error('Error fetching project:', projectError);
-      throw projectError;
+      throw new Error(`Failed to fetch project: ${projectError.message}`);
     }
 
     if (!project?.description) {
       throw new Error('Project description is required');
     }
 
+    console.log('Project fetched successfully:', project.title);
+
     // Initialize HuggingFace client
-    const hf = new HfInference(Deno.env.get('HUGGING_FACE_ACCESS_TOKEN'));
+    const hfToken = Deno.env.get('HUGGING_FACE_ACCESS_TOKEN');
+    if (!hfToken) {
+      throw new Error('Missing Hugging Face access token');
+    }
+
+    const hf = new HfInference(hfToken);
+    console.log('HuggingFace client initialized');
 
     // Create a structured prompt
     const prompt = `As a project manager, analyze this project and create 3-5 specific, actionable tasks:
@@ -57,10 +75,11 @@ Generate tasks in this exact JSON format:
 
 Make tasks specific, actionable, and focused on project implementation.`;
 
+    console.log('Sending prompt to HuggingFace');
+
     try {
-      // Use text generation with a larger model
       const result = await hf.textGeneration({
-        model: "bigscience/bloomz-560m", // A good balance between quality and speed
+        model: "bigscience/bloomz-560m",
         inputs: prompt,
         parameters: {
           max_new_tokens: 500,
@@ -69,14 +88,22 @@ Make tasks specific, actionable, and focused on project implementation.`;
         },
       });
 
+      console.log('Received response from HuggingFace');
+
       // Extract JSON from the response
       const jsonMatch = result.generated_text.match(/\[[\s\S]*\]/);
       let tasks;
 
       if (jsonMatch) {
-        tasks = JSON.parse(jsonMatch[0]);
+        try {
+          tasks = JSON.parse(jsonMatch[0]);
+          console.log('Successfully parsed tasks:', tasks);
+        } catch (parseError) {
+          console.error('Error parsing tasks JSON:', parseError);
+          throw new Error('Failed to parse AI response');
+        }
       } else {
-        // Fallback tasks if parsing fails
+        console.log('No JSON found in response, using fallback tasks');
         tasks = [{
           title: "Project Analysis",
           description: `Analyze requirements for: ${project.title}`,
@@ -104,50 +131,26 @@ Make tasks specific, actionable, and focused on project implementation.`;
 
       if (tasksError) {
         console.error('Error creating tasks:', tasksError);
-        throw tasksError;
+        throw new Error(`Failed to create tasks: ${tasksError.message}`);
       }
 
-      return new Response(
-        JSON.stringify({ tasks: createdTasks }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    } catch (error) {
-      console.error('Error in AI processing:', error);
-      // Return fallback tasks on AI error
-      const fallbackTasks = [{
-        title: "Review Project Scope",
-        description: `Analyze and break down the project: ${project.title}`,
-      }, {
-        title: "Create Project Timeline",
-        description: "Develop a detailed timeline with key milestones",
-      }, {
-        title: "Begin Implementation",
-        description: "Start working on core project components",
-      }];
-
-      const { data: createdTasks, error: tasksError } = await supabase
-        .from('tasks')
-        .insert(
-          fallbackTasks.map((task) => ({
-            title: task.title,
-            description: task.description,
-            created_by: founderId,
-            status: 'pending'
-          }))
-        )
-        .select();
-
-      if (tasksError) throw tasksError;
+      console.log('Tasks created successfully:', createdTasks);
 
       return new Response(
         JSON.stringify({ tasks: createdTasks }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
+    } catch (aiError) {
+      console.error('Error in AI processing:', aiError);
+      throw new Error(`AI processing failed: ${aiError.message}`);
     }
   } catch (error) {
     console.error('Error in generate-tasks function:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message || 'An unexpected error occurred',
+        details: error.stack
+      }),
       { 
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
