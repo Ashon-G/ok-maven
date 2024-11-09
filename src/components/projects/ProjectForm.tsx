@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { GenerateTasksButton } from "./GenerateTasksButton";
 import { Loader2 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { ProjectBasicFields } from "./form/ProjectBasicFields";
+import { ProjectGoals } from "./form/ProjectGoals";
 
 const STORAGE_KEY = "project_form_data";
 
@@ -24,10 +23,8 @@ export const ProjectForm = () => {
     goals: [""],
     target_audience: "",
     timeline: "",
-    budget: "",
   });
 
-  // Load saved form data from localStorage on component mount
   useEffect(() => {
     const savedData = localStorage.getItem(STORAGE_KEY);
     if (savedData) {
@@ -40,10 +37,13 @@ export const ProjectForm = () => {
     }
   }, []);
 
-  // Save form data to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
   }, [formData]);
+
+  const handleFieldChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   const handleGoalChange = (index: number, value: string) => {
     const newGoals = [...formData.goals];
@@ -77,21 +77,15 @@ export const ProjectForm = () => {
       if (error) throw error;
 
       setProjectId(data.id);
-      
-      // Clear localStorage after successful submission
       localStorage.removeItem(STORAGE_KEY);
-      
-      // Reset form
       setFormData({
         title: "",
         description: "",
         goals: [""],
         target_audience: "",
         timeline: "",
-        budget: "",
       });
 
-      // Invalidate and refetch projects query if it exists
       queryClient.invalidateQueries({ queryKey: ["projects"] });
 
       toast({
@@ -112,82 +106,20 @@ export const ProjectForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl mx-auto mb-8">
-      <div className="space-y-2">
-        <Label htmlFor="title">Project Title</Label>
-        <Input
-          id="title"
-          value={formData.title}
-          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-          required
-        />
-      </div>
+      <ProjectBasicFields
+        title={formData.title}
+        description={formData.description}
+        targetAudience={formData.target_audience}
+        timeline={formData.timeline}
+        onChange={handleFieldChange}
+      />
 
-      <div className="space-y-2">
-        <Label htmlFor="description">Project Description</Label>
-        <Textarea
-          id="description"
-          value={formData.description}
-          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-          placeholder="Describe your project in detail..."
-          required
-          className="min-h-[150px]"
-        />
-      </div>
-
-      <div className="space-y-4">
-        <Label>Project Goals</Label>
-        {formData.goals.map((goal, index) => (
-          <div key={index} className="flex gap-2">
-            <Input
-              value={goal}
-              onChange={(e) => handleGoalChange(index, e.target.value)}
-              placeholder={`Goal ${index + 1}`}
-            />
-            {formData.goals.length > 1 && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => removeGoal(index)}
-              >
-                Remove
-              </Button>
-            )}
-          </div>
-        ))}
-        <Button type="button" variant="outline" onClick={addGoal}>
-          Add Goal
-        </Button>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="target_audience">Target Audience</Label>
-        <Input
-          id="target_audience"
-          value={formData.target_audience}
-          onChange={(e) => setFormData({ ...formData, target_audience: e.target.value })}
-          placeholder="Who is this project for?"
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="timeline">Timeline</Label>
-        <Input
-          id="timeline"
-          value={formData.timeline}
-          onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
-          placeholder="Expected timeline for the project"
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="budget">Budget</Label>
-        <Input
-          id="budget"
-          value={formData.budget}
-          onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-          placeholder="Project budget"
-        />
-      </div>
+      <ProjectGoals
+        goals={formData.goals}
+        onGoalChange={handleGoalChange}
+        onAddGoal={addGoal}
+        onRemoveGoal={removeGoal}
+      />
 
       <div className="flex gap-4">
         <Button type="submit" disabled={isSubmitting}>
