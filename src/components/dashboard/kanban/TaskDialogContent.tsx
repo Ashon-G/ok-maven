@@ -1,6 +1,7 @@
 import { Textarea } from "@/components/ui/textarea";
 import { UserCircle, Calendar } from "lucide-react";
 import { format } from "date-fns";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -18,6 +19,10 @@ interface TaskDialogContentProps {
   dueDate: string | null;
   status: string;
   onStatusChange: (status: string) => void;
+  startDate: string | null;
+  endDate: string | null;
+  onStartDateChange?: (date: string) => void;
+  onEndDateChange?: (date: string) => void;
 }
 
 export const TaskDialogContent = ({
@@ -29,6 +34,10 @@ export const TaskDialogContent = ({
   dueDate,
   status,
   onStatusChange,
+  startDate,
+  endDate,
+  onStartDateChange,
+  onEndDateChange,
 }: TaskDialogContentProps) => {
   const columns = [
     { id: "pending", title: "To Do" },
@@ -68,6 +77,46 @@ export const TaskDialogContent = ({
           </Select>
         </div>
 
+        {isEditing ? (
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="text-sm font-medium">Start Date</label>
+              <Input
+                type="date"
+                value={startDate ? format(new Date(startDate), "yyyy-MM-dd") : ""}
+                onChange={(e) => onStartDateChange?.(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium">End Date</label>
+              <Input
+                type="date"
+                value={endDate ? format(new Date(endDate), "yyyy-MM-dd") : ""}
+                onChange={(e) => onEndDateChange?.(e.target.value)}
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-2">
+            {startDate && (
+              <div className="flex items-center gap-2">
+                <Calendar className="h-4 w-4 text-[#5e6c84]" />
+                <span className="text-sm">
+                  Start: {format(new Date(startDate), "PPP")}
+                </span>
+              </div>
+            )}
+            {endDate && (
+              <div className="flex items-center gap-2">
+                <Calendar className="h-4 w-4 text-[#5e6c84]" />
+                <span className="text-sm">
+                  End: {format(new Date(endDate), "PPP")}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
+
         {assignee && (
           <div className="flex items-center gap-2">
             <UserCircle className="h-4 w-4 text-[#5e6c84]" />
@@ -78,7 +127,7 @@ export const TaskDialogContent = ({
           <div className="flex items-center gap-2">
             <Calendar className="h-4 w-4 text-[#5e6c84]" />
             <span className="text-sm">
-              {format(new Date(dueDate), "PPP")}
+              Due: {format(new Date(dueDate), "PPP")}
             </span>
           </div>
         )}

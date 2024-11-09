@@ -19,6 +19,8 @@ interface Task {
   description: string | null;
   status: string;
   due_date: string | null;
+  start_date: string | null;
+  end_date: string | null;
   assignee?: { full_name: string } | null;
   created_by: string;
 }
@@ -36,21 +38,29 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(task.title);
   const [editedDescription, setEditedDescription] = useState(task.description || "");
+  const [editedStartDate, setEditedStartDate] = useState<string | null>(task.start_date);
+  const [editedEndDate, setEditedEndDate] = useState<string | null>(task.end_date);
 
   const updateTask = useMutation({
     mutationFn: async ({ 
       title, 
       description, 
-      status 
+      status,
+      start_date,
+      end_date,
     }: { 
       title?: string; 
       description?: string;
       status?: string;
+      start_date?: string | null;
+      end_date?: string | null;
     }) => {
       const updateData: any = {};
       if (title !== undefined) updateData.title = title;
       if (description !== undefined) updateData.description = description;
       if (status !== undefined) updateData.status = status;
+      if (start_date !== undefined) updateData.start_date = start_date;
+      if (end_date !== undefined) updateData.end_date = end_date;
 
       const { data, error } = await supabase
         .from("tasks")
@@ -126,7 +136,9 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
     }
     updateTask.mutate({ 
       title: editedTitle, 
-      description: editedDescription 
+      description: editedDescription,
+      start_date: editedStartDate,
+      end_date: editedEndDate,
     });
   };
 
@@ -167,6 +179,10 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
               dueDate={task.due_date}
               status={task.status}
               onStatusChange={handleStatusChange}
+              startDate={task.start_date}
+              endDate={task.end_date}
+              onStartDateChange={setEditedStartDate}
+              onEndDateChange={setEditedEndDate}
             />
 
             <TaskDialogFooter
@@ -175,12 +191,16 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
               onEdit={() => {
                 setEditedTitle(task.title);
                 setEditedDescription(task.description || "");
+                setEditedStartDate(task.start_date);
+                setEditedEndDate(task.end_date);
                 setIsEditing(true);
               }}
               onCancel={() => {
                 setIsEditing(false);
                 setEditedTitle(task.title);
                 setEditedDescription(task.description || "");
+                setEditedStartDate(task.start_date);
+                setEditedEndDate(task.end_date);
               }}
               onSave={handleSave}
               onDelete={() => deleteTask.mutate()}
