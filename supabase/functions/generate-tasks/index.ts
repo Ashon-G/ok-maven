@@ -1,6 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.0";
+import { addWeeks, format } from "https://esm.sh/date-fns@3.3.1";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -48,23 +49,32 @@ serve(async (req) => {
 
     console.log('Project fetched successfully:', project.title);
 
-    const prompt = `As a project manager, analyze this project and create 3-5 specific, actionable tasks:
+    const startDate = new Date();
+    const prompt = `As an educational program director, create a detailed 8-week externship program with specific milestones and tasks. Format the response exactly like this example, but adapt it to the project details:
 
 Project Title: ${project.title}
 Project Description: ${project.description}
 Goals: ${project.goals?.join(', ') || 'Not specified'}
 Target Audience: ${project.target_audience || 'Not specified'}
-Timeline: ${project.timeline || 'Not specified'}
+Timeline: ${project.timeline || '8 weeks'}
 
 Generate tasks in this exact JSON format:
 [
   {
-    "title": "Task title here",
-    "description": "Detailed task description here"
+    "title": "Milestone 1: Project Foundation & Analysis",
+    "description": "Detailed milestone description",
+    "start_date": "${format(startDate, 'yyyy-MM-dd')}",
+    "end_date": "${format(addWeeks(startDate, 2), 'yyyy-MM-dd')}",
+    "tasks": [
+      {
+        "title": "Task 1: Initial Analysis",
+        "description": "Detailed task description with learning objectives"
+      }
+    ]
   }
 ]
 
-Make tasks specific, actionable, and focused on project implementation.`;
+Make each milestone educational, focusing on skill development and practical application.`;
 
     console.log('Sending prompt to OpenAI');
 
@@ -81,7 +91,7 @@ Make tasks specific, actionable, and focused on project implementation.`;
         body: JSON.stringify({
           model: 'gpt-4o-mini',
           messages: [
-            { role: 'system', content: 'You are a helpful project manager that generates specific, actionable tasks.' },
+            { role: 'system', content: 'You are an educational program director that creates detailed, milestone-based learning programs.' },
             { role: 'user', content: prompt }
           ],
           temperature: 0.7,
@@ -100,53 +110,47 @@ Make tasks specific, actionable, and focused on project implementation.`;
 
       const generatedText = data.choices[0].message.content;
       const jsonMatch = generatedText.match(/\[[\s\S]*\]/);
-      let tasks;
+      let milestones;
 
       if (jsonMatch) {
         try {
-          tasks = JSON.parse(jsonMatch[0]);
-          console.log('Successfully parsed tasks:', tasks);
+          milestones = JSON.parse(jsonMatch[0]);
+          console.log('Successfully parsed milestones:', milestones);
+          
+          // Flatten milestones into individual tasks
+          const tasks = milestones.flatMap(milestone => 
+            milestone.tasks.map(task => ({
+              title: task.title,
+              description: `${milestone.title}\n\nDuration: ${milestone.start_date} to ${milestone.end_date}\n\n${task.description}`,
+              created_by: founderId,
+              status: 'pending',
+              due_date: milestone.end_date
+            }))
+          );
+
+          const { data: createdTasks, error: tasksError } = await supabase
+            .from('tasks')
+            .insert(tasks)
+            .select();
+
+          if (tasksError) {
+            console.error('Error creating tasks:', tasksError);
+            throw new Error(`Failed to create tasks: ${tasksError.message}`);
+          }
+
+          console.log('Tasks created successfully:', createdTasks);
+
+          return new Response(
+            JSON.stringify({ tasks: createdTasks }),
+            { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
         } catch (parseError) {
           console.error('Error parsing tasks JSON:', parseError);
           throw new Error('Failed to parse AI response');
         }
       } else {
-        console.log('No JSON found in response, using fallback tasks');
-        tasks = [{
-          title: "Project Analysis",
-          description: `Analyze requirements for: ${project.title}`,
-        }, {
-          title: "Project Planning",
-          description: "Create detailed project plan and timeline",
-        }, {
-          title: "Implementation Start",
-          description: "Begin initial implementation phase",
-        }];
+        throw new Error('No valid JSON found in AI response');
       }
-
-      const { data: createdTasks, error: tasksError } = await supabase
-        .from('tasks')
-        .insert(
-          tasks.map((task: any) => ({
-            title: task.title,
-            description: task.description,
-            created_by: founderId,
-            status: 'pending'
-          }))
-        )
-        .select();
-
-      if (tasksError) {
-        console.error('Error creating tasks:', tasksError);
-        throw new Error(`Failed to create tasks: ${tasksError.message}`);
-      }
-
-      console.log('Tasks created successfully:', createdTasks);
-
-      return new Response(
-        JSON.stringify({ tasks: createdTasks }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
     } catch (aiError) {
       clearTimeout(timeout);
       if (aiError.name === 'AbortError') {
