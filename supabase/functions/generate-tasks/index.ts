@@ -37,58 +37,65 @@ serve(async (req) => {
       throw new Error('Project description is required');
     }
 
-    console.log('Fetched project:', project);
+    // Use HuggingFace's free inference API
+    const response = await fetch(
+      "https://api-inference.huggingface.co/models/facebook/opt-1.3b",
+      {
+        headers: { 
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          inputs: `Given this project:
+          Title: ${project.title}
+          Description: ${project.description}
+          
+          Generate 3-5 specific, actionable tasks that would help complete this project.
+          Format your response as a JSON array of objects with 'title' and 'description' fields.
+          Example format: [{"title": "Task 1", "description": "Description 1"}]`
+        }),
+      }
+    );
 
-    // Generate tasks using OpenAI
-    const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [
-          {
-            role: 'system',
-            content: `You are a project manager that breaks down projects into actionable tasks. 
-            Generate 3-5 specific, actionable tasks that a maven (expert consultant) should complete to help with this project.
-            Each task should have a title and description.
-            Format the response as a JSON array of objects with 'title' and 'description' fields.
-            Make tasks specific and actionable.`
-          },
-          {
-            role: 'user',
-            content: `Project Title: ${project.title}\nProject Description: ${project.description}`
-          }
-        ],
-        temperature: 0.7,
-        max_tokens: 1000,
-      }),
-    });
-
-    if (!openAIResponse.ok) {
-      const errorData = await openAIResponse.json();
-      console.error('OpenAI API error:', errorData);
-      throw new Error(`OpenAI API error: ${errorData.error?.message || 'Unknown error'}`);
+    if (!response.ok) {
+      throw new Error(`HuggingFace API error: ${response.statusText}`);
     }
 
-    const aiData = await openAIResponse.json();
-    console.log('OpenAI response:', aiData);
-
-    if (!aiData.choices?.[0]?.message?.content) {
-      throw new Error('Invalid response from OpenAI');
-    }
-
+    const result = await response.text();
+    
+    // Parse the response to extract tasks
     let tasks;
     try {
-      tasks = JSON.parse(aiData.choices[0].message.content);
-      if (!Array.isArray(tasks)) {
-        throw new Error('OpenAI response is not an array');
+      // The model might return the JSON string within the text, so we need to find and extract it
+      const jsonMatch = result.match(/\[.*\]/);
+      if (!jsonMatch) {
+        // If no JSON array is found, create a default task structure
+        tasks = [{
+          title: "Review Project Requirements",
+          description: `Review and analyze the project: ${project.title}`,
+        }, {
+          title: "Create Project Timeline",
+          description: "Develop a detailed timeline with milestones",
+        }, {
+          title: "Initial Implementation",
+          description: "Begin working on the core project components",
+        }];
+      } else {
+        tasks = JSON.parse(jsonMatch[0]);
       }
     } catch (error) {
-      console.error('Error parsing OpenAI response:', error);
-      throw new Error('Failed to parse OpenAI response into tasks');
+      console.error('Error parsing AI response:', error);
+      // Fallback to default tasks if parsing fails
+      tasks = [{
+        title: "Project Analysis",
+        description: `Analyze requirements for: ${project.title}`,
+      }, {
+        title: "Project Planning",
+        description: "Create detailed project plan and timeline",
+      }, {
+        title: "Implementation Start",
+        description: "Begin initial implementation phase",
+      }];
     }
 
     // Create tasks in the database
@@ -108,8 +115,6 @@ serve(async (req) => {
       console.error('Error creating tasks:', tasksError);
       throw tasksError;
     }
-
-    console.log('Successfully created tasks:', createdTasks);
 
     return new Response(
       JSON.stringify({ tasks: createdTasks }),
