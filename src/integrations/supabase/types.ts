@@ -281,8 +281,10 @@ export type Database = {
           created_by: string
           description: string | null
           due_date: string | null
+          end_date: string | null
           id: string
           jira_issue_key: string | null
+          start_date: string | null
           status: string
           title: string
         }
@@ -292,8 +294,10 @@ export type Database = {
           created_by: string
           description?: string | null
           due_date?: string | null
+          end_date?: string | null
           id?: string
           jira_issue_key?: string | null
+          start_date?: string | null
           status?: string
           title: string
         }
@@ -303,8 +307,10 @@ export type Database = {
           created_by?: string
           description?: string | null
           due_date?: string | null
+          end_date?: string | null
           id?: string
           jira_issue_key?: string | null
+          start_date?: string | null
           status?: string
           title?: string
         }
