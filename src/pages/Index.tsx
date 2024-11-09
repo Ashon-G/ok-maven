@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { FoldingLogos } from "@/components/landing/FoldingLogos";
 import { FiArrowUpRight } from "react-icons/fi";
 import DoubleScrollingLogos from "@/components/landing/DoubleScrollingLogos";
+import { Supports } from "@/components/supports/Supports";
 
 const TiltChipLink = () => {
   return (
@@ -92,6 +93,10 @@ const Index = () => {
             </div>
           ))}
         </div>
+
+        <section className="py-24 bg-zinc-50">
+          <Supports />
+        </section>
 
         <div className="my-12 w-full">
           <FoldingLogos />

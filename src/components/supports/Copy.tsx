@@ -11,17 +11,14 @@ export const Copy = ({
 }) => {
   return (
     <div className="w-full">
-      <span className="mb-1.5 block text-center text-indigo-600 md:text-start">
-        Show who it's for
+      <span className="mb-1.5 block text-center text-secondary md:text-start">
+        Success Stories
       </span>
       <h2 className="mb-3 text-center text-4xl font-bold leading-tight md:text-start md:text-5xl md:leading-tight">
-        Support your business, big or small
+        Trusted by Innovative Founders
       </h2>
       <p className="mb-6 text-center text-base leading-relaxed md:text-start md:text-lg md:leading-relaxed">
-        Now we know WHAT you do, but who do you do it for? Why do they use it?
-        What problems does is solve for them? You can use a section like this
-        one to explain how people in the real world are deriving value out of
-        your product or service.
+        From early-stage startups to growing businesses, founders trust Maven to connect them with talented student developers and marketers. See how different types of businesses are leveraging student talent to build and grow faster.
       </p>
       <div className="mb-6 flex flex-wrap justify-center gap-3 md:justify-start">
         {OPTIONS.map((o, i) => {
