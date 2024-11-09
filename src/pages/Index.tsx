@@ -6,6 +6,7 @@ import { FiArrowUpRight } from "react-icons/fi";
 import DoubleScrollingLogos from "@/components/landing/DoubleScrollingLogos";
 import { Supports } from "@/components/supports/Supports";
 import { BenefitsGrid } from "@/components/benefits-grid/BenefitsGrid";
+import { CountUpStats } from "@/components/landing/CountUpStats";
 
 const TiltChipLink = () => {
   return (
@@ -82,6 +83,8 @@ const Index = () => {
             />
           </Card>
         </div>
+
+        <CountUpStats />
 
         <div className="mt-12 grid w-full max-w-4xl grid-cols-2 gap-6 md:grid-cols-4">
           {features.map((feature, i) => (
