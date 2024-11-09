@@ -2,12 +2,14 @@ import { UserCircle, Calendar } from "lucide-react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/components/auth/AuthProvider";
 
 interface Task {
   title: string;
   description: string | null;
   assignee?: { full_name: string } | null;
   due_date?: string | null;
+  created_by: string;
 }
 
 interface TaskCardProps {
@@ -15,6 +17,10 @@ interface TaskCardProps {
 }
 
 export const TaskCard = ({ task }: TaskCardProps) => {
+  const { session } = useAuth();
+  const isFounder = session?.user?.user_metadata?.user_type === "founder";
+  const isOwner = session?.user?.id === task.created_by;
+
   // Parse the description to extract milestone information
   const sections = task.description?.split('\n\n') || [];
   const milestoneTitle = sections[0] || '';
@@ -76,15 +82,20 @@ export const TaskCard = ({ task }: TaskCardProps) => {
         </div>
       )}
 
-      {/* Assignee */}
-      {task.assignee && (
-        <div className="flex items-center mt-2">
+      {/* Footer Info */}
+      <div className="flex items-center justify-between mt-2">
+        {task.assignee && (
           <div className="flex items-center gap-1 px-2 py-1 rounded-sm bg-gray-100 text-xs text-gray-600">
             <UserCircle className="h-3 w-3" />
             <span>{task.assignee.full_name}</span>
           </div>
-        </div>
-      )}
+        )}
+        {isFounder && isOwner && (
+          <Badge variant="outline" className="text-xs">
+            Owner
+          </Badge>
+        )}
+      </div>
     </motion.div>
   );
 };
