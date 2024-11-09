@@ -21,7 +21,6 @@ serve(async (req) => {
       throw new Error('Project ID and Founder ID are required');
     }
 
-    // Initialize Supabase client
     const supabaseUrl = Deno.env.get('SUPABASE_URL');
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
 
@@ -32,10 +31,9 @@ serve(async (req) => {
     const supabase = createClient(supabaseUrl, supabaseKey);
     console.log('Supabase client initialized');
 
-    // Fetch project details
     const { data: project, error: projectError } = await supabase
       .from('founder_projects')
-      .select('description, title')
+      .select('description, title, goals, target_audience, timeline')
       .eq('id', projectId)
       .single();
 
@@ -50,7 +48,6 @@ serve(async (req) => {
 
     console.log('Project fetched successfully:', project.title);
 
-    // Initialize HuggingFace client
     const hfToken = Deno.env.get('HUGGING_FACE_ACCESS_TOKEN');
     if (!hfToken) {
       throw new Error('Missing Hugging Face access token');
@@ -59,11 +56,13 @@ serve(async (req) => {
     const hf = new HfInference(hfToken);
     console.log('HuggingFace client initialized');
 
-    // Create a structured prompt
     const prompt = `As a project manager, analyze this project and create 3-5 specific, actionable tasks:
 
 Project Title: ${project.title}
 Project Description: ${project.description}
+Goals: ${project.goals?.join(', ') || 'Not specified'}
+Target Audience: ${project.target_audience || 'Not specified'}
+Timeline: ${project.timeline || 'Not specified'}
 
 Generate tasks in this exact JSON format:
 [
@@ -90,7 +89,6 @@ Make tasks specific, actionable, and focused on project implementation.`;
 
       console.log('Received response from HuggingFace');
 
-      // Extract JSON from the response
       const jsonMatch = result.generated_text.match(/\[[\s\S]*\]/);
       let tasks;
 
@@ -116,7 +114,6 @@ Make tasks specific, actionable, and focused on project implementation.`;
         }];
       }
 
-      // Create tasks in the database
       const { data: createdTasks, error: tasksError } = await supabase
         .from('tasks')
         .insert(
