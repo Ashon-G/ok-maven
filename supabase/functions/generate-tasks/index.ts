@@ -1,7 +1,6 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.0";
-import { HfInference } from 'https://esm.sh/@huggingface/inference@2.3.2';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -23,9 +22,10 @@ serve(async (req) => {
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL');
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+    const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
 
-    if (!supabaseUrl || !supabaseKey) {
-      throw new Error('Missing Supabase configuration');
+    if (!supabaseUrl || !supabaseKey || !openAIApiKey) {
+      throw new Error('Missing required environment variables');
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
@@ -48,14 +48,6 @@ serve(async (req) => {
 
     console.log('Project fetched successfully:', project.title);
 
-    const hfToken = Deno.env.get('HUGGING_FACE_ACCESS_TOKEN');
-    if (!hfToken) {
-      throw new Error('Missing Hugging Face access token');
-    }
-
-    const hf = new HfInference(hfToken);
-    console.log('HuggingFace client initialized');
-
     const prompt = `As a project manager, analyze this project and create 3-5 specific, actionable tasks:
 
 Project Title: ${project.title}
@@ -74,27 +66,40 @@ Generate tasks in this exact JSON format:
 
 Make tasks specific, actionable, and focused on project implementation.`;
 
-    console.log('Sending prompt to HuggingFace');
+    console.log('Sending prompt to OpenAI');
 
-    // Using a faster and more reliable model
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+    const timeout = setTimeout(() => controller.abort(), 30000);
 
     try {
-      const result = await hf.textGeneration({
-        model: "mistralai/Mistral-7B-Instruct-v0.1",
-        inputs: prompt,
-        parameters: {
-          max_new_tokens: 500,
-          temperature: 0.7,
-          top_p: 0.95,
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${openAIApiKey}`,
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: [
+            { role: 'system', content: 'You are a helpful project manager that generates specific, actionable tasks.' },
+            { role: 'user', content: prompt }
+          ],
+          temperature: 0.7,
+        }),
+        signal: controller.signal,
       });
 
       clearTimeout(timeout);
-      console.log('Received response from HuggingFace');
 
-      const jsonMatch = result.generated_text.match(/\[[\s\S]*\]/);
+      if (!response.ok) {
+        throw new Error(`OpenAI API error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log('Received response from OpenAI');
+
+      const generatedText = data.choices[0].message.content;
+      const jsonMatch = generatedText.match(/\[[\s\S]*\]/);
       let tasks;
 
       if (jsonMatch) {
