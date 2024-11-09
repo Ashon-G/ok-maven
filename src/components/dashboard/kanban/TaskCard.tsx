@@ -1,6 +1,7 @@
 import { UserCircle, Calendar } from "lucide-react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
+import { Badge } from "@/components/ui/badge";
 
 interface Task {
   title: string;
@@ -14,10 +15,12 @@ interface TaskCardProps {
 }
 
 export const TaskCard = ({ task }: TaskCardProps) => {
-  // Extract milestone title from description if it exists
-  const milestoneTitle = task.description?.split('\n\n')[0] || '';
-  const duration = task.description?.split('\n\n')[1] || '';
-  const description = task.description?.split('\n\n').slice(2).join('\n\n') || '';
+  // Parse the description to extract milestone information
+  const sections = task.description?.split('\n\n') || [];
+  const milestoneTitle = sections[0] || '';
+  const duration = sections[1] || '';
+  const objectives = sections[2]?.split('\n').filter(line => line.startsWith('- ')) || [];
+  const tasks = sections[3]?.split('\n').filter(line => line.startsWith('- ')) || [];
 
   return (
     <motion.div
@@ -27,26 +30,56 @@ export const TaskCard = ({ task }: TaskCardProps) => {
       exit={{ opacity: 0 }}
       className="bg-white rounded-lg shadow-sm hover:bg-gray-50 cursor-pointer p-4 group transition-all hover:shadow-md space-y-3"
     >
+      {/* Milestone Title */}
       {milestoneTitle && (
-        <div className="text-xs font-medium text-blue-600 uppercase tracking-wider">
+        <div className="text-sm font-semibold text-blue-600">
           {milestoneTitle}
         </div>
       )}
-      <div className="text-sm text-[#172b4d] font-medium">{task.title}</div>
+
+      {/* Main Title */}
+      <div className="text-base font-medium text-gray-900">
+        {task.title}
+      </div>
+
+      {/* Duration Badge */}
       {duration && (
-        <div className="flex items-center gap-2 text-xs text-gray-500">
-          <Calendar className="h-3 w-3" />
-          {duration}
+        <div className="flex items-center gap-2">
+          <Badge variant="secondary" className="flex items-center gap-1">
+            <Calendar className="h-3 w-3" />
+            <span className="text-xs">{duration}</span>
+          </Badge>
         </div>
       )}
-      {description && (
-        <div className="text-xs text-[#5e6c84] line-clamp-3">
-          {description}
+
+      {/* Objectives */}
+      {objectives.length > 0 && (
+        <div className="space-y-1">
+          <p className="text-xs font-medium text-gray-600">Project Objectives:</p>
+          <ul className="text-xs text-gray-500 list-disc pl-4 space-y-1">
+            {objectives.map((objective, index) => (
+              <li key={index}>{objective.replace('- ', '')}</li>
+            ))}
+          </ul>
         </div>
       )}
+
+      {/* Tasks */}
+      {tasks.length > 0 && (
+        <div className="space-y-1">
+          <p className="text-xs font-medium text-gray-600">Tasks:</p>
+          <ul className="text-xs text-gray-500 list-disc pl-4 space-y-1">
+            {tasks.map((task, index) => (
+              <li key={index}>{task.replace('- ', '')}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Assignee */}
       {task.assignee && (
         <div className="flex items-center mt-2">
-          <div className="flex items-center gap-1 px-2 py-1 rounded-sm bg-[#ebecf0] text-xs text-[#5e6c84]">
+          <div className="flex items-center gap-1 px-2 py-1 rounded-sm bg-gray-100 text-xs text-gray-600">
             <UserCircle className="h-3 w-3" />
             <span>{task.assignee.full_name}</span>
           </div>

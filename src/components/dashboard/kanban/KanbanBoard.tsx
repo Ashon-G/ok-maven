@@ -97,7 +97,7 @@ export const KanbanBoard = ({ tasks, isLoading }: KanbanBoardProps) => {
       onDragEnd={handleDragEnd}
     >
       <div className="min-h-[calc(100vh-12rem)] bg-[#f9fafc] p-6">
-        <div className="flex gap-4 overflow-x-auto pb-4">
+        <div className="flex gap-6 overflow-x-auto pb-6"> {/* Updated gap and padding */}
           <KanbanColumn 
             title="To Do" 
             tasks={columns.pending} 

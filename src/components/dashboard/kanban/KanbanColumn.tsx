@@ -28,7 +28,7 @@ export const KanbanColumn = ({ title, status, tasks, onTaskClick }: KanbanColumn
   const { session } = useAuth();
 
   return (
-    <div className="w-[280px] flex-shrink-0">
+    <div className="w-[400px] flex-shrink-0"> {/* Updated width from 280px to 400px */}
       <div className="bg-[#ebecf0] rounded-lg">
         <div className="flex items-center justify-between px-3 py-2.5">
           <h3 className="text-sm font-medium text-[#172b4d]">{title}</h3>
@@ -41,10 +41,10 @@ export const KanbanColumn = ({ title, status, tasks, onTaskClick }: KanbanColumn
         </div>
         <div
           ref={setNodeRef}
-          className="px-1 pb-1 min-h-[50px]"
+          className="px-2 pb-2 min-h-[50px]" {/* Updated padding */}
         >
           <SortableContext items={tasks.map(task => task.id)} strategy={verticalListSortingStrategy}>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-3"> {/* Updated gap */}
               {tasks.map((task) => (
                 <SortableTask 
                   key={task.id} 
