@@ -12,6 +12,8 @@ interface Task {
   description: string | null;
   status: string;
   due_date: string | null;
+  start_date: string | null;
+  end_date: string | null;
   assignee?: { full_name: string } | null;
   created_by: string;
   jira_issue_key: string | null;
