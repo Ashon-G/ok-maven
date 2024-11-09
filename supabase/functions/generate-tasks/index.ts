@@ -76,9 +76,13 @@ Make tasks specific, actionable, and focused on project implementation.`;
 
     console.log('Sending prompt to HuggingFace');
 
+    // Using a faster and more reliable model
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
     try {
       const result = await hf.textGeneration({
-        model: "bigscience/bloomz-560m",
+        model: "mistralai/Mistral-7B-Instruct-v0.1",
         inputs: prompt,
         parameters: {
           max_new_tokens: 500,
@@ -87,6 +91,7 @@ Make tasks specific, actionable, and focused on project implementation.`;
         },
       });
 
+      clearTimeout(timeout);
       console.log('Received response from HuggingFace');
 
       const jsonMatch = result.generated_text.match(/\[[\s\S]*\]/);
@@ -138,6 +143,10 @@ Make tasks specific, actionable, and focused on project implementation.`;
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     } catch (aiError) {
+      clearTimeout(timeout);
+      if (aiError.name === 'AbortError') {
+        throw new Error('AI request timed out after 30 seconds');
+      }
       console.error('Error in AI processing:', aiError);
       throw new Error(`AI processing failed: ${aiError.message}`);
     }
