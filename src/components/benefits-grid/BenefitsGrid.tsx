@@ -5,7 +5,7 @@ import { CollaborateBlock } from "./CollaborateBlock";
 import { HighlighBlocks } from "./HighlighBlocks";
 import { SectionHeading } from "../shared/SectionHeading";
 import { SectionSubheading } from "../shared/SectionSubheading";
-import { Button } from "../shared/Button";
+import { Button } from "@/components/ui/button";
 
 export const BenefitsGrid = () => {
   return (
@@ -28,7 +28,7 @@ export const BenefitsGrid = () => {
       <CollaborateBlock />
       <HighlighBlocks />
       <div className="col-span-3 mt-6 flex justify-center">
-        <Button intent="outline">
+        <Button variant="outline">
           <span className="font-bold">Get started - </span> no CC required
         </Button>
       </div>
