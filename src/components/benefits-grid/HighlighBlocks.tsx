@@ -22,56 +22,56 @@ export const HighlighBlocks = () => {
       <HighlightBlock
         Icon={FiDollarSign}
         iconClassName="text-green-500"
-        title="Save on planning"
-        subtitle="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        title="Optimize Resources"
+        subtitle="Reduce operational costs while maintaining high-quality output with our vetted talent pool."
       />
       <HighlightBlock
         Icon={FiArrowUpRight}
         iconClassName="text-pink-500"
-        title="Grow your margins"
-        subtitle="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        title="Scale Efficiently"
+        subtitle="Access top-tier talent on-demand to accelerate your growth without the overhead."
       />
       <HighlightBlock
         Icon={FiSmile}
         iconClassName="text-blue-500"
-        title="Increase productivity"
-        subtitle="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        title="Boost Innovation"
+        subtitle="Leverage fresh perspectives and cutting-edge skills to drive your startup forward."
       />
       <HighlightBlock
         Icon={FiCoffee}
         iconClassName="text-orange-500"
-        title="No more late nights"
-        subtitle="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        title="Fast Implementation"
+        subtitle="Get your projects off the ground quickly with ready-to-deploy talent."
       />
       <HighlightBlock
         Icon={FiFeather}
         iconClassName="text-zinc-500"
-        title="Take better notes"
-        subtitle="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        title="Tech Excellence"
+        subtitle="Access developers skilled in the latest technologies and frameworks."
       />
       <HighlightBlock
         Icon={FiInbox}
         iconClassName="text-purple-500"
-        title="Reach inbox zero"
-        subtitle="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        title="Market Validation"
+        subtitle="Perfect for accelerators and VCs looking to validate new market opportunities."
       />
       <HighlightBlock
         Icon={FiMove}
         iconClassName="text-fuchsia-500"
-        title="Remain flexible"
-        subtitle="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        title="Stay Agile"
+        subtitle="Adapt quickly to market changes with flexible talent solutions."
       />
       <HighlightBlock
         Icon={FiClipboard}
         iconClassName="text-red-500"
-        title="Stay on track"
-        subtitle="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        title="Hit Milestones"
+        subtitle="Meet your development and growth targets with reliable tech talent."
       />
       <HighlightBlock
         Icon={FiRepeat}
         iconClassName="text-yellow-500"
-        title="Repeat what works"
-        subtitle="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        title="Scale Success"
+        subtitle="Replicate successful strategies across your startup portfolio."
       />
     </>
   );

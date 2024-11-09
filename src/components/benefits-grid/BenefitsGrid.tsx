@@ -18,10 +18,9 @@ export const BenefitsGrid = () => {
       className="relative mx-auto grid max-w-6xl grid-cols-3 gap-4 px-2 md:px-4"
     >
       <div className="col-span-3">
-        <SectionHeading>The clear benefits of X</SectionHeading>
+        <SectionHeading>Accelerate Your Startup Growth</SectionHeading>
         <SectionSubheading>
-          Features are good, benefits are even better! Here's a made up list for
-          reference.
+          From early-stage startups to VC-backed companies, discover how Maven helps you scale faster and more efficiently.
         </SectionSubheading>
       </div>
       <IntegrationsBlock />
