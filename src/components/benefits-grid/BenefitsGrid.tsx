@@ -19,7 +19,7 @@ export const BenefitsGrid = () => {
     >
       <div className="col-span-3">
         <SectionHeading>Accelerate Your Startup Growth</SectionHeading>
-        <SectionSubheading>
+        <SectionSubheading className="text-black">
           From early-stage startups to VC-backed companies, discover how Maven helps you scale faster and more efficiently.
         </SectionSubheading>
       </div>
