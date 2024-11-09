@@ -36,6 +36,8 @@ export const CreateTaskDialog = ({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [selectedMaven, setSelectedMaven] = useState("");
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -83,6 +85,8 @@ export const CreateTaskDialog = ({
         created_by: userId,
         assigned_to: selectedMaven || null,
         status: defaultStatus,
+        start_date: startDate?.toISOString() || null,
+        end_date: endDate?.toISOString() || null,
       }).select().single();
 
       if (error) throw error;
@@ -113,6 +117,8 @@ export const CreateTaskDialog = ({
       setTitle("");
       setDescription("");
       setSelectedMaven("");
+      setStartDate(undefined);
+      setEndDate(undefined);
       toast({
         title: "Success",
         description: "Task created successfully",
@@ -149,6 +155,22 @@ export const CreateTaskDialog = ({
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Task description"
             />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="text-sm font-medium">Start Date</label>
+              <Input
+                type="date"
+                onChange={(e) => setStartDate(e.target.value ? new Date(e.target.value) : undefined)}
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium">End Date</label>
+              <Input
+                type="date"
+                onChange={(e) => setEndDate(e.target.value ? new Date(e.target.value) : undefined)}
+              />
+            </div>
           </div>
           <div>
             <label className="text-sm font-medium">Assign to Maven</label>

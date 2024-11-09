@@ -8,6 +8,9 @@ interface Task {
   title: string;
   description: string | null;
   assignee?: { full_name: string } | null;
+  start_date?: string | null;
+  end_date?: string | null;
+  created_by: string;
 }
 
 interface SortableTaskProps {

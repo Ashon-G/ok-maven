@@ -1,10 +1,14 @@
-import { UserCircle } from "lucide-react";
+import { UserCircle, Calendar } from "lucide-react";
 import { motion } from "framer-motion";
+import { format } from "date-fns";
 
 interface Task {
   title: string;
   description: string | null;
   assignee?: { full_name: string } | null;
+  start_date?: string | null;
+  end_date?: string | null;
+  created_by: string;
 }
 
 interface TaskCardProps {
@@ -26,14 +30,32 @@ export const TaskCard = ({ task }: TaskCardProps) => {
           {task.description}
         </div>
       )}
-      {task.assignee && (
-        <div className="flex items-center mt-2">
-          <div className="flex items-center gap-1 px-2 py-1 rounded-sm bg-[#ebecf0] text-xs text-[#5e6c84]">
-            <UserCircle className="h-3 w-3" />
-            <span>{task.assignee.full_name}</span>
+      <div className="flex flex-col gap-2 mt-2">
+        {task.assignee && (
+          <div className="flex items-center">
+            <div className="flex items-center gap-1 px-2 py-1 rounded-sm bg-[#ebecf0] text-xs text-[#5e6c84]">
+              <UserCircle className="h-3 w-3" />
+              <span>{task.assignee.full_name}</span>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+        {(task.start_date || task.end_date) && (
+          <div className="flex items-center gap-2">
+            {task.start_date && (
+              <div className="flex items-center gap-1 px-2 py-1 rounded-sm bg-[#ebecf0] text-xs text-[#5e6c84]">
+                <Calendar className="h-3 w-3" />
+                <span>Start: {format(new Date(task.start_date), "MMM d")}</span>
+              </div>
+            )}
+            {task.end_date && (
+              <div className="flex items-center gap-1 px-2 py-1 rounded-sm bg-[#ebecf0] text-xs text-[#5e6c84]">
+                <Calendar className="h-3 w-3" />
+                <span>Due: {format(new Date(task.end_date), "MMM d")}</span>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </motion.div>
   );
 };
