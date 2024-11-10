@@ -33,16 +33,20 @@ export const JiraIntegrationDialog = ({
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const { data: existingIntegration } = useQuery({
+  const { data: existingIntegration, isError } = useQuery({
     queryKey: ["jiraIntegration", session?.user.id],
     queryFn: async () => {
+      if (!session?.user.id) return null;
+
       const { data, error } = await supabase
         .from("jira_integrations")
         .select("*")
-        .eq("user_id", session?.user.id)
+        .eq("user_id", session.user.id)
         .maybeSingle();
 
-      if (error && error.code !== "PGRST116") throw error;
+      if (error && error.code !== "PGRST116") {
+        throw error;
+      }
       return data;
     },
     enabled: !!session?.user.id,
@@ -79,6 +83,15 @@ export const JiraIntegrationDialog = ({
       });
     },
   });
+
+  if (isError) {
+    toast({
+      title: "Error",
+      description: "Failed to fetch Jira integration details",
+      variant: "destructive",
+    });
+    return null;
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
