@@ -432,6 +432,7 @@ export type Database = {
             | Database["public"]["Enums"]["slack_notification_type"]
             | null
           user_id: string
+          webhook_url: string | null
           workspace_id: string
         }
         Insert: {
@@ -444,6 +445,7 @@ export type Database = {
             | Database["public"]["Enums"]["slack_notification_type"]
             | null
           user_id: string
+          webhook_url?: string | null
           workspace_id: string
         }
         Update: {
@@ -456,6 +458,7 @@ export type Database = {
             | Database["public"]["Enums"]["slack_notification_type"]
             | null
           user_id?: string
+          webhook_url?: string | null
           workspace_id?: string
         }
         Relationships: [
