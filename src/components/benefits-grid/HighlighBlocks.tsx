@@ -22,56 +22,56 @@ export const HighlighBlocks = () => {
       <HighlightBlock
         Icon={FiDollarSign}
         iconClassName="text-green-500"
-        title="Cost Efficiency"
-        subtitle="Reduce operational costs by up to 60% while maintaining enterprise-grade development quality."
+        title="Budget-Friendly"
+        subtitle="Access talented student developers at rates that work for startups, reducing development costs without compromising quality."
       />
       <HighlightBlock
         Icon={FiArrowUpRight}
         iconClassName="text-pink-500"
-        title="Rapid Scaling"
-        subtitle="Scale your tech team on-demand with pre-vetted developers who can start immediately."
+        title="Fast Growth"
+        subtitle="Scale your development team quickly with pre-vetted student talent who bring fresh perspectives and latest tech skills."
       />
       <HighlightBlock
         Icon={FiSmile}
         iconClassName="text-blue-500"
-        title="Quality Assurance"
-        subtitle="Every Maven is thoroughly vetted for technical excellence and communication skills."
+        title="Quality Assured"
+        subtitle="Work with thoroughly vetted student developers who demonstrate both technical excellence and strong communication skills."
       />
       <HighlightBlock
         Icon={FiCoffee}
         iconClassName="text-orange-500"
-        title="Quick Onboarding"
-        subtitle="Get your projects running within days, not months, with our streamlined onboarding process."
+        title="Quick Start"
+        subtitle="Get your projects up and running within days, not months, with our streamlined onboarding process for student developers."
       />
       <HighlightBlock
         Icon={FiFeather}
         iconClassName="text-zinc-500"
-        title="Flexible Engagement"
-        subtitle="Choose from part-time to full-time developers based on your project needs."
+        title="Flexible Terms"
+        subtitle="Choose from part-time to full-time student developers based on your project needs and budget constraints."
       />
       <HighlightBlock
         Icon={FiInbox}
         iconClassName="text-purple-500"
-        title="Project Management"
-        subtitle="Built-in tools for seamless project tracking, reporting, and milestone management."
+        title="Project Tools"
+        subtitle="Access built-in tools for seamless project tracking, milestone management, and collaboration with student developers."
       />
       <HighlightBlock
         Icon={FiMove}
         iconClassName="text-fuchsia-500"
-        title="Tech Expertise"
-        subtitle="Access developers skilled in the latest technologies, from web and mobile to AI/ML."
+        title="Tech Skills"
+        subtitle="Connect with student developers skilled in modern technologies, from web and mobile development to AI/ML projects."
       />
       <HighlightBlock
         Icon={FiClipboard}
         iconClassName="text-red-500"
-        title="Dedicated Support"
-        subtitle="24/7 support to ensure your projects stay on track and technical issues are resolved quickly."
+        title="Full Support"
+        subtitle="Get dedicated support to ensure smooth collaboration with student developers and quick resolution of any issues."
       />
       <HighlightBlock
         Icon={FiRepeat}
         iconClassName="text-yellow-500"
-        title="Continuous Delivery"
-        subtitle="Implement agile methodologies for faster iterations and continuous improvement."
+        title="Agile Process"
+        subtitle="Implement agile methodologies with student developers for rapid iterations and continuous project improvement."
       />
     </>
   );

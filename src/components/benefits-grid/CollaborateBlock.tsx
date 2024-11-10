@@ -37,7 +37,7 @@ export const CollaborateBlock = () => (
       <div>
         <CardTitle>Real-time Collaboration</CardTitle>
         <CardSubtitle>
-          Work seamlessly with your team and Mavens in real-time, enabling faster decision-making and efficient project execution.
+          Enable seamless communication and collaboration between your team and student developers through our real-time workspace environment.
         </CardSubtitle>
       </div>
     </div>

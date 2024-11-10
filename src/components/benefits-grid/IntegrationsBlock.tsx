@@ -15,7 +15,7 @@ export const IntegrationsBlock = () => (
       <div>
         <CardTitle>Powerful Integrations</CardTitle>
         <CardSubtitle>
-          Connect Maven with your favorite tools like Jira, GitHub, and more to streamline your development workflow.
+          Seamlessly connect Maven with your essential tools like GitHub, Jira, and Slack to maintain your existing workflow while leveraging student talent.
         </CardSubtitle>
       </div>
     </div>
