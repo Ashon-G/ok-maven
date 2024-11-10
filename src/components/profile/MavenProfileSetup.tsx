@@ -87,22 +87,25 @@ export const MavenProfileSetup = () => {
 
       if (profileError) throw profileError;
 
-      // Add education
+      // Add education with formatted date
       const { error: educationError } = await supabase
         .from("maven_education")
         .insert({
           maven_id: session.user.id,
           ...data.education,
+          graduation_date: data.education.graduation_date.toISOString().split('T')[0], // Format as YYYY-MM-DD
         });
 
       if (educationError) throw educationError;
 
-      // Add experience
+      // Add experience with formatted dates
       const { error: experienceError } = await supabase
         .from("maven_experience")
         .insert({
           maven_id: session.user.id,
           ...data.experience,
+          start_date: data.experience.start_date.toISOString().split('T')[0],
+          end_date: data.experience.end_date?.toISOString().split('T')[0],
         });
 
       if (experienceError) throw experienceError;
@@ -119,12 +122,14 @@ export const MavenProfileSetup = () => {
 
       if (skillsError) throw skillsError;
 
-      // Add availability
+      // Add availability with formatted dates
       const { error: availabilityError } = await supabase
         .from("maven_availability")
         .insert({
           maven_id: session.user.id,
           ...data.availability,
+          start_date: data.availability.start_date.toISOString().split('T')[0],
+          end_date: data.availability.end_date.toISOString().split('T')[0],
         });
 
       if (availabilityError) throw availabilityError;
@@ -290,4 +295,4 @@ export const MavenProfileSetup = () => {
       </Button>
     </form>
   );
-};
+});
