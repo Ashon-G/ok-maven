@@ -22,56 +22,56 @@ export const HighlighBlocks = () => {
       <HighlightBlock
         Icon={FiDollarSign}
         iconClassName="text-green-500"
-        title="Optimize Resources"
-        subtitle="Reduce operational costs while maintaining high-quality output with our vetted talent pool."
+        title="Cost Efficiency"
+        subtitle="Reduce operational costs by up to 60% while maintaining enterprise-grade development quality."
       />
       <HighlightBlock
         Icon={FiArrowUpRight}
         iconClassName="text-pink-500"
-        title="Scale Efficiently"
-        subtitle="Access top-tier talent on-demand to accelerate your growth without the overhead."
+        title="Rapid Scaling"
+        subtitle="Scale your tech team on-demand with pre-vetted developers who can start immediately."
       />
       <HighlightBlock
         Icon={FiSmile}
         iconClassName="text-blue-500"
-        title="Boost Innovation"
-        subtitle="Leverage fresh perspectives and cutting-edge skills to drive your startup forward."
+        title="Quality Assurance"
+        subtitle="Every Maven is thoroughly vetted for technical excellence and communication skills."
       />
       <HighlightBlock
         Icon={FiCoffee}
         iconClassName="text-orange-500"
-        title="Fast Implementation"
-        subtitle="Get your projects off the ground quickly with ready-to-deploy talent."
+        title="Quick Onboarding"
+        subtitle="Get your projects running within days, not months, with our streamlined onboarding process."
       />
       <HighlightBlock
         Icon={FiFeather}
         iconClassName="text-zinc-500"
-        title="Tech Excellence"
-        subtitle="Access developers skilled in the latest technologies and frameworks."
+        title="Flexible Engagement"
+        subtitle="Choose from part-time to full-time developers based on your project needs."
       />
       <HighlightBlock
         Icon={FiInbox}
         iconClassName="text-purple-500"
-        title="Market Validation"
-        subtitle="Perfect for accelerators and VCs looking to validate new market opportunities."
+        title="Project Management"
+        subtitle="Built-in tools for seamless project tracking, reporting, and milestone management."
       />
       <HighlightBlock
         Icon={FiMove}
         iconClassName="text-fuchsia-500"
-        title="Stay Agile"
-        subtitle="Adapt quickly to market changes with flexible talent solutions."
+        title="Tech Expertise"
+        subtitle="Access developers skilled in the latest technologies, from web and mobile to AI/ML."
       />
       <HighlightBlock
         Icon={FiClipboard}
         iconClassName="text-red-500"
-        title="Hit Milestones"
-        subtitle="Meet your development and growth targets with reliable tech talent."
+        title="Dedicated Support"
+        subtitle="24/7 support to ensure your projects stay on track and technical issues are resolved quickly."
       />
       <HighlightBlock
         Icon={FiRepeat}
         iconClassName="text-yellow-500"
-        title="Scale Success"
-        subtitle="Replicate successful strategies across your startup portfolio."
+        title="Continuous Delivery"
+        subtitle="Implement agile methodologies for faster iterations and continuous improvement."
       />
     </>
   );

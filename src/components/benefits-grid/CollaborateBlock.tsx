@@ -35,9 +35,9 @@ export const CollaborateBlock = () => (
         />
       </div>
       <div>
-        <CardTitle>Collaborate seamlessly</CardTitle>
+        <CardTitle>Real-time Collaboration</CardTitle>
         <CardSubtitle>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Work seamlessly with your team and Mavens in real-time, enabling faster decision-making and efficient project execution.
         </CardSubtitle>
       </div>
     </div>
