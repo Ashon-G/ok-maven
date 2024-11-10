@@ -57,7 +57,7 @@ export const SlackIntegrationDialog = ({
     // Ensure HTTPS is used by replacing http with https if present
     const origin = window.location.origin.replace(/^http:/, 'https:');
     const redirectUri = `${origin}/dashboard/tasks?slack=true`;
-    const scope = "chat:write,commands,incoming-webhook";
+    const scope = "commands,chat:write,users:read";
     
     window.location.href = `https://slack.com/oauth/v2/authorize?client_id=${clientId}&scope=${scope}&redirect_uri=${redirectUri}`;
   };
