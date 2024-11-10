@@ -9,6 +9,7 @@ import { BenefitsGrid } from "@/components/benefits-grid/BenefitsGrid";
 import { CountUpStats } from "@/components/landing/CountUpStats";
 import { BlogPostCarousel } from "@/components/landing/BlogPostCarousel";
 import { CTA } from "@/components/landing/CTA";
+import { Footer } from "@/components/layout/Footer";
 
 const TiltChipLink = () => {
   return (
@@ -119,6 +120,8 @@ const Index = () => {
         <BlogPostCarousel />
         <CTA />
       </main>
+
+      <Footer />
     </div>
   );
 };

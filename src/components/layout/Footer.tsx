@@ -1,5 +1,6 @@
 import { Facebook, Twitter, Instagram, Linkedin, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 export const Footer = () => {
   return (
@@ -13,18 +14,26 @@ export const Footer = () => {
               Empowering startups with expert guidance and innovative solutions.
             </p>
             <div className="flex space-x-4">
-              <a href="https://twitter.com" className="hover:text-secondary transition-colors">
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a href="https://facebook.com" className="hover:text-secondary transition-colors">
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a href="https://instagram.com" className="hover:text-secondary transition-colors">
-                <Instagram className="h-5 w-5" />
-              </a>
-              <a href="https://linkedin.com" className="hover:text-secondary transition-colors">
-                <Linkedin className="h-5 w-5" />
-              </a>
+              <Button variant="ghost" size="icon" asChild className="hover:text-secondary">
+                <a href="https://twitter.com" aria-label="Twitter">
+                  <Twitter className="h-5 w-5" />
+                </a>
+              </Button>
+              <Button variant="ghost" size="icon" asChild className="hover:text-secondary">
+                <a href="https://facebook.com" aria-label="Facebook">
+                  <Facebook className="h-5 w-5" />
+                </a>
+              </Button>
+              <Button variant="ghost" size="icon" asChild className="hover:text-secondary">
+                <a href="https://instagram.com" aria-label="Instagram">
+                  <Instagram className="h-5 w-5" />
+                </a>
+              </Button>
+              <Button variant="ghost" size="icon" asChild className="hover:text-secondary">
+                <a href="https://linkedin.com" aria-label="LinkedIn">
+                  <Linkedin className="h-5 w-5" />
+                </a>
+              </Button>
             </div>
           </div>
 
@@ -33,19 +42,19 @@ export const Footer = () => {
             <h3 className="text-lg font-semibold">Quick Links</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link to="/" className="hover:text-secondary transition-colors">
-                  Home
-                </Link>
+                <Button variant="link" asChild className="text-primary-foreground hover:text-secondary p-0 h-auto">
+                  <Link to="/">Home</Link>
+                </Button>
               </li>
               <li>
-                <Link to="/compliance-packages" className="hover:text-secondary transition-colors">
-                  Packages
-                </Link>
+                <Button variant="link" asChild className="text-primary-foreground hover:text-secondary p-0 h-auto">
+                  <Link to="/compliance-packages">Packages</Link>
+                </Button>
               </li>
               <li>
-                <Link to="/upgrade" className="hover:text-secondary transition-colors">
-                  Upgrade Plan
-                </Link>
+                <Button variant="link" asChild className="text-primary-foreground hover:text-secondary p-0 h-auto">
+                  <Link to="/upgrade">Upgrade Plan</Link>
+                </Button>
               </li>
             </ul>
           </div>
@@ -55,19 +64,19 @@ export const Footer = () => {
             <h3 className="text-lg font-semibold">Support</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link to="/help" className="hover:text-secondary transition-colors">
-                  Help Center
-                </Link>
+                <Button variant="link" asChild className="text-primary-foreground hover:text-secondary p-0 h-auto">
+                  <Link to="/help">Help Center</Link>
+                </Button>
               </li>
               <li>
-                <Link to="/terms" className="hover:text-secondary transition-colors">
-                  Terms of Service
-                </Link>
+                <Button variant="link" asChild className="text-primary-foreground hover:text-secondary p-0 h-auto">
+                  <Link to="/terms">Terms of Service</Link>
+                </Button>
               </li>
               <li>
-                <Link to="/privacy" className="hover:text-secondary transition-colors">
-                  Privacy Policy
-                </Link>
+                <Button variant="link" asChild className="text-primary-foreground hover:text-secondary p-0 h-auto">
+                  <Link to="/privacy">Privacy Policy</Link>
+                </Button>
               </li>
             </ul>
           </div>
