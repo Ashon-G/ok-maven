@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import useMeasure from "react-use-measure";
@@ -14,9 +14,41 @@ const BREAKPOINTS = {
   lg: 1024,
 };
 
+type PostType = {
+  imgUrl: string;
+  author: string;
+  title: string;
+  description: string;
+  slug: string;
+};
+
+const Post = ({ imgUrl, author, title, description, slug }: PostType) => {
+  return (
+    <a
+      href={`/blog/${slug}`}
+      className="relative shrink-0 cursor-pointer transition-transform hover:-translate-y-1"
+      style={{
+        width: CARD_WIDTH,
+        marginRight: MARGIN,
+      }}
+    >
+      <img
+        src={imgUrl}
+        className="mb-3 h-[200px] w-full rounded-lg object-cover"
+        alt={`Blog post about ${title}`}
+      />
+      <span className="rounded-md border-[1px] border-neutral-500 px-1.5 py-1 text-xs uppercase text-neutral-500">
+        {author}
+      </span>
+      <p className="mt-1.5 text-lg font-medium">{title}</p>
+      <p className="text-sm text-neutral-500">{description}</p>
+    </a>
+  );
+};
+
 export const BlogPostCarousel = () => {
   const [ref, { width }] = useMeasure();
-  const [offset, setOffset] = useState(0);
+  const [offset, setOffset] = React.useState(0);
 
   const { data: blogData } = useQuery({
     queryKey: ["blog-posts"],
@@ -96,37 +128,5 @@ export const BlogPostCarousel = () => {
         </div>
       </div>
     </section>
-  );
-};
-
-type PostType = {
-  imgUrl: string;
-  author: string;
-  title: string;
-  description: string;
-  slug: string;
-};
-
-const Post = ({ imgUrl, author, title, description, slug }: PostType) => {
-  return (
-    <a
-      href={`/blog/${slug}`}
-      className="relative shrink-0 cursor-pointer transition-transform hover:-translate-y-1"
-      style={{
-        width: CARD_WIDTH,
-        marginRight: MARGIN,
-      }}
-    >
-      <img
-        src={imgUrl}
-        className="mb-3 h-[200px] w-full rounded-lg object-cover"
-        alt={`Blog post about ${title}`}
-      />
-      <span className="rounded-md border-[1px] border-neutral-500 px-1.5 py-1 text-xs uppercase text-neutral-500">
-        {author}
-      </span>
-      <p className="mt-1.5 text-lg font-medium">{title}</p>
-      <p className="text-sm text-neutral-500">{description}</p>
-    </a>
   );
 };
