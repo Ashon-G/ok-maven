@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tables, Enums } from "@/integrations/supabase/types";
 
 interface SlackIntegrationDialogProps {
   open: boolean;
@@ -30,7 +31,7 @@ export const SlackIntegrationDialog = ({
   const { session } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const [notificationPreference, setNotificationPreference] = useState<string>("mentions");
+  const [notificationPreference, setNotificationPreference] = useState<Enums<'slack_notification_type'>>("mentions");
 
   const { data: integration, isError } = useQuery({
     queryKey: ["slackIntegration", session?.user.id],
@@ -46,7 +47,7 @@ export const SlackIntegrationDialog = ({
       if (error && error.code !== "PGRST116") {
         throw error;
       }
-      return data;
+      return data as Tables<"slack_integrations"> | null;
     },
     enabled: !!session?.user.id,
   });

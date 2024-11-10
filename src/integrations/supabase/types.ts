@@ -421,6 +421,53 @@ export type Database = {
         }
         Relationships: []
       }
+      slack_integrations: {
+        Row: {
+          access_token: string
+          bot_user_id: string
+          channel_id: string
+          created_at: string
+          id: string
+          notification_preferences:
+            | Database["public"]["Enums"]["slack_notification_type"]
+            | null
+          user_id: string
+          workspace_id: string
+        }
+        Insert: {
+          access_token: string
+          bot_user_id: string
+          channel_id: string
+          created_at?: string
+          id?: string
+          notification_preferences?:
+            | Database["public"]["Enums"]["slack_notification_type"]
+            | null
+          user_id: string
+          workspace_id: string
+        }
+        Update: {
+          access_token?: string
+          bot_user_id?: string
+          channel_id?: string
+          created_at?: string
+          id?: string
+          notification_preferences?:
+            | Database["public"]["Enums"]["slack_notification_type"]
+            | null
+          user_id?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "slack_integrations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       subscriptions: {
         Row: {
           cancel_at_period_end: boolean
@@ -567,6 +614,7 @@ export type Database = {
         | "Sales"
         | "Other"
       project_status_enum: "draft" | "active" | "completed" | "archived"
+      slack_notification_type: "all" | "mentions" | "none"
       subscription_status: "active" | "canceled" | "past_due" | "incomplete"
       user_type_enum: "founder" | "maven" | "admin"
     }
