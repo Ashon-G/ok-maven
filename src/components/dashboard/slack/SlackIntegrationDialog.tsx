@@ -94,6 +94,10 @@ export const SlackIntegrationDialog = ({
     return null;
   }
 
+  const handleValueChange = (value: Enums<'slack_notification_type'>) => {
+    setNotificationPreference(value);
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -113,7 +117,7 @@ export const SlackIntegrationDialog = ({
                 <label className="text-sm font-medium">Notification Preferences</label>
                 <Select
                   value={notificationPreference}
-                  onValueChange={setNotificationPreference}
+                  onValueChange={handleValueChange}
                 >
                   <SelectTrigger>
                     <SelectValue />
