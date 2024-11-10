@@ -24,19 +24,36 @@ wss.on("connection", (ws: WebSocket) => {
   ws.on("message", async (message: string) => {
     const data = JSON.parse(message);
     
-    // Handle Socket Mode events
     if (data.type === 'url_verification') {
       ws.send(JSON.stringify({ challenge: data.challenge }));
     }
     
-    // Handle other event types
     if (data.type === 'event_callback') {
-      // Process the event callback here
       console.log('Received event callback:', data.event);
-      // Add logic to handle specific events
     }
   });
 });
+
+async function sendSlackWebhookMessage(webhookUrl: string, message: string) {
+  try {
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text: message }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to send Slack message: ${response.statusText}`);
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error sending Slack webhook message:', error);
+    throw error;
+  }
+}
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -79,6 +96,7 @@ serve(async (req) => {
             access_token: data.access_token,
             bot_user_id: data.bot_user_id,
             channel_id: data.incoming_webhook.channel_id,
+            webhook_url: data.incoming_webhook.url, // Store the webhook URL
           });
 
         if (dbError) throw dbError;
@@ -89,31 +107,41 @@ serve(async (req) => {
       }
 
       case 'send-message': {
-        const { message, channel_id } = await req.json();
-        const { data: integration } = await supabase
+        const { message, userId } = await req.json();
+        
+        // Get the Slack integration for the user
+        const { data: integration, error: integrationError } = await supabase
           .from('slack_integrations')
-          .select('access_token')
-          .eq('user_id', req.headers.get('x-user-id'))
+          .select('webhook_url, access_token, channel_id')
+          .eq('user_id', userId)
           .single();
 
-        if (!integration) {
+        if (integrationError) {
           throw new Error('No Slack integration found');
         }
 
-        const response = await fetch('https://slack.com/api/chat.postMessage', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${integration.access_token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            channel: channel_id,
-            text: message,
-          }),
-        });
+        if (integration.webhook_url) {
+          // Use webhook if available
+          await sendSlackWebhookMessage(integration.webhook_url, message);
+        } else if (integration.access_token) {
+          // Fallback to bot token
+          const response = await fetch('https://slack.com/api/chat.postMessage', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${integration.access_token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              channel: integration.channel_id,
+              text: message,
+            }),
+          });
 
-        const data = await response.json();
-        if (!data.ok) throw new Error(data.error);
+          const data = await response.json();
+          if (!data.ok) throw new Error(data.error);
+        } else {
+          throw new Error('No Slack messaging method available');
+        }
 
         return new Response(JSON.stringify({ success: true }), {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -124,6 +152,7 @@ serve(async (req) => {
         throw new Error('Invalid action');
     }
   } catch (error) {
+    console.error('Error in Slack integration:', error);
     return new Response(JSON.stringify({ error: error.message }), {
       status: 400,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
