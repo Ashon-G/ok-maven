@@ -7,8 +7,6 @@ import { CreateTaskDialog } from "./kanban/CreateTaskDialog";
 import { JiraIntegrationDialog } from "./jira/JiraIntegrationDialog";
 import { GenerateTasksDialog } from "./kanban/GenerateTasksDialog";
 import { useSearchParams } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Settings } from "lucide-react";
 
 export const TaskList = () => {
   const [searchParams] = useSearchParams();
@@ -51,19 +49,6 @@ export const TaskList = () => {
 
   return (
     <div className="space-y-4">
-      {userProfile?.user_type === "founder" && (
-        <div className="flex items-center justify-end gap-2">
-          <Button
-            onClick={() => setIsJiraOpen(true)}
-            variant="outline"
-            className="gap-2"
-          >
-            <Settings className="h-4 w-4" />
-            Connect to Jira
-          </Button>
-        </div>
-      )}
-
       <KanbanBoard tasks={tasks || []} isLoading={isLoading} />
       
       {userProfile?.user_type === "founder" && (
