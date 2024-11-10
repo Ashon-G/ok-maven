@@ -8,7 +8,7 @@ import { JiraIntegrationDialog } from "./jira/JiraIntegrationDialog";
 import { GenerateTasksDialog } from "./kanban/GenerateTasksDialog";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Settings, Wand2 } from "lucide-react";
+import { Settings } from "lucide-react";
 
 export const TaskList = () => {
   const [searchParams] = useSearchParams();
@@ -60,14 +60,6 @@ export const TaskList = () => {
           >
             <Settings className="h-4 w-4" />
             Connect to Jira
-          </Button>
-          <Button
-            onClick={() => setIsGenerateOpen(true)}
-            variant="outline"
-            className="gap-2"
-          >
-            <Wand2 className="h-4 w-4" />
-            Generate Tasks
           </Button>
         </div>
       )}
