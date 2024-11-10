@@ -3,17 +3,40 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { verifySlackRequest } from "./utils/verify.ts";
 import { handleSlackCommands } from "./handlers/commands.ts";
 import { handleOAuth } from "./handlers/oauth.ts";
+import { WebSocket, WebSocketServer } from "https://deno.land/x/websocket@v0.1.4/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const SLACK_CLIENT_ID = Deno.env.get('SLACK_CLIENT_ID');
-const SLACK_CLIENT_SECRET = Deno.env.get('SLACK_CLIENT_SECRET');
+const SLACK_APP_TOKEN = Deno.env.get('SLACK_APP_TOKEN');
 const SLACK_SIGNING_SECRET = Deno.env.get('SLACK_SIGNING_SECRET');
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL');
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+
+// Initialize WebSocket server for Socket Mode
+const wss = new WebSocketServer(8080);
+
+wss.on("connection", (ws: WebSocket) => {
+  console.log("New Socket Mode connection");
+
+  ws.on("message", async (message: string) => {
+    const data = JSON.parse(message);
+    
+    // Handle Socket Mode events
+    if (data.type === 'url_verification') {
+      ws.send(JSON.stringify({ challenge: data.challenge }));
+    }
+    
+    // Handle other event types
+    if (data.type === 'event_callback') {
+      // Process the event callback here
+      console.log('Received event callback:', data.event);
+      // Add logic to handle specific events
+    }
+  });
+});
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -42,7 +65,7 @@ serve(async (req) => {
     switch (action) {
       case 'oauth': {
         const { code } = await req.json();
-        const data = await handleOAuth(code, SLACK_CLIENT_ID!, SLACK_CLIENT_SECRET!);
+        const data = await handleOAuth(code, SLACK_APP_TOKEN!, SLACK_SIGNING_SECRET!);
         
         if (!data.ok) {
           throw new Error(data.error);

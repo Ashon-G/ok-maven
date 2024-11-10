@@ -20,6 +20,10 @@ export default Manifest({
       messagesTabEnabled: true,
       messagesTabReadOnlyEnabled: false,
     },
+    socketMode: {
+      enabled: true,
+      appToken: Deno.env.get('SLACK_APP_TOKEN'),
+    },
   },
   outgoingDomains: [], // No external domains needed yet
 });
