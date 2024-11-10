@@ -68,6 +68,7 @@ export const SignupForm = ({ userType, title }: SignupFormProps) => {
             user_type: userType,
             maven_skillset: userType === "maven" ? mavenSkillset : null,
           },
+          emailRedirectTo: `${window.location.origin}/dashboard`,
         },
       });
 
@@ -100,18 +101,13 @@ export const SignupForm = ({ userType, title }: SignupFormProps) => {
 
       if (updateError) throw updateError;
 
-      // Set up auth state change listener for redirection
-      const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-        if (event === 'SIGNED_IN') {
-          navigate('/dashboard');
-          subscription.unsubscribe();
-        }
-      });
-
       toast({
         title: "Success!",
-        description: "Account created successfully. Redirecting to dashboard...",
+        description: "Account created successfully. Please check your email to verify your account.",
       });
+
+      // Redirect to login page after successful signup
+      navigate("/login");
 
     } catch (error) {
       toast({
