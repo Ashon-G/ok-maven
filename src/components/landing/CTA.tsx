@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 export const CTA = () => {
   return (
@@ -22,18 +23,12 @@ export const CTA = () => {
           Start your journey today.
         </p>
         <div className="flex justify-center gap-4">
-          <Link 
-            to="/signup/founder"
-            className="rounded-full bg-secondary px-8 py-4 font-semibold text-secondary-foreground transition-all hover:bg-secondary/90"
-          >
-            Start Building
-          </Link>
-          <Link
-            to="/signup/maven"
-            className="rounded-full border border-primary-foreground/20 px-8 py-4 font-semibold text-primary-foreground transition-all hover:bg-primary-foreground/10"
-          >
-            Join as Student
-          </Link>
+          <Button variant="secondary" asChild>
+            <Link to="/signup/founder">Start Building</Link>
+          </Button>
+          <Button variant="outline" asChild className="text-white hover:text-primary hover:bg-white">
+            <Link to="/signup/maven">Join as Student</Link>
+          </Button>
         </div>
       </div>
     </section>

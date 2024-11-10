@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom";
-import { FoldingLogos } from "@/components/landing/FoldingLogos";
 import { FiArrowUpRight } from "react-icons/fi";
+import { FoldingLogos } from "@/components/landing/FoldingLogos";
 import DoubleScrollingLogos from "@/components/landing/DoubleScrollingLogos";
 import { Supports } from "@/components/supports/Supports";
 import { BenefitsGrid } from "@/components/benefits-grid/BenefitsGrid";
@@ -38,8 +38,10 @@ const Index = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          <Link to="/login" className="text-sm hover:underline">Login</Link>
-          <Button variant="ghost" asChild>
+          <Button variant="link" asChild>
+            <Link to="/login">Login</Link>
+          </Button>
+          <Button variant="secondary" asChild>
             <Link to="/signup">Get Started</Link>
           </Button>
         </div>
@@ -55,7 +57,7 @@ const Index = () => {
           </h1>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <Button className="bg-primary hover:bg-primary/90" asChild>
+            <Button variant="secondary" asChild>
               <Link to="/signup">Start Building Today</Link>
             </Button>
             <TiltChipLink />
@@ -108,7 +110,7 @@ const Index = () => {
           <FoldingLogos />
         </div>
 
-        <Button className="mb-12 bg-primary hover:bg-primary/90" asChild>
+        <Button variant="secondary" asChild className="mb-12">
           <Link to="/signup">Get Started Now</Link>
         </Button>
 
