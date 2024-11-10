@@ -54,6 +54,20 @@ export const handleSignupSubmission = async (
     if (signUpError) throw signUpError;
     if (!authData.user) throw new Error("No user data returned");
 
+    // Wait for profile creation
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    // Verify profile exists
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', authData.user.id)
+      .single();
+
+    if (profileError || !profile) {
+      throw new Error("Profile creation failed. Please try again.");
+    }
+
     // Upload avatar
     setIsUploading(true);
     const fileExt = avatarFile.name.split('.').pop();
@@ -90,22 +104,14 @@ export const handleSignupSubmission = async (
 
     if (updateError) throw updateError;
 
-    // Wait for profile creation and database updates to complete
-    await new Promise(resolve => setTimeout(resolve, 3000));
-
-    // Verify profile exists before proceeding
-    const { data: profile, error: profileError } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", authData.user.id)
-      .single();
-
-    if (profileError || !profile) {
-      throw new Error("Profile creation failed. Please try again.");
-    }
+    setIsUploading(false);
+    toast({
+      title: "Success!",
+      description: "Account created successfully. Redirecting to dashboard...",
+    });
 
     // Now sign in the user
-    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+    const { error: signInError } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -113,16 +119,6 @@ export const handleSignupSubmission = async (
     if (signInError) {
       throw new Error("Account created but couldn't sign in automatically. Please try logging in manually.");
     }
-
-    if (!signInData.user) {
-      throw new Error("No user data returned after sign in");
-    }
-
-    setIsUploading(false);
-    toast({
-      title: "Success!",
-      description: "Account created successfully. Redirecting to dashboard...",
-    });
 
     navigate("/dashboard");
   } catch (error: any) {
