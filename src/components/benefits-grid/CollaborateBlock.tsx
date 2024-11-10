@@ -35,9 +35,9 @@ export const CollaborateBlock = () => (
         />
       </div>
       <div>
-        <CardTitle>Real-time Collaboration</CardTitle>
+        <CardTitle>Collaborate seamlessly</CardTitle>
         <CardSubtitle>
-          Enable seamless communication and collaboration between your team and student developers through our real-time workspace environment.
+          Lorem ipsum dolor sit amet consectetur adipisicing elit.
         </CardSubtitle>
       </div>
     </div>

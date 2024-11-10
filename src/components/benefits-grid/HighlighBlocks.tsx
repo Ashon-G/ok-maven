@@ -22,56 +22,56 @@ export const HighlighBlocks = () => {
       <HighlightBlock
         Icon={FiDollarSign}
         iconClassName="text-green-500"
-        title="Budget-Friendly"
-        subtitle="Access talented student developers at rates that work for startups, reducing development costs without compromising quality."
+        title="Optimize Resources"
+        subtitle="Reduce operational costs while maintaining high-quality output with our vetted talent pool."
       />
       <HighlightBlock
         Icon={FiArrowUpRight}
         iconClassName="text-pink-500"
-        title="Fast Growth"
-        subtitle="Scale your development team quickly with pre-vetted student talent who bring fresh perspectives and latest tech skills."
+        title="Scale Efficiently"
+        subtitle="Access top-tier talent on-demand to accelerate your growth without the overhead."
       />
       <HighlightBlock
         Icon={FiSmile}
         iconClassName="text-blue-500"
-        title="Quality Assured"
-        subtitle="Work with thoroughly vetted student developers who demonstrate both technical excellence and strong communication skills."
+        title="Boost Innovation"
+        subtitle="Leverage fresh perspectives and cutting-edge skills to drive your startup forward."
       />
       <HighlightBlock
         Icon={FiCoffee}
         iconClassName="text-orange-500"
-        title="Quick Start"
-        subtitle="Get your projects up and running within days, not months, with our streamlined onboarding process for student developers."
+        title="Fast Implementation"
+        subtitle="Get your projects off the ground quickly with ready-to-deploy talent."
       />
       <HighlightBlock
         Icon={FiFeather}
         iconClassName="text-zinc-500"
-        title="Flexible Terms"
-        subtitle="Choose from part-time to full-time student developers based on your project needs and budget constraints."
+        title="Tech Excellence"
+        subtitle="Access developers skilled in the latest technologies and frameworks."
       />
       <HighlightBlock
         Icon={FiInbox}
         iconClassName="text-purple-500"
-        title="Project Tools"
-        subtitle="Access built-in tools for seamless project tracking, milestone management, and collaboration with student developers."
+        title="Market Validation"
+        subtitle="Perfect for accelerators and VCs looking to validate new market opportunities."
       />
       <HighlightBlock
         Icon={FiMove}
         iconClassName="text-fuchsia-500"
-        title="Tech Skills"
-        subtitle="Connect with student developers skilled in modern technologies, from web and mobile development to AI/ML projects."
+        title="Stay Agile"
+        subtitle="Adapt quickly to market changes with flexible talent solutions."
       />
       <HighlightBlock
         Icon={FiClipboard}
         iconClassName="text-red-500"
-        title="Full Support"
-        subtitle="Get dedicated support to ensure smooth collaboration with student developers and quick resolution of any issues."
+        title="Hit Milestones"
+        subtitle="Meet your development and growth targets with reliable tech talent."
       />
       <HighlightBlock
         Icon={FiRepeat}
         iconClassName="text-yellow-500"
-        title="Agile Process"
-        subtitle="Implement agile methodologies with student developers for rapid iterations and continuous project improvement."
+        title="Scale Success"
+        subtitle="Replicate successful strategies across your startup portfolio."
       />
     </>
   );
