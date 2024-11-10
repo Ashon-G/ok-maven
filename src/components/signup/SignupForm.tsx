@@ -100,12 +100,19 @@ export const SignupForm = ({ userType, title }: SignupFormProps) => {
 
       if (updateError) throw updateError;
 
-      toast({
-        title: "Success!",
-        description: "Please check your email to verify your account.",
+      // Set up auth state change listener for redirection
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+        if (event === 'SIGNED_IN') {
+          navigate('/dashboard');
+          subscription.unsubscribe();
+        }
       });
 
-      navigate("/login");
+      toast({
+        title: "Success!",
+        description: "Account created successfully. Redirecting to dashboard...",
+      });
+
     } catch (error) {
       toast({
         title: "Error",
