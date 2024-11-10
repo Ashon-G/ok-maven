@@ -54,20 +54,20 @@ export const TaskList = () => {
       {userProfile?.user_type === "founder" && (
         <div className="flex items-center justify-end gap-2">
           <Button
-            onClick={() => setIsGenerateOpen(true)}
-            variant="outline"
-            className="gap-2"
-          >
-            <Wand2 className="h-4 w-4" />
-            Generate Tasks
-          </Button>
-          <Button
             onClick={() => setIsJiraOpen(true)}
             variant="outline"
             className="gap-2"
           >
             <Settings className="h-4 w-4" />
             Connect to Jira
+          </Button>
+          <Button
+            onClick={() => setIsGenerateOpen(true)}
+            variant="outline"
+            className="gap-2"
+          >
+            <Wand2 className="h-4 w-4" />
+            Generate Tasks
           </Button>
         </div>
       )}
