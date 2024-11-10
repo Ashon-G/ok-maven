@@ -27,15 +27,15 @@ export const handleSignupSubmission = async (
   }
 
   try {
-    // First check if user exists in auth
-    const { data: { user: existingAuthUser }, error: checkError } = await supabase.auth.admin.getUserByEmail(email);
-    
-    if (existingAuthUser) {
-      throw new Error("An account with this email already exists");
-    }
+    // First check if user exists in profiles
+    const { data: existingProfile } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('username', email)
+      .single();
 
-    if (checkError && checkError.message !== "User not found") {
-      throw checkError;
+    if (existingProfile) {
+      throw new Error("An account with this email already exists");
     }
 
     // Sign up the user with metadata
