@@ -7,7 +7,7 @@ export default Manifest({
   displayInformation: {
     name: "Maven Assistant",
     description: "Your Maven workspace assistant",
-    backgroundColor: "#4F46E5" // Indigo color that matches Maven's theme
+    backgroundColor: "#4F46E5"
   },
   botScopes: [
     "commands",
@@ -24,6 +24,28 @@ export default Manifest({
       enabled: true,
       appToken: Deno.env.get('SLACK_APP_TOKEN'),
     },
+    slashCommands: [
+      {
+        command: "/maven-task-create",
+        description: "Create a new task",
+        usage_hint: "[title] [description] [@assignee]"
+      },
+      {
+        command: "/maven-task-edit",
+        description: "Edit an existing task",
+        usage_hint: "[task-id] [field] [new-value]"
+      },
+      {
+        command: "/maven-task-delete",
+        description: "Delete a task",
+        usage_hint: "[task-id]"
+      },
+      {
+        command: "/maven-chat",
+        description: "Send a message to a Maven user",
+        usage_hint: "[@user] [message]"
+      }
+    ]
   },
-  outgoingDomains: [], // No external domains needed yet
+  outgoingDomains: [],
 });
