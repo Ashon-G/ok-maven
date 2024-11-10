@@ -3,9 +3,11 @@ import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   useEffect(() => {
     const checkUser = async () => {
@@ -18,14 +20,24 @@ const Login = () => {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event) => {
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === "SIGNED_IN") {
+        toast({
+          title: "Welcome back!",
+          description: "Successfully signed in.",
+        });
         navigate("/dashboard");
+      }
+      if (event === "SIGNED_OUT") {
+        toast({
+          title: "Signed out",
+          description: "You have been signed out.",
+        });
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, toast]);
 
   return (
     <div className="min-h-screen bg-primary flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -67,6 +79,9 @@ const Login = () => {
             }}
             theme="dark"
             providers={[]}
+            redirectTo={`${window.location.origin}/dashboard`}
+            onlyThirdPartyProviders={false}
+            magicLink={false}
             view="sign_in"
           />
         </div>
