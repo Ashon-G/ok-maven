@@ -21,12 +21,28 @@ const Login = () => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === "SIGNED_IN") {
-        toast({
-          title: "Welcome back!",
-          description: "Successfully signed in.",
-        });
-        navigate("/dashboard");
+      if (event === "SIGNED_IN" && session) {
+        // Verify the session is valid
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .single();
+
+        if (profile) {
+          toast({
+            title: "Welcome back!",
+            description: "Successfully signed in.",
+          });
+          navigate("/dashboard");
+        } else {
+          toast({
+            title: "Error",
+            description: "Profile not found. Please try again.",
+            variant: "destructive",
+          });
+          await supabase.auth.signOut();
+        }
       }
       if (event === "SIGNED_OUT") {
         toast({

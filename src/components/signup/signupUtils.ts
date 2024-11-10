@@ -27,7 +27,18 @@ export const handleSignupSubmission = async (
   }
 
   try {
-    // First, sign up the user
+    // First check if user exists
+    const { data: existingUser } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('username', email)
+      .single();
+
+    if (existingUser) {
+      throw new Error("An account with this email already exists");
+    }
+
+    // Sign up the user
     const { data: authData, error: signUpError } = await supabase.auth.signUp({
       email,
       password,
@@ -68,16 +79,22 @@ export const handleSignupSubmission = async (
 
     if (updateError) throw updateError;
 
-    // Wait a moment for the profile to be created
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Wait for profile creation and database updates to complete
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
     // Now sign in the user
-    const { error: signInError } = await supabase.auth.signInWithPassword({
+    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
-    if (signInError) throw signInError;
+    if (signInError) {
+      throw new Error("Account created but couldn't sign in automatically. Please try logging in manually.");
+    }
+
+    if (!signInData.user) {
+      throw new Error("No user data returned after sign in");
+    }
 
     toast({
       title: "Success!",
@@ -86,6 +103,7 @@ export const handleSignupSubmission = async (
 
     navigate("/dashboard");
   } catch (error) {
+    console.error("Signup error:", error);
     throw error;
   }
 };
