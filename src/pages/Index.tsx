@@ -7,6 +7,7 @@ import DoubleScrollingLogos from "@/components/landing/DoubleScrollingLogos";
 import { Supports } from "@/components/supports/Supports";
 import { BenefitsGrid } from "@/components/benefits-grid/BenefitsGrid";
 import { CountUpStats } from "@/components/landing/CountUpStats";
+import { BlogPostCarousel } from "@/components/landing/BlogPostCarousel";
 
 const TiltChipLink = () => {
   return (
@@ -111,6 +112,9 @@ const Index = () => {
         </Button>
 
         <BenefitsGrid />
+
+        {/* Add BlogPostCarousel at the bottom */}
+        <BlogPostCarousel />
       </main>
     </div>
   );
