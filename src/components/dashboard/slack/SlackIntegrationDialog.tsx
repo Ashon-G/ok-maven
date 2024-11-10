@@ -54,7 +54,9 @@ export const SlackIntegrationDialog = ({
 
   const connectSlack = async () => {
     const clientId = import.meta.env.VITE_SLACK_CLIENT_ID;
-    const redirectUri = `${window.location.origin}/dashboard/tasks?slack=true`;
+    // Ensure HTTPS is used by replacing http with https if present
+    const origin = window.location.origin.replace(/^http:/, 'https:');
+    const redirectUri = `${origin}/dashboard/tasks?slack=true`;
     const scope = "chat:write,commands,incoming-webhook";
     
     window.location.href = `https://slack.com/oauth/v2/authorize?client_id=${clientId}&scope=${scope}&redirect_uri=${redirectUri}`;
