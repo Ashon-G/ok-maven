@@ -27,18 +27,18 @@ export const handleSignupSubmission = async (
   }
 
   try {
-    // First check if user exists
-    const { data: existingUser } = await supabase
-      .from('profiles')
-      .select('id')
-      .eq('username', email)
-      .single();
-
-    if (existingUser) {
+    // First check if user exists in auth
+    const { data: { user: existingAuthUser }, error: checkError } = await supabase.auth.admin.getUserByEmail(email);
+    
+    if (existingAuthUser) {
       throw new Error("An account with this email already exists");
     }
 
-    // Sign up the user
+    if (checkError && checkError.message !== "User not found") {
+      throw checkError;
+    }
+
+    // Sign up the user with metadata
     const { data: authData, error: signUpError } = await supabase.auth.signUp({
       email,
       password,
@@ -55,9 +55,20 @@ export const handleSignupSubmission = async (
     if (!authData.user) throw new Error("No user data returned");
 
     // Upload avatar
+    setIsUploading(true);
     const fileExt = avatarFile.name.split('.').pop();
     const filePath = `${authData.user.id}/avatar.${fileExt}`;
 
+    // First, try to remove any existing avatar
+    try {
+      await supabase.storage
+        .from('avatars')
+        .remove([filePath]);
+    } catch (error) {
+      // Ignore error if file doesn't exist
+    }
+
+    // Upload new avatar
     const { error: uploadError } = await supabase.storage
       .from('avatars')
       .upload(filePath, avatarFile, {
@@ -80,7 +91,18 @@ export const handleSignupSubmission = async (
     if (updateError) throw updateError;
 
     // Wait for profile creation and database updates to complete
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise(resolve => setTimeout(resolve, 3000));
+
+    // Verify profile exists before proceeding
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", authData.user.id)
+      .single();
+
+    if (profileError || !profile) {
+      throw new Error("Profile creation failed. Please try again.");
+    }
 
     // Now sign in the user
     const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
@@ -96,13 +118,15 @@ export const handleSignupSubmission = async (
       throw new Error("No user data returned after sign in");
     }
 
+    setIsUploading(false);
     toast({
       title: "Success!",
       description: "Account created successfully. Redirecting to dashboard...",
     });
 
     navigate("/dashboard");
-  } catch (error) {
+  } catch (error: any) {
+    setIsUploading(false);
     console.error("Signup error:", error);
     throw error;
   }
