@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { Link } from "react-router-dom";
 
 export const CTA = () => {
   return (
     <section
       id="contact"
-      className="relative bg-cover bg-center bg-no-repeat py-24"
+      className="relative bg-cover bg-center bg-no-repeat py-24 w-full mt-24"
       style={{
         backgroundImage:
           "url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80')",
@@ -13,7 +13,7 @@ export const CTA = () => {
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-primary/90" />
       
-      <div className="container relative text-center">
+      <div className="container relative mx-auto text-center px-4">
         <h2 className="mb-6 text-4xl font-bold text-white">
           Ready to Build Your <span className="gradient-text">Next Big Thing</span>?
         </h2>

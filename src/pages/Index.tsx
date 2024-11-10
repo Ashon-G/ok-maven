@@ -8,6 +8,7 @@ import { Supports } from "@/components/supports/Supports";
 import { BenefitsGrid } from "@/components/benefits-grid/BenefitsGrid";
 import { CountUpStats } from "@/components/landing/CountUpStats";
 import { BlogPostCarousel } from "@/components/landing/BlogPostCarousel";
+import { CTA } from "@/components/landing/CTA";
 
 const TiltChipLink = () => {
   return (
@@ -113,8 +114,8 @@ const Index = () => {
 
         <BenefitsGrid />
 
-        {/* Add BlogPostCarousel at the bottom */}
         <BlogPostCarousel />
+        <CTA />
       </main>
     </div>
   );
