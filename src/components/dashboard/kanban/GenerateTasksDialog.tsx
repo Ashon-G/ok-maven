@@ -4,6 +4,9 @@ import { Loader2, Wand2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import {
   Dialog,
   DialogContent,
@@ -23,14 +26,29 @@ export const GenerateTasksDialog = ({
   userId,
 }: GenerateTasksDialogProps) => {
   const [isGenerating, setIsGenerating] = useState(false);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
   const generateTasks = async () => {
+    if (!title.trim() || !description.trim()) {
+      toast({
+        title: "Missing Information",
+        description: "Please provide both a title and description.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsGenerating(true);
     try {
       const { data, error } = await supabase.functions.invoke('generate-tasks', {
-        body: { founderId: userId },
+        body: { 
+          founderId: userId,
+          title,
+          description,
+        },
       });
 
       if (error) {
@@ -48,6 +66,8 @@ export const GenerateTasksDialog = ({
         description: `Successfully created ${data.tasks.length} tasks.`,
       });
       onOpenChange(false);
+      setTitle("");
+      setDescription("");
     } catch (error) {
       console.error('Error generating tasks:', error);
       toast({
@@ -67,9 +87,31 @@ export const GenerateTasksDialog = ({
           <DialogTitle>Generate Tasks with AI</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="title">Project Title</Label>
+            <Input
+              id="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter project title"
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="description">Project Description</Label>
+            <Textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Describe your project in detail..."
+              className="min-h-[100px]"
+            />
+          </div>
+
           <p className="text-sm text-muted-foreground">
-            Our AI will analyze your project and generate relevant tasks to help you get started.
+            Our AI will analyze your project details and generate relevant tasks to help you get started.
           </p>
+
           <Button 
             onClick={generateTasks} 
             disabled={isGenerating}
