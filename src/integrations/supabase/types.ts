@@ -143,6 +143,194 @@ export type Database = {
           },
         ]
       }
+      maven_availability: {
+        Row: {
+          end_date: string
+          id: string
+          location_preference: string
+          maven_id: string
+          role_type: string
+          start_date: string
+        }
+        Insert: {
+          end_date: string
+          id?: string
+          location_preference: string
+          maven_id: string
+          role_type: string
+          start_date: string
+        }
+        Update: {
+          end_date?: string
+          id?: string
+          location_preference?: string
+          maven_id?: string
+          role_type?: string
+          start_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "maven_availability_maven_id_fkey"
+            columns: ["maven_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      maven_documents: {
+        Row: {
+          document_type: string
+          document_url: string
+          id: string
+          maven_id: string
+        }
+        Insert: {
+          document_type: string
+          document_url: string
+          id?: string
+          maven_id: string
+        }
+        Update: {
+          document_type?: string
+          document_url?: string
+          id?: string
+          maven_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "maven_documents_maven_id_fkey"
+            columns: ["maven_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      maven_education: {
+        Row: {
+          degree_program: string
+          gpa: number | null
+          graduation_date: string
+          id: string
+          major: string
+          maven_id: string
+          minor: string | null
+          university_id: string
+          year_of_study: string
+        }
+        Insert: {
+          degree_program: string
+          gpa?: number | null
+          graduation_date: string
+          id?: string
+          major: string
+          maven_id: string
+          minor?: string | null
+          university_id: string
+          year_of_study: string
+        }
+        Update: {
+          degree_program?: string
+          gpa?: number | null
+          graduation_date?: string
+          id?: string
+          major?: string
+          maven_id?: string
+          minor?: string | null
+          university_id?: string
+          year_of_study?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "maven_education_maven_id_fkey"
+            columns: ["maven_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "maven_education_university_id_fkey"
+            columns: ["university_id"]
+            isOneToOne: false
+            referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      maven_experience: {
+        Row: {
+          achievements: string | null
+          company_name: string
+          end_date: string | null
+          experience_type: string
+          id: string
+          job_title: string
+          maven_id: string
+          responsibilities: string | null
+          start_date: string
+        }
+        Insert: {
+          achievements?: string | null
+          company_name: string
+          end_date?: string | null
+          experience_type: string
+          id?: string
+          job_title: string
+          maven_id: string
+          responsibilities?: string | null
+          start_date: string
+        }
+        Update: {
+          achievements?: string | null
+          company_name?: string
+          end_date?: string | null
+          experience_type?: string
+          id?: string
+          job_title?: string
+          maven_id?: string
+          responsibilities?: string | null
+          start_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "maven_experience_maven_id_fkey"
+            columns: ["maven_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      maven_skills: {
+        Row: {
+          id: string
+          maven_id: string
+          skill_name: string
+          skill_type: string
+        }
+        Insert: {
+          id?: string
+          maven_id: string
+          skill_name: string
+          skill_type: string
+        }
+        Update: {
+          id?: string
+          maven_id?: string
+          skill_name?: string
+          skill_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "maven_skills_maven_id_fkey"
+            columns: ["maven_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       messages: {
         Row: {
           content: string
@@ -189,9 +377,12 @@ export type Database = {
           created_at: string
           full_name: string | null
           id: string
+          linkedin_profile: string | null
+          location: string | null
           maven_skillset:
             | Database["public"]["Enums"]["maven_skillset_enum"]
             | null
+          phone_number: string | null
           settings: Json | null
           user_type: Database["public"]["Enums"]["user_type_enum"] | null
           username: string | null
@@ -202,9 +393,12 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id: string
+          linkedin_profile?: string | null
+          location?: string | null
           maven_skillset?:
             | Database["public"]["Enums"]["maven_skillset_enum"]
             | null
+          phone_number?: string | null
           settings?: Json | null
           user_type?: Database["public"]["Enums"]["user_type_enum"] | null
           username?: string | null
@@ -215,9 +409,12 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id?: string
+          linkedin_profile?: string | null
+          location?: string | null
           maven_skillset?:
             | Database["public"]["Enums"]["maven_skillset_enum"]
             | null
+          phone_number?: string | null
           settings?: Json | null
           user_type?: Database["public"]["Enums"]["user_type_enum"] | null
           username?: string | null
@@ -330,6 +527,21 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      universities: {
+        Row: {
+          id: string
+          name: string
+        }
+        Insert: {
+          id?: string
+          name: string
+        }
+        Update: {
+          id?: string
+          name?: string
+        }
+        Relationships: []
       }
     }
     Views: {
