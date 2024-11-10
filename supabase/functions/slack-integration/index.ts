@@ -1,3 +1,4 @@
+```typescript
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
@@ -10,8 +11,48 @@ const SLACK_CLIENT_ID = Deno.env.get('SLACK_CLIENT_ID')
 const SLACK_CLIENT_SECRET = Deno.env.get('SLACK_CLIENT_SECRET')
 const SLACK_SIGNING_SECRET = Deno.env.get('SLACK_SIGNING_SECRET')
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')
-const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY')
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
+
+// Verify Slack request signature
+const verifySlackRequest = async (request: Request) => {
+  const timestamp = request.headers.get('x-slack-request-timestamp');
+  const signature = request.headers.get('x-slack-signature');
+  
+  if (!timestamp || !signature) {
+    return false;
+  }
+
+  // Verify timestamp is within 5 minutes
+  const fiveMinutesAgo = Math.floor(Date.now() / 1000) - 60 * 5;
+  if (parseInt(timestamp) < fiveMinutesAgo) {
+    return false;
+  }
+
+  // Clone the request to get the body
+  const clonedRequest = request.clone();
+  const body = await clonedRequest.text();
+  
+  const baseString = `v0:${timestamp}:${body}`;
+  const hmac = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(SLACK_SIGNING_SECRET),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  
+  const signature_bytes = await crypto.subtle.sign(
+    "HMAC",
+    hmac,
+    new TextEncoder().encode(baseString)
+  );
+  
+  const computed_signature = `v0=${[...new Uint8Array(signature_bytes)]
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('')}`;
+  
+  return computed_signature === signature;
+}
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -25,6 +66,59 @@ serve(async (req) => {
 
     if (!action) {
       throw new Error('No action specified')
+    }
+
+    // Handle Slack commands
+    if (action === 'slack-command') {
+      if (!await verifySlackRequest(req)) {
+        return new Response('Invalid request signature', { status: 401 });
+      }
+
+      const formData = await req.formData();
+      const command = formData.get('command');
+      const text = formData.get('text');
+      const user_id = formData.get('user_id');
+      const response_url = formData.get('response_url');
+
+      switch (command) {
+        case '/maven-status':
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', user_id)
+            .single();
+
+          return new Response(JSON.stringify({
+            response_type: 'ephemeral',
+            text: `Your Maven status:\nType: ${profile?.user_type}\nSkillset: ${profile?.maven_skillset || 'Not set'}`
+          }), {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+
+        case '/maven-tasks':
+          const { data: tasks } = await supabase
+            .from('tasks')
+            .select('*')
+            .eq('assigned_to', user_id)
+            .eq('status', 'pending');
+
+          const taskList = tasks?.map(task => `• ${task.title}`).join('\n') || 'No pending tasks';
+          
+          return new Response(JSON.stringify({
+            response_type: 'ephemeral',
+            text: `Your pending tasks:\n${taskList}`
+          }), {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+
+        default:
+          return new Response(JSON.stringify({
+            response_type: 'ephemeral',
+            text: 'Unknown command'
+          }), {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+      }
     }
 
     switch (action) {
@@ -110,3 +204,4 @@ serve(async (req) => {
     })
   }
 })
+```
