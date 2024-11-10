@@ -27,6 +27,7 @@ export const handleSignupSubmission = async (
   }
 
   try {
+    // First, sign up the user
     const { data: authData, error: signUpError } = await supabase.auth.signUp({
       email,
       password,
@@ -67,7 +68,10 @@ export const handleSignupSubmission = async (
 
     if (updateError) throw updateError;
 
-    // Sign in the user immediately after signup
+    // Wait a moment for the profile to be created
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Now sign in the user
     const { error: signInError } = await supabase.auth.signInWithPassword({
       email,
       password,
