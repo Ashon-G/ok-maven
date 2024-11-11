@@ -145,7 +145,7 @@ const Dashboard = () => {
 
       <AnimatedNavigation />
 
-      <div className="pt-24 pb-20">
+      <div className="pt-24 pb-24 md:pb-20">
         <Outlet />
       </div>
 

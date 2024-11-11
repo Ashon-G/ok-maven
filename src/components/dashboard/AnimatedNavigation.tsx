@@ -9,6 +9,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { ListTodo, MessageSquare, Wallet, User, Settings } from "lucide-react";
 
 const NUM_LINES = 30;
 
@@ -20,44 +21,72 @@ const AnimatedNavigation = () => {
 
   // Define nav items based on user role
   const navItems = [
-    { position: 1, title: "Tasks", path: "/dashboard/tasks" },
-    { position: 8, title: "Chat", path: "/dashboard/chat" },
-    { position: 15, title: "Treasury", path: "/dashboard/treasury" },
-    { position: 22, title: "Profile", path: "/dashboard/profile" },
-    ...(isAdmin ? [{ position: 29, title: "Admin", path: "/dashboard/admin" }] : []),
+    { position: 1, title: "Tasks", path: "/dashboard/tasks", icon: ListTodo },
+    { position: 8, title: "Chat", path: "/dashboard/chat", icon: MessageSquare },
+    { position: 15, title: "Treasury", path: "/dashboard/treasury", icon: Wallet },
+    { position: 22, title: "Profile", path: "/dashboard/profile", icon: User },
+    ...(isAdmin ? [{ position: 29, title: "Admin", path: "/dashboard/admin", icon: Settings }] : []),
   ];
 
   const [isHovered, setIsHovered] = useState(false);
   const mouseY = useMotionValue(Infinity);
 
-  return (
-    <motion.nav
-      onMouseMove={(e) => {
-        mouseY.set(e.clientY);
-        setIsHovered(true);
-      }}
-      onMouseLeave={() => {
-        mouseY.set(Infinity);
-        setIsHovered(false);
-      }}
-      className="fixed right-0 top-0 flex h-screen flex-col items-end justify-between py-4 pl-8 z-50"
-    >
-      {Array.from(Array(NUM_LINES).keys()).map((i) => {
-        const linkContent = navItems.find((item) => item.position === i + 1);
+  // Mobile Bottom Navigation
+  const MobileNav = () => (
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
+      <div className="flex justify-around items-center h-16">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = item.path === location.pathname;
+          return (
+            <button
+              key={item.path}
+              onClick={() => navigate(item.path)}
+              className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${
+                isActive ? 'text-secondary' : 'text-gray-500'
+              }`}
+            >
+              <Icon className="h-5 w-5" />
+              <span className="text-xs">{item.title}</span>
+            </button>
+          );
+        })}
+      </div>
+    </nav>
+  );
 
-        return (
-          <LinkLine
-            key={i}
-            title={linkContent?.title}
-            path={linkContent?.path}
-            isActive={linkContent?.path === location.pathname}
-            isHovered={isHovered}
-            mouseY={mouseY}
-            onClick={() => linkContent?.path && navigate(linkContent.path)}
-          />
-        );
-      })}
-    </motion.nav>
+  // Desktop Side Navigation
+  return (
+    <>
+      <motion.nav
+        className="hidden md:flex fixed right-0 top-0 h-screen flex-col items-end justify-between py-4 pl-8 z-50"
+        onMouseMove={(e) => {
+          mouseY.set(e.clientY);
+          setIsHovered(true);
+        }}
+        onMouseLeave={() => {
+          mouseY.set(Infinity);
+          setIsHovered(false);
+        }}
+      >
+        {Array.from(Array(NUM_LINES).keys()).map((i) => {
+          const linkContent = navItems.find((item) => item.position === i + 1);
+
+          return (
+            <LinkLine
+              key={i}
+              title={linkContent?.title}
+              path={linkContent?.path}
+              isActive={linkContent?.path === location.pathname}
+              isHovered={isHovered}
+              mouseY={mouseY}
+              onClick={() => linkContent?.path && navigate(linkContent.path)}
+            />
+          );
+        })}
+      </motion.nav>
+      <MobileNav />
+    </>
   );
 };
 
