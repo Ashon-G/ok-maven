@@ -19,6 +19,7 @@ import Treasury from "./pages/dashboard/Treasury";
 import UpgradePlan from "./pages/UpgradePlan";
 import CompliancePackages from "./pages/CompliancePackages";
 import BlogPost from "./pages/blog/[slug]";
+import Integrations from "./pages/dashboard/Integrations";
 import { useAuth } from "@/components/auth/AuthProvider";
 
 const queryClient = new QueryClient();
@@ -77,6 +78,7 @@ const AppRoutes = () => {
         <Route path="tasks" element={<Tasks />} />
         <Route path="chat" element={<Chat />} />
         <Route path="treasury" element={<Treasury />} />
+        <Route path="integrations" element={<Integrations />} />
         <Route path="profile" element={<Profile />} />
         <Route path="admin" element={
           <ProtectedRoute adminOnly>

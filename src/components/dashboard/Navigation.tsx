@@ -1,84 +1,94 @@
 import { NavLink } from "react-router-dom";
-import { MessageSquare, ListTodo, Settings } from "lucide-react";
+import { useAuth } from "@/components/auth/AuthProvider";
+import {
+  MessageSquare,
+  ListTodo,
+  User,
+  Settings,
+  Wallet,
+  Link as LinkIcon
+} from "lucide-react";
 
-interface NavigationProps {
-  isAdmin: boolean;
-  setOpen: (value: boolean) => void;
-}
+export const Navigation = () => {
+  const { session } = useAuth();
+  const userType = session?.user?.user_metadata?.user_type;
+  const isAdmin = userType === 'admin';
 
-export const NavLinks = ({ isAdmin, setOpen }: NavigationProps) => (
-  <>
-    <NavLink
-      to="tasks"
-      onClick={() => setOpen(false)}
-      className={({ isActive }) =>
-        `nav-link ${isActive ? "active" : ""}`
-      }
-    >
-      <ListTodo className="h-4 w-4" />
-      Tasks
-    </NavLink>
-    <NavLink
-      to="chat"
-      onClick={() => setOpen(false)}
-      className={({ isActive }) =>
-        `nav-link ${isActive ? "active" : ""}`
-      }
-    >
-      <MessageSquare className="h-4 w-4" />
-      Chat
-    </NavLink>
-    {isAdmin && (
+  return (
+    <nav className="flex justify-center gap-1 fixed bottom-0 left-0 right-0 p-2 bg-white border-t border-gray-200 z-50 md:relative md:border-none">
       <NavLink
-        to="admin"
-        onClick={() => setOpen(false)}
+        to="tasks"
         className={({ isActive }) =>
-          `nav-link ${isActive ? "active" : ""}`
-        }
-      >
-        <Settings className="h-4 w-4" />
-        Admin
-      </NavLink>
-    )}
-  </>
-);
-
-export const MobileNavLinks = ({ isAdmin }: { isAdmin: boolean }) => (
-  <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-around border-t border-gray-200 bg-white p-2 md:hidden">
-    <NavLink
-      to="tasks"
-      className={({ isActive }) =>
-        `flex flex-col items-center p-2 ${
-          isActive ? "text-blue-600" : "text-gray-600"
-        }`
-      }
-    >
-      <ListTodo className="h-5 w-5" />
-      <span className="text-xs">Tasks</span>
-    </NavLink>
-    <NavLink
-      to="chat"
-      className={({ isActive }) =>
-        `flex flex-col items-center p-2 ${
-          isActive ? "text-blue-600" : "text-gray-600"
-        }`
-      }
-    >
-      <MessageSquare className="h-5 w-5" />
-      <span className="text-xs">Chat</span>
-    </NavLink>
-    {isAdmin && (
-      <NavLink
-        to="admin"
-        className={({ isActive }) =>
-          `flex flex-col items-center p-2 ${
-            isActive ? "text-blue-600" : "text-gray-600"
+          `flex flex-col items-center p-2 rounded-lg hover:bg-gray-100 ${
+            isActive ? "text-primary" : "text-gray-600"
           }`
         }
       >
-        <Settings className="h-5 w-5" />
-        <span className="text-xs">Admin</span>
+        <ListTodo className="h-5 w-5" />
+        <span className="text-xs">Tasks</span>
       </NavLink>
-    )}
-  </div>
-);
+
+      <NavLink
+        to="chat"
+        className={({ isActive }) =>
+          `flex flex-col items-center p-2 rounded-lg hover:bg-gray-100 ${
+            isActive ? "text-primary" : "text-gray-600"
+          }`
+        }
+      >
+        <MessageSquare className="h-5 w-5" />
+        <span className="text-xs">Chat</span>
+      </NavLink>
+
+      <NavLink
+        to="treasury"
+        className={({ isActive }) =>
+          `flex flex-col items-center p-2 rounded-lg hover:bg-gray-100 ${
+            isActive ? "text-primary" : "text-gray-600"
+          }`
+        }
+      >
+        <Wallet className="h-5 w-5" />
+        <span className="text-xs">Treasury</span>
+      </NavLink>
+
+      <NavLink
+        to="integrations"
+        className={({ isActive }) =>
+          `flex flex-col items-center p-2 rounded-lg hover:bg-gray-100 ${
+            isActive ? "text-primary" : "text-gray-600"
+          }`
+        }
+      >
+        <LinkIcon className="h-5 w-5" />
+        <span className="text-xs">Integrations</span>
+      </NavLink>
+
+      <NavLink
+        to="profile"
+        className={({ isActive }) =>
+          `flex flex-col items-center p-2 rounded-lg hover:bg-gray-100 ${
+            isActive ? "text-primary" : "text-gray-600"
+          }`
+        }
+      >
+        <User className="h-5 w-5" />
+        <span className="text-xs">Profile</span>
+      </NavLink>
+
+      {isAdmin && (
+        <NavLink
+          to="admin"
+          className={({ isActive }) =>
+            `flex flex-col items-center p-2 rounded-lg hover:bg-gray-100 ${
+              isActive ? "text-primary" : "text-gray-600"
+            }`
+          }
+        >
+          <Settings className="h-5 w-5" />
+          <span className="text-xs">Admin</span>
+        </NavLink>
+      )}
+    </nav>
+  );
+};
