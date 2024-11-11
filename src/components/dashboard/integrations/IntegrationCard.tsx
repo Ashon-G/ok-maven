@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
-import { Jira, Slack } from "lucide-react";
+import { GitPullRequest, Slack } from "lucide-react";
 
 type IntegrationIcon = "jira" | "slack";
 
@@ -13,7 +13,7 @@ interface IntegrationCardProps {
 }
 
 const icons = {
-  jira: Jira,
+  jira: GitPullRequest,
   slack: Slack,
 };
 
