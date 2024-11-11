@@ -3,6 +3,7 @@ import { UserCircle, LogOut, Settings, CreditCard, Wand2 } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { ImpersonateUser } from "@/components/admin/ImpersonateUser";
+import { InstallPrompt } from "@/components/pwa/InstallPrompt";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -144,6 +145,7 @@ const Dashboard = () => {
       </nav>
 
       <AnimatedNavigation />
+      <InstallPrompt />
 
       <div className="pt-24 pb-24 md:pb-20">
         <Outlet />
