@@ -137,27 +137,29 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
   };
 
   const dialogContent = (
-    <>
+    <div className="flex flex-col h-full">
       <TaskDialogHeader
         title={task.title}
         isEditing={isEditing}
         editedTitle={editedTitle}
         setEditedTitle={setEditedTitle}
       />
-      <TaskDialogContent
-        description={task.description}
-        isEditing={isEditing}
-        editedDescription={editedDescription}
-        setEditedDescription={setEditedDescription}
-        assignee={task.assignee}
-        dueDate={task.due_date}
-        status={task.status}
-        onStatusChange={handleStatusChange}
-        startDate={task.start_date}
-        endDate={task.end_date}
-        onStartDateChange={setEditedStartDate}
-        onEndDateChange={setEditedEndDate}
-      />
+      <div className="flex-1 overflow-y-auto">
+        <TaskDialogContent
+          description={task.description}
+          isEditing={isEditing}
+          editedDescription={editedDescription}
+          setEditedDescription={setEditedDescription}
+          assignee={task.assignee}
+          dueDate={task.due_date}
+          status={task.status}
+          onStatusChange={handleStatusChange}
+          startDate={task.start_date}
+          endDate={task.end_date}
+          onStartDateChange={setEditedStartDate}
+          onEndDateChange={setEditedEndDate}
+        />
+      </div>
       <TaskDialogFooter
         canEdit={canEdit}
         isEditing={isEditing}
@@ -178,7 +180,7 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
         onSave={handleSave}
         onDelete={() => deleteTask.mutate()}
       />
-    </>
+    </div>
   );
 
   if (isMobile) {
