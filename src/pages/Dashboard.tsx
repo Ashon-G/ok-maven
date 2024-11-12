@@ -75,8 +75,8 @@ const Dashboard = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger className="focus:outline-none">
                   <div className="relative inline-flex">
-                    <div className="absolute -inset-1 rounded-lg bg-black/90"></div>
-                    <div className="relative flex items-center gap-3 px-3 py-2 bg-black/90 rounded-lg">
+                    <div className="absolute -inset-3 rounded-full bg-black/90"></div>
+                    <div className="relative flex items-center gap-3 px-4 py-2">
                       <Avatar className="h-12 w-12 border-2 border-white">
                         <AvatarImage src={profile?.avatar_url || ""} />
                         <AvatarFallback>
@@ -182,3 +182,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
