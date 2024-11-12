@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { UserCircle, LogOut, Settings, CreditCard, Wand2 } from "lucide-react";
+import { UserCircle, LogOut, Settings, CreditCard, Wand2, UserCircle2 } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { ImpersonateUser } from "@/components/admin/ImpersonateUser";
@@ -106,6 +106,11 @@ const Dashboard = () => {
                   <DropdownMenuItem className="cursor-pointer text-red-600" onClick={handleSignOut}>
                     <LogOut className="mr-2 h-4 w-4" />
                     Sign Out
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="cursor-default text-gray-500">
+                    <UserCircle2 className="mr-2 h-4 w-4" />
+                    {profile?.user_type?.charAt(0).toUpperCase() + profile?.user_type?.slice(1) || 'User'}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
