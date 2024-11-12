@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Profile } from "@/integrations/supabase/types/profile";
@@ -5,7 +6,6 @@ import { PopularServices } from "./sections/PopularServices";
 import { RecentlyViewed } from "./sections/RecentlyViewed";
 import { MavenGrid } from "./sections/MavenGrid";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
 
 export const MavenMarketplace = () => {
   const [searchQuery, setSearchQuery] = useState("");
