@@ -4,21 +4,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { CreateTaskForm } from "./CreateTaskForm";
+import { MobileFullscreenDialog } from "./MobileFullscreenDialog";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 interface CreateTaskDialogProps {
   open: boolean;
@@ -33,11 +22,7 @@ export const CreateTaskDialog = ({
   userId,
   defaultStatus = "pending",
 }: CreateTaskDialogProps) => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [selectedMaven, setSelectedMaven] = useState("");
-  const [startDate, setStartDate] = useState<Date>();
-  const [endDate, setEndDate] = useState<Date>();
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -76,22 +61,21 @@ export const CreateTaskDialog = ({
   });
 
   const createTask = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (taskData: any) => {
       if (!userId) throw new Error("No user found");
 
-      const { data, error } = await supabase.from("tasks").insert({
-        title,
-        description,
-        created_by: userId,
-        assigned_to: selectedMaven || null,
-        status: defaultStatus,
-        start_date: startDate?.toISOString() || null,
-        end_date: endDate?.toISOString() || null,
-      }).select().single();
+      const { data, error } = await supabase
+        .from("tasks")
+        .insert({
+          ...taskData,
+          created_by: userId,
+          status: defaultStatus,
+        })
+        .select()
+        .single();
 
       if (error) throw error;
 
-      // If Jira integration exists, create Jira issue
       if (jiraIntegration) {
         const response = await fetch("/api/jira/create-issue", {
           method: "POST",
@@ -100,8 +84,8 @@ export const CreateTaskDialog = ({
           },
           body: JSON.stringify({
             taskId: data.id,
-            title,
-            description,
+            title: taskData.title,
+            description: taskData.description,
             jiraConfig: jiraIntegration,
           }),
         });
@@ -114,11 +98,6 @@ export const CreateTaskDialog = ({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
       onOpenChange(false);
-      setTitle("");
-      setDescription("");
-      setSelectedMaven("");
-      setStartDate(undefined);
-      setEndDate(undefined);
       toast({
         title: "Success",
         description: "Task created successfully",
@@ -133,72 +112,26 @@ export const CreateTaskDialog = ({
     },
   });
 
+  const dialogContent = (
+    <CreateTaskForm
+      availableMavens={availableMavens}
+      jiraIntegration={jiraIntegration}
+      onSubmit={createTask.mutate}
+      isSubmitting={createTask.isPending}
+    />
+  );
+
+  if (isMobile) {
+    return (
+      <MobileFullscreenDialog open={open} onClose={() => onOpenChange(false)}>
+        {dialogContent}
+      </MobileFullscreenDialog>
+    );
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Create New Task</DialogTitle>
-        </DialogHeader>
-        <div className="space-y-4">
-          <div>
-            <label className="text-sm font-medium">Title</label>
-            <Input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Task title"
-            />
-          </div>
-          <div>
-            <label className="text-sm font-medium">Description</label>
-            <Textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Task description"
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="text-sm font-medium">Start Date</label>
-              <Input
-                type="date"
-                onChange={(e) => setStartDate(e.target.value ? new Date(e.target.value) : undefined)}
-              />
-            </div>
-            <div>
-              <label className="text-sm font-medium">End Date</label>
-              <Input
-                type="date"
-                onChange={(e) => setEndDate(e.target.value ? new Date(e.target.value) : undefined)}
-              />
-            </div>
-          </div>
-          <div>
-            <label className="text-sm font-medium">Assign to Maven</label>
-            <Select value={selectedMaven} onValueChange={setSelectedMaven}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a Maven" />
-              </SelectTrigger>
-              <SelectContent>
-                {availableMavens?.map((maven) => (
-                  <SelectItem key={maven.id} value={maven.id}>
-                    {maven.full_name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <Button
-            onClick={() => createTask.mutate()}
-            disabled={!title || createTask.isPending}
-            className="w-full"
-          >
-            {createTask.isPending && (
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-            )}
-            Create Task {jiraIntegration && "& Jira Issue"}
-          </Button>
-        </div>
-      </DialogContent>
+      <DialogContent>{dialogContent}</DialogContent>
     </Dialog>
   );
 };

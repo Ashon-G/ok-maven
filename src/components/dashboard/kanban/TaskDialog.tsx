@@ -1,17 +1,14 @@
-import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui/dialog";
+import { Dialog } from "@/components/ui/dialog";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { cn } from "@/lib/utils";
 import { TaskDialogHeader } from "./TaskDialogHeader";
 import { TaskDialogContent } from "./TaskDialogContent";
 import { TaskDialogFooter } from "./TaskDialogFooter";
+import { MobileFullscreenDialog } from "./MobileFullscreenDialog";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 interface Task {
   id: string;
@@ -40,6 +37,7 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
   const [editedDescription, setEditedDescription] = useState(task.description || "");
   const [editedStartDate, setEditedStartDate] = useState<string | null>(task.start_date);
   const [editedEndDate, setEditedEndDate] = useState<string | null>(task.end_date);
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   const updateTask = useMutation({
     mutationFn: async ({ 
@@ -68,11 +66,7 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
         .eq("id", task.id)
         .select();
 
-      if (error) {
-        console.error("Error updating task:", error);
-        throw new Error(error.message);
-      }
-
+      if (error) throw error;
       return data;
     },
     onSuccess: () => {
@@ -84,7 +78,6 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
       });
     },
     onError: (error: Error) => {
-      console.error("Mutation error:", error);
       toast({
         title: "Error",
         description: "You don't have permission to update this task",
@@ -100,10 +93,7 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
         .delete()
         .eq("id", task.id);
 
-      if (error) {
-        console.error("Error deleting task:", error);
-        throw new Error(error.message);
-      }
+      if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
@@ -114,7 +104,6 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
       });
     },
     onError: (error: Error) => {
-      console.error("Delete error:", error);
       toast({
         title: "Error",
         description: "You don't have permission to delete this task",
@@ -147,67 +136,64 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
     updateTask.mutate({ status: newStatus });
   };
 
+  const dialogContent = (
+    <>
+      <TaskDialogHeader
+        title={task.title}
+        isEditing={isEditing}
+        editedTitle={editedTitle}
+        setEditedTitle={setEditedTitle}
+      />
+      <TaskDialogContent
+        description={task.description}
+        isEditing={isEditing}
+        editedDescription={editedDescription}
+        setEditedDescription={setEditedDescription}
+        assignee={task.assignee}
+        dueDate={task.due_date}
+        status={task.status}
+        onStatusChange={handleStatusChange}
+        startDate={task.start_date}
+        endDate={task.end_date}
+        onStartDateChange={setEditedStartDate}
+        onEndDateChange={setEditedEndDate}
+      />
+      <TaskDialogFooter
+        canEdit={canEdit}
+        isEditing={isEditing}
+        onEdit={() => {
+          setEditedTitle(task.title);
+          setEditedDescription(task.description || "");
+          setEditedStartDate(task.start_date);
+          setEditedEndDate(task.end_date);
+          setIsEditing(true);
+        }}
+        onCancel={() => {
+          setIsEditing(false);
+          setEditedTitle(task.title);
+          setEditedDescription(task.description || "");
+          setEditedStartDate(task.start_date);
+          setEditedEndDate(task.end_date);
+        }}
+        onSave={handleSave}
+        onDelete={() => deleteTask.mutate()}
+      />
+    </>
+  );
+
+  if (isMobile) {
+    return (
+      <MobileFullscreenDialog open={open} onClose={() => onOpenChange(false)}>
+        {dialogContent}
+      </MobileFullscreenDialog>
+    );
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
-        <DialogPrimitive.Content
-          className={cn(
-            "fixed left-[50%] top-[50%] z-50 grid w-full max-w-3xl translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200",
-            "data-[state=open]:animate-in data-[state=closed]:animate-out",
-            "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-            "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
-            "data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%]",
-            "data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]",
-            "sm:rounded-lg"
-          )}
-        >
-          <div className="max-h-[80vh] overflow-y-auto">
-            <TaskDialogHeader
-              title={task.title}
-              isEditing={isEditing}
-              editedTitle={editedTitle}
-              setEditedTitle={setEditedTitle}
-            />
-
-            <TaskDialogContent
-              description={task.description}
-              isEditing={isEditing}
-              editedDescription={editedDescription}
-              setEditedDescription={setEditedDescription}
-              assignee={task.assignee}
-              dueDate={task.due_date}
-              status={task.status}
-              onStatusChange={handleStatusChange}
-              startDate={task.start_date}
-              endDate={task.end_date}
-              onStartDateChange={setEditedStartDate}
-              onEndDateChange={setEditedEndDate}
-            />
-
-            <TaskDialogFooter
-              canEdit={canEdit}
-              isEditing={isEditing}
-              onEdit={() => {
-                setEditedTitle(task.title);
-                setEditedDescription(task.description || "");
-                setEditedStartDate(task.start_date);
-                setEditedEndDate(task.end_date);
-                setIsEditing(true);
-              }}
-              onCancel={() => {
-                setIsEditing(false);
-                setEditedTitle(task.title);
-                setEditedDescription(task.description || "");
-                setEditedStartDate(task.start_date);
-                setEditedEndDate(task.end_date);
-              }}
-              onSave={handleSave}
-              onDelete={() => deleteTask.mutate()}
-            />
-          </div>
-        </DialogPrimitive.Content>
-      </DialogPrimitive.Portal>
+      <div className="max-h-[80vh] overflow-y-auto p-6">
+        {dialogContent}
+      </div>
     </Dialog>
   );
 };

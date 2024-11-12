@@ -9,6 +9,83 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      credit_applications: {
+        Row: {
+          annual_revenue: string
+          business_address: string
+          city: string
+          company_name: string
+          contact_email: string
+          contact_first_name: string
+          contact_last_name: string
+          contact_phone: string
+          contact_title: string
+          created_at: string
+          id: string
+          state: string
+          status: Database["public"]["Enums"]["application_status_enum"]
+          tax_id: string
+          terms_accepted: boolean
+          trade_references: Json
+          updated_at: string
+          user_id: string | null
+          year_established: string
+          zip_code: string
+        }
+        Insert: {
+          annual_revenue: string
+          business_address: string
+          city: string
+          company_name: string
+          contact_email: string
+          contact_first_name: string
+          contact_last_name: string
+          contact_phone: string
+          contact_title: string
+          created_at?: string
+          id?: string
+          state: string
+          status?: Database["public"]["Enums"]["application_status_enum"]
+          tax_id: string
+          terms_accepted?: boolean
+          trade_references?: Json
+          updated_at?: string
+          user_id?: string | null
+          year_established: string
+          zip_code: string
+        }
+        Update: {
+          annual_revenue?: string
+          business_address?: string
+          city?: string
+          company_name?: string
+          contact_email?: string
+          contact_first_name?: string
+          contact_last_name?: string
+          contact_phone?: string
+          contact_title?: string
+          created_at?: string
+          id?: string
+          state?: string
+          status?: Database["public"]["Enums"]["application_status_enum"]
+          tax_id?: string
+          terms_accepted?: boolean
+          trade_references?: Json
+          updated_at?: string
+          user_id?: string | null
+          year_established?: string
+          zip_code?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "credit_applications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       founder_maven_assignments: {
         Row: {
           assigned_by: string
@@ -607,6 +684,7 @@ export type Database = {
       }
     }
     Enums: {
+      application_status_enum: "pending" | "approved" | "rejected"
       jira_hosting_type: "cloud" | "server"
       maven_skillset_enum:
         | "Developer"
