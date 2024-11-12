@@ -71,7 +71,7 @@ const Dashboard = () => {
             <div className="flex items-center gap-4">
               <DropdownMenu>
                 <DropdownMenuTrigger className="focus:outline-none">
-                  <Avatar className="h-8 w-8">
+                  <Avatar className="h-10 w-10">
                     <AvatarImage src={profile?.avatar_url || ""} />
                     <AvatarFallback>
                       {profile?.full_name?.charAt(0) || session?.user.email?.charAt(0) || "?"}
