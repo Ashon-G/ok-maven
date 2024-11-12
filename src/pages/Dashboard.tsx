@@ -74,19 +74,19 @@ const Dashboard = () => {
             <div className="flex items-center gap-4">
               <DropdownMenu>
                 <DropdownMenuTrigger className="focus:outline-none">
-                  <div className="relative inline-flex items-center">
-                    <div className="absolute -inset-2 rounded-full bg-black/90 blur-[1px]"></div>
-                    <div className="absolute -inset-[3px] rounded-full bg-black/90"></div>
-                    <div className="relative flex items-center gap-3 px-2">
+                  <div className="relative inline-flex">
+                    <div className="absolute -inset-3 rounded-[28px] bg-black/90 blur-[1px]"></div>
+                    <div className="absolute -inset-[11px] rounded-[28px] bg-black/90"></div>
+                    <div className="relative flex items-center gap-2 px-3 py-1">
                       <Avatar className="h-14 w-14 border-2 border-white">
                         <AvatarImage src={profile?.avatar_url || ""} />
                         <AvatarFallback>
                           {profile?.full_name?.charAt(0) || session?.user.email?.charAt(0) || "?"}
                         </AvatarFallback>
                       </Avatar>
-                      <span className="text-white text-sm">
-                        Member since {memberSince}
-                      </span>
+                      <div className="text-white text-sm whitespace-nowrap">
+                        Member since<br/>{memberSince}
+                      </div>
                     </div>
                   </div>
                 </DropdownMenuTrigger>
