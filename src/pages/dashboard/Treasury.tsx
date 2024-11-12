@@ -1,9 +1,8 @@
-import { SwipeCarousel } from "@/components/dashboard/treasury/SwipeCarousel";
 import { MavenMarketplace } from "@/components/dashboard/treasury/MavenMarketplace";
 
 const Treasury = () => {
   return (
-    <div className="container mx-auto px-4">
+    <div className="container max-w-7xl mx-auto px-4">
       <MavenMarketplace />
     </div>
   );
