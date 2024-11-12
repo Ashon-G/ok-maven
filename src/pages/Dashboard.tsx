@@ -75,16 +75,15 @@ const Dashboard = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger className="focus:outline-none">
                   <div className="relative inline-flex">
-                    <div className="absolute -inset-3 rounded-[28px] bg-black/90 blur-[1px]"></div>
-                    <div className="absolute -inset-[11px] rounded-[28px] bg-black/90"></div>
-                    <div className="relative flex items-center gap-2 px-3 py-1">
-                      <Avatar className="h-14 w-14 border-2 border-white">
+                    <div className="absolute -inset-1 rounded-lg bg-black/90"></div>
+                    <div className="relative flex items-center gap-3 px-3 py-2 bg-black/90 rounded-lg">
+                      <Avatar className="h-12 w-12 border-2 border-white">
                         <AvatarImage src={profile?.avatar_url || ""} />
                         <AvatarFallback>
                           {profile?.full_name?.charAt(0) || session?.user.email?.charAt(0) || "?"}
                         </AvatarFallback>
                       </Avatar>
-                      <div className="text-white text-sm whitespace-nowrap">
+                      <div className="text-white text-sm">
                         Member since<br/>{memberSince}
                       </div>
                     </div>
