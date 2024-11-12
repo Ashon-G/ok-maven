@@ -14,7 +14,7 @@ export const MavenCard = ({ maven }: MavenCardProps) => {
         <img
           src={maven.avatar_url || "https://api.dicebear.com/7.x/avataaars/svg"}
           alt={maven.full_name || "Maven"}
-          className="h-40 w-full object-cover"
+          className="h-48 w-full object-cover" // Increased from h-40 to h-48
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
       </div>
