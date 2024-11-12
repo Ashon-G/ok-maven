@@ -65,7 +65,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50/50 no-scrollbar">
-      <nav className="fixed top-0 left-0 right-0 z-50 mb-8 bg-white p-2 border-b border-black/5 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
+      <nav className="fixed top-0 left-0 right-0 z-50 mb-8 bg-white p-4 border-b border-black/5 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
         <div className="mx-auto max-w-7xl">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-4">
