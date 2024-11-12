@@ -4,7 +4,7 @@ import { Profile } from "@/integrations/supabase/types/profile";
 import { PopularServices } from "./sections/PopularServices";
 import { RecentlyViewed } from "./sections/RecentlyViewed";
 import { MavenGrid } from "./sections/MavenGrid";
-import { SearchInput } from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
 export const MavenMarketplace = () => {
@@ -32,7 +32,7 @@ export const MavenMarketplace = () => {
   return (
     <div className="mt-8 space-y-12">
       <div className="flex items-center gap-4">
-        <SearchInput
+        <Input
           placeholder="Search services"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
