@@ -138,9 +138,6 @@ const Dashboard = () => {
               )}
             </div>
           </div>
-          <div className="mt-2 px-4 text-sm text-gray-500">
-            Current user type: {userMetadataType || 'none'} (user metadata) / {appMetadataType || 'none'} (app metadata)
-          </div>
         </div>
       </nav>
 
