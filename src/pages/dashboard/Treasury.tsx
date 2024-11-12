@@ -4,7 +4,6 @@ import { MavenMarketplace } from "@/components/dashboard/treasury/MavenMarketpla
 const Treasury = () => {
   return (
     <div className="container mx-auto px-4">
-      <h1 className="mb-8 text-3xl font-bold">Treasury</h1>
       <SwipeCarousel />
       <MavenMarketplace />
     </div>

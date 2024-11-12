@@ -1,12 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { MavenCarousel } from "./MavenCarousel";
-import { MavenFilters } from "./MavenFilters";
-import { useState } from "react";
 import { Profile } from "@/integrations/supabase/types/profile";
+import { PopularServices } from "./sections/PopularServices";
+import { RecentlyViewed } from "./sections/RecentlyViewed";
+import { MavenGrid } from "./sections/MavenGrid";
+import { SearchInput } from "@/components/ui/input";
+import { useState } from "react";
 
 export const MavenMarketplace = () => {
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const { data: mavens } = useQuery({
     queryKey: ["mavens"],
@@ -21,37 +23,26 @@ export const MavenMarketplace = () => {
     },
   });
 
-  const filteredMavens = mavens?.filter(
-    (maven) =>
-      selectedFilters.length === 0 ||
-      (maven.maven_skillset && selectedFilters.includes(maven.maven_skillset))
+  const filteredMavens = mavens?.filter((maven) =>
+    maven.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    maven.bio?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    maven.maven_skillset?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const mavensByLocation = filteredMavens?.reduce((acc, maven) => {
-    const location = maven.location || "Remote";
-    if (!acc[location]) {
-      acc[location] = [];
-    }
-    acc[location].push(maven);
-    return acc;
-  }, {} as Record<string, Profile[]>);
-
   return (
-    <div className="mt-12">
-      <div className="flex items-center justify-between border-b border-gray-200 pb-6">
-        <h2 className="text-2xl font-bold">Maven Marketplace</h2>
-        <MavenFilters onFilterChange={setSelectedFilters} />
+    <div className="mt-8 space-y-12">
+      <div className="flex items-center gap-4">
+        <SearchInput
+          placeholder="Search services"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="max-w-md"
+        />
       </div>
-      <div className="mt-6 space-y-8">
-        {mavensByLocation &&
-          Object.entries(mavensByLocation).map(([location, mavens]) => (
-            <MavenCarousel
-              key={location}
-              title={`${location} Mavens`}
-              mavens={mavens}
-            />
-          ))}
-      </div>
+      
+      <PopularServices mavens={mavens || []} />
+      <RecentlyViewed mavens={mavens || []} />
+      <MavenGrid title="All Services" mavens={filteredMavens || []} />
     </div>
   );
 };
