@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { JiraIntegrationDialog } from "@/components/dashboard/jira/JiraIntegrationDialog";
 import { GenerateTasksDialog } from "@/components/dashboard/kanban/GenerateTasksDialog";
 import { useState } from "react";
+import { format } from "date-fns";
 
 const Dashboard = () => {
   const { session } = useAuth();
@@ -63,6 +64,8 @@ const Dashboard = () => {
     window.location.href = "/login";
   };
 
+  const memberSince = profile?.created_at ? format(new Date(profile.created_at), 'MMMM yyyy') : '';
+
   return (
     <div className="min-h-screen bg-gray-50/50 no-scrollbar">
       <nav className="fixed top-0 left-0 right-0 z-50 mb-8 bg-white p-4 border-b border-black/5 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
@@ -71,12 +74,18 @@ const Dashboard = () => {
             <div className="flex items-center gap-4">
               <DropdownMenu>
                 <DropdownMenuTrigger className="focus:outline-none">
-                  <Avatar className="h-14 w-14">
-                    <AvatarImage src={profile?.avatar_url || ""} />
-                    <AvatarFallback>
-                      {profile?.full_name?.charAt(0) || session?.user.email?.charAt(0) || "?"}
-                    </AvatarFallback>
-                  </Avatar>
+                  <div className="relative">
+                    <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 opacity-75 blur"></div>
+                    <Avatar className="h-14 w-14 relative">
+                      <AvatarImage src={profile?.avatar_url || ""} />
+                      <AvatarFallback>
+                        {profile?.full_name?.charAt(0) || session?.user.email?.charAt(0) || "?"}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs text-gray-500">
+                      Member since {memberSince}
+                    </div>
+                  </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-56 bg-white border border-gray-200 shadow-lg">
                   <NavLink to="profile">
