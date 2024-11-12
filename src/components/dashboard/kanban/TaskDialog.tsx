@@ -1,4 +1,4 @@
-import { Dialog } from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
@@ -193,9 +193,9 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <div className="max-h-[80vh] overflow-y-auto p-6">
+      <DialogContent className="max-h-[80vh] overflow-y-auto">
         {dialogContent}
-      </div>
+      </DialogContent>
     </Dialog>
   );
 };
