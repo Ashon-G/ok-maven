@@ -75,7 +75,8 @@ const Dashboard = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger className="focus:outline-none">
                   <div className="relative">
-                    <div className="absolute -inset-1 rounded-full bg-black/90 opacity-90"></div>
+                    <div className="absolute -inset-2 rounded-full bg-black/90 blur-[1px]"></div>
+                    <div className="absolute -inset-[3px] rounded-full bg-black/90"></div>
                     <Avatar className="h-14 w-14 relative border-2 border-white">
                       <AvatarImage src={profile?.avatar_url || ""} />
                       <AvatarFallback>
