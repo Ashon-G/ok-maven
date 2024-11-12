@@ -38,11 +38,11 @@ export const MavenMarketplace = () => {
 
   return (
     <div className="mt-12">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between border-b border-gray-200 pb-6">
         <h2 className="text-2xl font-bold">Maven Marketplace</h2>
         <MavenFilters onFilterChange={setSelectedFilters} />
       </div>
-      <div className="mt-6 space-y-4">
+      <div className="mt-6 space-y-8">
         {mavensByLocation &&
           Object.entries(mavensByLocation).map(([location, mavens]) => (
             <MavenCarousel
