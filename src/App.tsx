@@ -1,4 +1,3 @@
-import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -92,23 +91,17 @@ const AppRoutes = () => {
   );
 };
 
-const AppContent = () => {
-  return (
-    <TooltipProvider>
-      <SplashScreen />
-      <Toaster />
-      <Sonner />
-      <AppRoutes />
-    </TooltipProvider>
-  );
-};
-
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <AuthProvider>
-          <AppContent />
+          <TooltipProvider>
+            <SplashScreen />
+            <Toaster />
+            <Sonner />
+            <AppRoutes />
+          </TooltipProvider>
         </AuthProvider>
       </BrowserRouter>
     </QueryClientProvider>
