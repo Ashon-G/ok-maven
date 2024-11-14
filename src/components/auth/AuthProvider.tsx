@@ -20,20 +20,18 @@ export const useAuth = () => {
   return context;
 };
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    // Initialize auth state
     const initAuth = async () => {
       try {
         const { data: { session: initialSession } } = await supabase.auth.getSession();
         setSession(initialSession);
 
-        // Only redirect if we're on a protected route and there's no session
         if (!initialSession && location.pathname.startsWith('/dashboard')) {
           navigate("/login", { replace: true });
         }
@@ -59,8 +57,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => subscription.unsubscribe();
   }, [navigate, location.pathname]);
 
+  const value = React.useMemo(
+    () => ({
+      session,
+      loading,
+    }),
+    [session, loading]
+  );
+
   return (
-    <AuthContext.Provider value={{ session, loading }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
