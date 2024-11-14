@@ -119,13 +119,26 @@ export const Chat = () => {
     mutationFn: async () => {
       if (!session?.user.id || !selectedUser) throw new Error("No user selected");
 
-      const { error } = await supabase.from("messages").insert({
+      const { error: messageError } = await supabase.from("messages").insert({
         content: message,
         sender_id: session.user.id,
         receiver_id: selectedUser,
       });
 
-      if (error) throw error;
+      if (messageError) throw messageError;
+
+      // Send notification
+      const { error: notificationError } = await supabase.functions.invoke("send-message-notification", {
+        body: {
+          to: selectedUser,
+          senderName: userProfile?.full_name || "Someone",
+          messageContent: message,
+        },
+      });
+
+      if (notificationError) {
+        console.error("Error sending notification:", notificationError);
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["messages"] });
