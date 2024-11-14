@@ -94,20 +94,20 @@ const AppRoutes = () => {
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <React.StrictMode>
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <AuthProvider>
+          <React.StrictMode>
             <TooltipProvider>
               <SplashScreen />
               <Toaster />
               <Sonner />
               <AppRoutes />
             </TooltipProvider>
-          </AuthProvider>
-        </QueryClientProvider>
-      </React.StrictMode>
-    </BrowserRouter>
+          </React.StrictMode>
+        </AuthProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 };
 
