@@ -95,14 +95,14 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <AuthProvider>
-          <TooltipProvider delayDuration={0}>
+        <TooltipProvider delayDuration={0}>
+          <AuthProvider>
             <SplashScreen />
             <Toaster />
             <Sonner />
             <AppRoutes />
-          </TooltipProvider>
-        </AuthProvider>
+          </AuthProvider>
+        </TooltipProvider>
       </BrowserRouter>
     </QueryClientProvider>
   );
