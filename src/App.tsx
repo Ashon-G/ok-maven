@@ -92,22 +92,26 @@ const AppRoutes = () => {
   );
 };
 
+const AppContent = () => {
+  return (
+    <TooltipProvider>
+      <SplashScreen />
+      <Toaster />
+      <Sonner />
+      <AppRoutes />
+    </TooltipProvider>
+  );
+};
+
 const App = () => {
   return (
-    <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <AuthProvider>
-            <TooltipProvider>
-              <SplashScreen />
-              <Toaster />
-              <Sonner />
-              <AppRoutes />
-            </TooltipProvider>
-          </AuthProvider>
-        </BrowserRouter>
-      </QueryClientProvider>
-    </React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <AuthProvider>
+          <AppContent />
+        </AuthProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 };
 
