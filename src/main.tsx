@@ -9,9 +9,11 @@ if (!root) throw new Error("Root element not found");
 
 const app = (
   <React.StrictMode>
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <App />
-    </ThemeProvider>
+    <React.Fragment>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <App />
+      </ThemeProvider>
+    </React.Fragment>
   </React.StrictMode>
 );
 
