@@ -16,6 +16,7 @@ import UpgradePlan from "./pages/UpgradePlan";
 import CompliancePackages from "./pages/CompliancePackages";
 import BlogPost from "./pages/blog/[slug]";
 import Integrations from "./pages/dashboard/Integrations";
+import HelpCenter from "./pages/HelpCenter";
 
 const ProtectedRoute = ({ children, adminOnly = false }: { children: React.ReactNode, adminOnly?: boolean }) => {
   const { session, loading } = useAuth();
@@ -60,6 +61,7 @@ const AppRoutes = () => {
       <Route path="/signup/founder" element={<FounderSignup />} />
       <Route path="/signup/maven" element={<MavenSignup />} />
       <Route path="/upgrade" element={<UpgradePlan />} />
+      <Route path="/help" element={<HelpCenter />} />
       <Route path="/compliance-packages" element={<CompliancePackages />} />
       <Route path="/blog/:slug" element={<BlogPost />} />
       <Route path="/dashboard" element={
