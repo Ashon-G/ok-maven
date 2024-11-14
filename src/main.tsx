@@ -7,14 +7,10 @@ import './index.css'
 const root = document.getElementById("root");
 if (!root) throw new Error("Root element not found");
 
-const app = (
+createRoot(root).render(
   <React.StrictMode>
-    <React.Fragment>
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <App />
-      </ThemeProvider>
-    </React.Fragment>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <App />
+    </ThemeProvider>
   </React.StrictMode>
 );
-
-createRoot(root).render(app);
