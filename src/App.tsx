@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { SplashScreen } from "@/components/ui/splash-screen";
 import { LoadingAnimation } from "@/components/ui/loading-animation";
+import { StrictMode } from "react";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import FounderSignup from "./pages/signup/FounderSignup";
