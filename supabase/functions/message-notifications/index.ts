@@ -1,14 +1,14 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { Resend } from 'https://esm.sh/@resend/node';
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
+
+const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+const supabaseServiceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
-
-const resend = new Resend(Deno.env.get('RESEND_API_KEY'));
-const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-const supabaseServiceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -33,7 +33,7 @@ serve(async (req) => {
           
           // Get receiver's email and sender's name
           const { data: receiverData } = await supabase
-            .from('auth.users')
+            .from('profiles')
             .select('email')
             .eq('id', message.receiver_id)
             .single();
@@ -49,13 +49,36 @@ serve(async (req) => {
             return;
           }
 
-          // Send email notification
-          await resend.emails.send({
-            from: 'notifications@yourdomain.com',
-            to: receiverData.email,
-            subject: 'New Message Notification',
-            html: `<p>You have a new message from ${senderData.full_name}:</p><p>${message.content}</p>`,
+          // Send email notification using Resend's API directly
+          const emailResponse = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${RESEND_API_KEY}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              from: 'Maven <notifications@maven.dev>',
+              to: receiverData.email,
+              subject: `New message from ${senderData.full_name}`,
+              html: `
+                <div>
+                  <h2>You have a new message from ${senderData.full_name}</h2>
+                  <p style="margin: 16px 0; padding: 12px; background-color: #f3f4f6; border-radius: 6px;">
+                    ${message.content}
+                  </p>
+                  <p>
+                    <a href="https://maven.dev/dashboard/chat" style="color: #0ea5e9;">
+                      Click here to view and reply to the message
+                    </a>
+                  </p>
+                </div>
+              `,
+            }),
           });
+
+          if (!emailResponse.ok) {
+            console.error('Failed to send email:', await emailResponse.text());
+          }
         }
       )
       .subscribe();
