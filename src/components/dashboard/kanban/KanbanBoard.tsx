@@ -5,19 +5,7 @@ import { KanbanColumn } from "./KanbanColumn";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { TaskDialog } from "./TaskDialog";
-
-interface Task {
-  id: string;
-  title: string;
-  description: string | null;
-  status: string;
-  due_date: string | null;
-  start_date: string | null;
-  end_date: string | null;
-  assignee?: { full_name: string } | null;
-  created_by: string;
-  jira_issue_key: string | null;
-}
+import { Task } from "@/integrations/supabase/types/task";
 
 interface KanbanBoardProps {
   tasks: Task[];
