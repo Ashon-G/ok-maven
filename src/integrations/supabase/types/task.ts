@@ -14,6 +14,9 @@ export interface Task {
     id: string;
     full_name: string;
   } | null;
+  creator?: {
+    full_name: string;
+  } | null;
 }
 
 export interface TaskRating {

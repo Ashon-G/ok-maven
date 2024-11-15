@@ -42,7 +42,7 @@ export const TaskList = () => {
         .from("tasks")
         .select(`
           *,
-          assignee:profiles!tasks_assigned_to_fkey(full_name),
+          assignee:profiles!tasks_assigned_to_fkey(id, full_name),
           creator:profiles!tasks_created_by_fkey(full_name)
         `)
         .order("created_at", { ascending: false });
