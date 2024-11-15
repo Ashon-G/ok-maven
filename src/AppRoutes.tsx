@@ -44,7 +44,8 @@ const ProtectedRoute = ({ children, adminOnly = false }: { children: React.React
 };
 
 const AppRoutes = () => {
-  const { loading } = useAuth();
+  const { session, loading } = useAuth();
+  const userType = session?.user?.user_metadata?.user_type;
 
   if (loading) {
     return (
@@ -69,7 +70,9 @@ const AppRoutes = () => {
           <Dashboard />
         </ProtectedRoute>
       }>
-        <Route index element={<Navigate to="tasks" replace />} />
+        <Route index element={
+          <Navigate to={userType === 'founder' ? "marketplace" : "tasks"} replace />
+        } />
         <Route path="tasks" element={<Tasks />} />
         <Route path="chat" element={<Chat />} />
         <Route path="marketplace" element={<Marketplace />} />
