@@ -11,7 +11,7 @@ import Tasks from "./pages/dashboard/Tasks";
 import Chat from "./pages/dashboard/Chat";
 import Profile from "./pages/dashboard/Profile";
 import Admin from "./pages/dashboard/Admin";
-import Treasury from "./pages/dashboard/Treasury";
+import Marketplace from "./pages/dashboard/Treasury";
 import UpgradePlan from "./pages/UpgradePlan";
 import CompliancePackages from "./pages/CompliancePackages";
 import BlogPost from "./pages/blog/[slug]";
@@ -72,7 +72,7 @@ const AppRoutes = () => {
         <Route index element={<Navigate to="tasks" replace />} />
         <Route path="tasks" element={<Tasks />} />
         <Route path="chat" element={<Chat />} />
-        <Route path="treasury" element={<Treasury />} />
+        <Route path="marketplace" element={<Marketplace />} />
         <Route path="integrations" element={<Integrations />} />
         <Route path="profile" element={<Profile />} />
         <Route path="admin" element={

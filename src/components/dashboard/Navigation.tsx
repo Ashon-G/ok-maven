@@ -41,7 +41,7 @@ export const Navigation = () => {
       </NavLink>
 
       <NavLink
-        to="treasury"
+        to="marketplace"
         className={({ isActive }) =>
           `flex flex-col items-center p-2 rounded-lg hover:bg-gray-100 ${
             isActive ? "text-primary" : "text-gray-600"
@@ -49,7 +49,7 @@ export const Navigation = () => {
         }
       >
         <Wallet className="h-5 w-5" />
-        <span className="text-xs">Treasury</span>
+        <span className="text-xs">Marketplace</span>
       </NavLink>
 
       <NavLink
