@@ -11,7 +11,7 @@ import Tasks from "./pages/dashboard/Tasks";
 import Chat from "./pages/dashboard/Chat";
 import Profile from "./pages/dashboard/Profile";
 import Admin from "./pages/dashboard/Admin";
-import Marketplace from "./pages/dashboard/Treasury";
+import Marketplace from "./pages/dashboard/Marketplace";
 import UpgradePlan from "./pages/UpgradePlan";
 import CompliancePackages from "./pages/CompliancePackages";
 import BlogPost from "./pages/blog/[slug]";
