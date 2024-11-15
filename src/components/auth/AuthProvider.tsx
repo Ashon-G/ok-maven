@@ -35,6 +35,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         if (!initialSession && location.pathname.startsWith('/dashboard')) {
           navigate("/login", { replace: true });
+        } else if (initialSession && location.pathname === '/login') {
+          const userType = initialSession.user.user_metadata.user_type;
+          const defaultPath = userType === 'founder' ? '/dashboard/marketplace' : '/dashboard/tasks';
+          navigate(defaultPath, { replace: true });
         }
       } catch (error) {
         console.error('Error initializing auth:', error);
@@ -52,6 +56,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       if (!session && location.pathname.startsWith('/dashboard')) {
         navigate("/login", { replace: true });
+      } else if (session && location.pathname === '/login') {
+        const userType = session.user.user_metadata.user_type;
+        const defaultPath = userType === 'founder' ? '/dashboard/marketplace' : '/dashboard/tasks';
+        navigate(defaultPath, { replace: true });
       }
     });
 
