@@ -15,7 +15,7 @@ interface TaskDialogContentProps {
   isEditing: boolean;
   editedDescription: string;
   setEditedDescription: (description: string) => void;
-  assignee?: { full_name: string } | null;
+  assignee?: { full_name: string; id?: string } | null;
   dueDate: string | null;
   status: string;
   onStatusChange: (status: string) => void;

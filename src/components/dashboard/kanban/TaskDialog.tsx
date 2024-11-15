@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { TaskDialogHeader } from "./TaskDialogHeader";
 import { TaskDialogContent } from "./TaskDialogContent";
 import { TaskDialogFooter } from "./TaskDialogFooter";
-import { TaskDialogStatus } from "./TaskDialogStatus";
+import { RatingDialog } from "./RatingDialog";
 import { MobileFullscreenDialog } from "./MobileFullscreenDialog";
 import { useMediaQuery } from "@/hooks/use-media-query";
 
@@ -19,7 +19,7 @@ interface Task {
   due_date: string | null;
   start_date: string | null;
   end_date: string | null;
-  assignee?: { full_name: string } | null;
+  assignee?: { full_name: string; id?: string } | null;
   created_by: string;
 }
 
@@ -38,6 +38,7 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
   const [editedDescription, setEditedDescription] = useState(task.description || "");
   const [editedStartDate, setEditedStartDate] = useState<string | null>(task.start_date);
   const [editedEndDate, setEditedEndDate] = useState<string | null>(task.end_date);
+  const [showRating, setShowRating] = useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const updateTask = useMutation({
@@ -133,6 +134,9 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
   const handleStatusChange = (newStatus: string) => {
     if (newStatus === task.status) return;
     updateTask.mutate({ status: newStatus });
+    if (newStatus === "completed" && task.assignee?.id) {
+      setShowRating(true);
+    }
   };
 
   const dialogContent = (
@@ -151,18 +155,12 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
           setEditedDescription={setEditedDescription}
           assignee={task.assignee}
           dueDate={task.due_date}
+          status={task.status}
+          onStatusChange={handleStatusChange}
           startDate={task.start_date}
           endDate={task.end_date}
           onStartDateChange={setEditedStartDate}
           onEndDateChange={setEditedEndDate}
-        />
-        <TaskDialogStatus
-          status={task.status}
-          onStatusChange={handleStatusChange}
-          canEdit={canEdit}
-          taskId={task.id}
-          mavenId={task.assignee?.id}
-          founderId={task.created_by}
         />
       </div>
       <TaskDialogFooter
@@ -185,6 +183,15 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
         onSave={handleSave}
         onDelete={() => deleteTask.mutate()}
       />
+      {task.assignee?.id && (
+        <RatingDialog
+          open={showRating}
+          onOpenChange={setShowRating}
+          taskId={task.id}
+          mavenId={task.assignee.id}
+          founderId={task.created_by}
+        />
+      )}
     </div>
   );
 
