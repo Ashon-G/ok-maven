@@ -598,6 +598,58 @@ export type Database = {
           },
         ]
       }
+      task_ratings: {
+        Row: {
+          created_at: string
+          feedback: string | null
+          founder_id: string
+          id: string
+          maven_id: string
+          rating: number
+          task_id: string
+        }
+        Insert: {
+          created_at?: string
+          feedback?: string | null
+          founder_id: string
+          id?: string
+          maven_id: string
+          rating: number
+          task_id: string
+        }
+        Update: {
+          created_at?: string
+          feedback?: string | null
+          founder_id?: string
+          id?: string
+          maven_id?: string
+          rating?: number
+          task_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "task_ratings_founder_id_fkey"
+            columns: ["founder_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_ratings_maven_id_fkey"
+            columns: ["maven_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_ratings_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: true
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tasks: {
         Row: {
           assigned_to: string | null

@@ -10,4 +10,18 @@ export interface Task {
   jira_issue_key: string | null;
   start_date: string | null;
   end_date: string | null;
+  assignee?: {
+    id: string;
+    full_name: string;
+  } | null;
+}
+
+export interface TaskRating {
+  id: string;
+  task_id: string;
+  maven_id: string;
+  founder_id: string;
+  rating: number;
+  feedback: string | null;
+  created_at: string;
 }

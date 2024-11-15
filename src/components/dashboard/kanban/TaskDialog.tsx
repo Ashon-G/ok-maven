@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { TaskDialogHeader } from "./TaskDialogHeader";
 import { TaskDialogContent } from "./TaskDialogContent";
 import { TaskDialogFooter } from "./TaskDialogFooter";
+import { TaskDialogStatus } from "./TaskDialogStatus";
 import { MobileFullscreenDialog } from "./MobileFullscreenDialog";
 import { useMediaQuery } from "@/hooks/use-media-query";
 
@@ -60,14 +61,12 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
       if (start_date !== undefined) updateData.start_date = start_date;
       if (end_date !== undefined) updateData.end_date = end_date;
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from("tasks")
         .update(updateData)
-        .eq("id", task.id)
-        .select();
+        .eq("id", task.id);
 
       if (error) throw error;
-      return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
@@ -152,12 +151,18 @@ export const TaskDialog = ({ task, open, onOpenChange }: TaskDialogProps) => {
           setEditedDescription={setEditedDescription}
           assignee={task.assignee}
           dueDate={task.due_date}
-          status={task.status}
-          onStatusChange={handleStatusChange}
           startDate={task.start_date}
           endDate={task.end_date}
           onStartDateChange={setEditedStartDate}
           onEndDateChange={setEditedEndDate}
+        />
+        <TaskDialogStatus
+          status={task.status}
+          onStatusChange={handleStatusChange}
+          canEdit={canEdit}
+          taskId={task.id}
+          mavenId={task.assignee?.id}
+          founderId={task.created_by}
         />
       </div>
       <TaskDialogFooter
