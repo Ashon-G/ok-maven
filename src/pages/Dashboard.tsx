@@ -19,7 +19,6 @@ import { Button } from "@/components/ui/button";
 import { JiraIntegrationDialog } from "@/components/dashboard/jira/JiraIntegrationDialog";
 import { GenerateTasksDialog } from "@/components/dashboard/kanban/GenerateTasksDialog";
 import { useState } from "react";
-import { format } from "date-fns";
 
 const Dashboard = () => {
   const { session } = useAuth();
@@ -64,8 +63,6 @@ const Dashboard = () => {
     window.location.href = "/login";
   };
 
-  const memberSince = profile?.created_at ? format(new Date(profile.created_at), 'MMMM yyyy') : '';
-
   return (
     <div className="min-h-screen bg-gray-50/50 no-scrollbar">
       <nav className="fixed top-0 left-0 right-0 z-50 mb-8 bg-white p-4 border-b border-black/5 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
@@ -74,20 +71,12 @@ const Dashboard = () => {
             <div className="flex items-center gap-4">
               <DropdownMenu>
                 <DropdownMenuTrigger className="focus:outline-none">
-                  <div className="relative inline-flex">
-                    <div className="absolute -inset-3 rounded-full bg-black/90"></div>
-                    <div className="relative flex items-center gap-3 px-4 py-2">
-                      <Avatar className="h-12 w-12 border-2 border-white">
-                        <AvatarImage src={profile?.avatar_url || ""} />
-                        <AvatarFallback>
-                          {profile?.full_name?.charAt(0) || session?.user.email?.charAt(0) || "?"}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="text-white text-sm">
-                        Member since<br/>{memberSince}
-                      </div>
-                    </div>
-                  </div>
+                  <Avatar className="h-12 w-12">
+                    <AvatarImage src={profile?.avatar_url || ""} />
+                    <AvatarFallback>
+                      {profile?.full_name?.charAt(0) || session?.user.email?.charAt(0) || "?"}
+                    </AvatarFallback>
+                  </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-56 bg-white border border-gray-200 shadow-lg">
                   <NavLink to="profile">
@@ -182,4 +171,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
