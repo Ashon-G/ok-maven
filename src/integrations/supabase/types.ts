@@ -86,6 +86,44 @@ export type Database = {
           },
         ]
       }
+      figma_integrations: {
+        Row: {
+          access_token: string
+          created_at: string
+          id: string
+          refresh_token: string
+          team_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          access_token: string
+          created_at?: string
+          id?: string
+          refresh_token: string
+          team_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          access_token?: string
+          created_at?: string
+          id?: string
+          refresh_token?: string
+          team_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "figma_integrations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       founder_maven_assignments: {
         Row: {
           assigned_by: string
@@ -137,9 +175,12 @@ export type Database = {
           budget: string | null
           created_at: string
           description: string
+          documents: Json | null
+          figma_files: Json | null
           founder_id: string
           goals: string[] | null
           id: string
+          image_url: string | null
           status: Database["public"]["Enums"]["project_status_enum"]
           target_audience: string | null
           timeline: string | null
@@ -149,9 +190,12 @@ export type Database = {
           budget?: string | null
           created_at?: string
           description: string
+          documents?: Json | null
+          figma_files?: Json | null
           founder_id: string
           goals?: string[] | null
           id?: string
+          image_url?: string | null
           status?: Database["public"]["Enums"]["project_status_enum"]
           target_audience?: string | null
           timeline?: string | null
@@ -161,9 +205,12 @@ export type Database = {
           budget?: string | null
           created_at?: string
           description?: string
+          documents?: Json | null
+          figma_files?: Json | null
           founder_id?: string
           goals?: string[] | null
           id?: string
+          image_url?: string | null
           status?: Database["public"]["Enums"]["project_status_enum"]
           target_audience?: string | null
           timeline?: string | null
@@ -451,6 +498,7 @@ export type Database = {
         Row: {
           avatar_url: string | null
           bio: string | null
+          business: Json | null
           created_at: string
           full_name: string | null
           id: string
@@ -467,6 +515,7 @@ export type Database = {
         Insert: {
           avatar_url?: string | null
           bio?: string | null
+          business?: Json | null
           created_at?: string
           full_name?: string | null
           id: string
@@ -483,6 +532,7 @@ export type Database = {
         Update: {
           avatar_url?: string | null
           bio?: string | null
+          business?: Json | null
           created_at?: string
           full_name?: string | null
           id?: string
@@ -737,6 +787,7 @@ export type Database = {
     }
     Enums: {
       application_status_enum: "pending" | "approved" | "rejected"
+      figma_access_type: "read" | "write"
       jira_hosting_type: "cloud" | "server"
       maven_skillset_enum:
         | "Developer"
